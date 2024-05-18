@@ -12,7 +12,7 @@ struct ContentView: View {
     @State private var targetLanguageIndex = 1
     @State private var inputText = ""
     @State private var outputText = ""
-    let language = ["Turkish", "English", "German", "Spanish", "Italian", "Russian", "Arabic"]
+    let language = ["English", "Turkish", "German", "Spanish", "Italian", "Russian", "Arabic"]
     
     var body: some View {
         VStack {
@@ -188,6 +188,7 @@ struct ContentView: View {
     
     func translationWithAPI(inputText: String, sourceLanguage: String, targetLanguage: String) {
         // Example translation with no API
+        
         let translations = [
             "Merhaba": ["English": "Hello", "German": "Hallo"],
             "Nasilsin": ["English": "How Are You", "German": "Wie geht es dir"]
