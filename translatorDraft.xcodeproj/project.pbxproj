@@ -282,6 +282,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = translatorDraft/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Coomunicator;
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "\"Audio is recorded to transcribe what is spoken. No Audio is saved\"";
 				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "\"Allows for microphone detection of spoken words\"";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -314,6 +315,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = translatorDraft/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Coomunicator;
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "\"Audio is recorded to transcribe what is spoken. No Audio is saved\"";
 				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "\"Allows for microphone detection of spoken words\"";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;

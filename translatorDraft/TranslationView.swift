@@ -12,8 +12,10 @@ struct TranslationView: View {
     @State private var recognitionRequest: SFSpeechAudioBufferRecognitionRequest?
     @State private var recognitionTask: SFSpeechRecognitionTask?
 
-    let languages = ["English", "Turkish", "German", "Spanish", "Italian", "Russian", "Arabic"]
-    let languageCodes = ["en", "tr", "de", "es", "it", "ru", "ar"]
+    let languages = ["English", "Spanish", "Turkish", "German", "Italian", "Russian", "Arabic", "Vietnamese"]
+    let languageCodes = ["en", "es", "tr", "de", "it", "ru", "ar", "vi"]
+    
+    @State private var isPressed = false
 
     var body: some View {
         VStack {
@@ -21,16 +23,18 @@ struct TranslationView: View {
                 Color("color")
                     .edgesIgnoringSafeArea(.all)
                 VStack {
-                    HStack {
+                    HStack() {
                         Text("Text Translation")
                             .font(.system(size: 25))
                             .fontWeight(.bold)
                             .foregroundColor(.white)
+                        //                            .multilineTextAlignment(.leading)
                             .padding()
                         
                         Spacer()
                         
                         Image(systemName: "bell.badge")
+                            .padding()
                             .frame(width: 45, height: 45)
                             .foregroundColor(.white)
                     }
@@ -49,9 +53,12 @@ struct TranslationView: View {
                         .pickerStyle(MenuPickerStyle())
                         .padding()
                         
-                        Image(systemName: "arrow.left.arrow.right")
-                            .frame(width: 20, height: 20)
-                            .foregroundColor(.white)
+                        Image(systemName: "arrow.right")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .foregroundColor(/*@START_MENU_TOKEN@*/.white/*@END_MENU_TOKEN@*/)
+                            .frame(width: 30.0)
+                        
                         
                         Picker("Target Language", selection: $targetLanguageIndex) {
                             ForEach(0..<languages.count, id: \.self) { index in
@@ -74,11 +81,11 @@ struct TranslationView: View {
                                 .background(Color(red: 0.14, green: 0.15, blue: 0.15))
                                 .cornerRadius(22)
                             VStack {
-                                Rectangle()
-                                    .foregroundColor(.clear)
-                                    .frame(width: 373, height: 1)
-                                    .background(.white.opacity(0.33))
-                                HStack {
+                                //                                Rectangle()
+                                //                                    .foregroundColor(.clear)
+                                //                                    .frame(width: 373, height: 1)
+                                //                                    .background(.white.opacity(0.33))
+                                HStack() {
                                     TextField("Enter Text", text: $inputText)
                                         .font(.title2)
                                         .frame(maxWidth: 300)
@@ -92,16 +99,43 @@ struct TranslationView: View {
                                         }
                                     }) {
                                         Image(systemName: isListening ? "mic.fill" : "mic.slash.fill")
+                                            .resizable()
                                             .foregroundColor(.white)
+                                            .frame(width: 20.0, height: 20.0)
                                     }
-                                    .padding(.vertical)
+                                    
                                 }
                             }
                             .padding()
                         }
                     }
-                    Button("Translation", action: translationText)
-                        .padding()
+                    
+                    Button(action: {
+                        translationText()
+                    }) {
+                        Text("Translate")
+                            .padding()
+                            .background(Color.blue)
+                            .foregroundColor(.white)
+                            .cornerRadius(15)
+                            .shadow(color: Color("black"), radius: 5, x: 5, y: 5)
+                            .scaleEffect(isPressed ? 1.2 : 1.0)
+                            .gesture(
+                                DragGesture(minimumDistance: 0)
+                                    .onChanged { _ in
+                                        withAnimation {
+                                            isPressed = true
+                                        }
+                                    }
+                                    .onEnded { _ in
+                                        withAnimation {
+                                            isPressed = false
+                                        }
+                                        translationText()
+                                    }
+                            )
+                    }
+                    
                     
                     VStack {
                         Text("Translation To \(languages[targetLanguageIndex])")
@@ -116,6 +150,7 @@ struct TranslationView: View {
                                 .background(Color(red: 0.14, green: 0.15, blue: 0.15))
                                 .cornerRadius(22)
                             TextField("Translated Text", text: $outputText)
+                                .padding(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
                                 .font(.title2)
                                 .foregroundColor(.white)
                         }
@@ -134,7 +169,8 @@ struct TranslationView: View {
     }
     
     func translationWithAPI(inputText: String, sourceLanguage: String, targetLanguage: String) {
-        let urlStr = "https://api.mymemory.translated.net/get?q=\(inputText.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "")&langpair=\(sourceLanguage)|\(targetLanguage)"
+//        let urlStr = "https://api.mymemory.translated.net/get?q=\(inputText.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "")&langpair=\(sourceLanguage)|\(targetLanguage)"
+        let urlStr = "https://api.mymemory.translated.net/get?q=\(inputText)&langpair=\(sourceLanguage)|\(targetLanguage)"
         guard let url = URL(string: urlStr) else {
             outputText = "Invalid URL"
             return
