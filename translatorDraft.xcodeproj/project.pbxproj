@@ -275,6 +275,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"translatorDraft/Preview Content\"";
@@ -282,7 +283,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = translatorDraft/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = Coomunicator;
+				INFOPLIST_KEY_CFBundleDisplayName = Communicator;
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "\"Audio is recorded to transcribe what is spoken. No Audio is saved\"";
 				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "\"Allows for microphone detection of spoken words\"";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -308,6 +309,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"translatorDraft/Preview Content\"";
@@ -315,7 +317,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = translatorDraft/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = Coomunicator;
+				INFOPLIST_KEY_CFBundleDisplayName = Communicator;
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "\"Audio is recorded to transcribe what is spoken. No Audio is saved\"";
 				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "\"Allows for microphone detection of spoken words\"";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;

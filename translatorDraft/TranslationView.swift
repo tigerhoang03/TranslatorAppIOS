@@ -11,24 +11,26 @@ struct TranslationView: View {
     @State private var speechRecognizer = SFSpeechRecognizer()
     @State private var recognitionRequest: SFSpeechAudioBufferRecognitionRequest?
     @State private var recognitionTask: SFSpeechRecognitionTask?
-
-    let languages = ["English", "Spanish", "Turkish", "German", "Italian", "Russian", "Arabic", "Vietnamese"]
-    let languageCodes = ["en", "es", "tr", "de", "it", "ru", "ar", "vi"]
-    
     @State private var isPressed = false
+    
+    let emptyTranslation = "NO QUERY SPECIFIED. EXAMPLE REQUEST: GET?Q=HELLO&LANGPAIR=EN|IT"
+
+    let languages = ["English", "Spanish", "Vietnamese", "Turkish", "German", "Italian", "Russian", "Arabic"]
+    let languageCodes = ["en", "es", "vi", "tr", "de", "it", "ru", "ar"]
+    
 
     var body: some View {
         VStack {
             ZStack {
-                Color("color")
+                    Color(#colorLiteral(red: 0.2431, green: 0.1961, blue: 0.1961, alpha: 1))
                     .edgesIgnoringSafeArea(.all)
                 VStack {
                     HStack() {
-                        Text("Text Translation")
-                            .font(.system(size: 25))
+                        Text("Communicator")
+                            .font(.system(size: 22))
                             .fontWeight(.bold)
                             .foregroundColor(.white)
-                        //                            .multilineTextAlignment(.leading)
+                            .multilineTextAlignment(.leading)
                             .padding()
                         
                         Spacer()
@@ -56,7 +58,7 @@ struct TranslationView: View {
                         Image(systemName: "arrow.right")
                             .resizable()
                             .aspectRatio(contentMode: .fit)
-                            .foregroundColor(/*@START_MENU_TOKEN@*/.white/*@END_MENU_TOKEN@*/)
+                            .foregroundColor(Color(#colorLiteral(red: 0.4941, green: 0.3882, blue: 0.3882, alpha: 1)))
                             .frame(width: 30.0)
                         
                         
@@ -78,17 +80,16 @@ struct TranslationView: View {
                             Rectangle()
                                 .foregroundColor(.clear)
                                 .frame(width: 373, height: 208)
-                                .background(Color(red: 0.14, green: 0.15, blue: 0.15))
+                                .background(Color(#colorLiteral(red: 0.3137, green: 0.2353, blue: 0.2353, alpha: 1)))
                                 .cornerRadius(22)
                             VStack {
-                                //                                Rectangle()
-                                //                                    .foregroundColor(.clear)
-                                //                                    .frame(width: 373, height: 1)
-                                //                                    .background(.white.opacity(0.33))
                                 HStack() {
-                                    TextField("Enter Text", text: $inputText)
+                                    TextField("Input Text", text: $inputText)
+                                        .padding(.all)
                                         .font(.title2)
-                                        .frame(maxWidth: 300)
+                                        .foregroundColor(.white)
+                                        .lineLimit(nil)
+                                        .frame(maxWidth:300)
                                     
                                     Button(action: {
                                         self.isListening.toggle()
@@ -101,21 +102,20 @@ struct TranslationView: View {
                                         Image(systemName: isListening ? "mic.fill" : "mic.slash.fill")
                                             .resizable()
                                             .foregroundColor(.white)
-                                            .frame(width: 20.0, height: 20.0)
+                                            .frame(width: 50.0/*@END_MENU_TOKEN@*/, height: /*@START_MENU_TOKEN@*/50.0)
                                     }
-                                    
                                 }
                             }
                             .padding()
+                            
                         }
                     }
-                    
                     Button(action: {
                         translationText()
                     }) {
                         Text("Translate")
                             .padding()
-                            .background(Color.blue)
+                            .background(Color(#colorLiteral(red: 0.4941, green: 0.3882, blue: 0.3882, alpha: 1)))
                             .foregroundColor(.white)
                             .cornerRadius(15)
                             .shadow(color: Color("black"), radius: 5, x: 5, y: 5)
@@ -147,15 +147,26 @@ struct TranslationView: View {
                             Rectangle()
                                 .foregroundColor(.clear)
                                 .frame(width: 373, height: 208)
-                                .background(Color(red: 0.14, green: 0.15, blue: 0.15))
+                                .background(Color(#colorLiteral(red: 0.3137, green: 0.2353, blue: 0.2353, alpha: 1)))
                                 .cornerRadius(22)
-                            TextField("Translated Text", text: $outputText)
-                                .padding(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
-                                .font(.title2)
-                                .foregroundColor(.white)
+//                            TextField("Translated Text", text: $outputText)
+//                                .padding(.all)
+//                                .font(.title2)
+//                                .foregroundColor(.white)
+//                                .lineLimit(nil)
+                            ScrollView{
+                                Text(outputText)
+                                    .padding()
+                                    .font(.title2)
+                                    .lineLimit(nil)
+                                    .fixedSize(horizontal: false, vertical: true)
+                                    .foregroundColor(.white)
+
+                                Spacer()
+                            }
                         }
                     }
-                    .padding()
+                    
                 }
             }
         }
@@ -189,7 +200,13 @@ struct TranslationView: View {
                    let responseData = json["responseData"] as? [String: Any],
                    let translatedText = responseData["translatedText"] as? String {
                     DispatchQueue.main.async {
-                        self.outputText = translatedText
+                        if translatedText == emptyTranslation {
+                            self.outputText = "Empty Input. Please Translate Again"
+                        }
+                        else{
+                            self.outputText = translatedText
+                        }
+                        
                     }
                 } else {
                     DispatchQueue.main.async {
