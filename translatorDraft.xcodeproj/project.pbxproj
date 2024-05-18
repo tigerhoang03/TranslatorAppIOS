@@ -21,6 +21,7 @@
 		4979F0962BF8D75500A62A2A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4979F0992BF8D75500A62A2A /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		4979F0A02BF8D91200A62A2A /* TranslationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranslationView.swift; sourceTree = "<group>"; };
+		4979F0A22BF9094E00A62A2A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -53,6 +54,7 @@
 		4979F0912BF8D75400A62A2A /* translatorDraft */ = {
 			isa = PBXGroup;
 			children = (
+				4979F0A22BF9094E00A62A2A /* Info.plist */,
 				4979F0922BF8D75400A62A2A /* translatorDraftApp.swift */,
 				4979F0A02BF8D91200A62A2A /* TranslationView.swift */,
 				4979F0942BF8D75400A62A2A /* ContentView.swift */,
@@ -279,6 +281,9 @@
 				DEVELOPMENT_TEAM = WD5MG5W3WW;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = translatorDraft/Info.plist;
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "\"Audio is recorded to transcribe what is spoken. No Audio is saved\"";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "\"Allows for microphone detection of spoken words\"";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -308,6 +313,9 @@
 				DEVELOPMENT_TEAM = WD5MG5W3WW;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = translatorDraft/Info.plist;
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "\"Audio is recorded to transcribe what is spoken. No Audio is saved\"";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "\"Allows for microphone detection of spoken words\"";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

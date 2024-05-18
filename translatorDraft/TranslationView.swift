@@ -1,17 +1,24 @@
 import SwiftUI
+import Speech
 
 struct TranslationView: View {
     @State private var sourceLanguageIndex = 0
     @State private var targetLanguageIndex = 1
     @State private var inputText = ""
     @State private var outputText = ""
+    @State private var isListening = false
+    @State private var audioEngine = AVAudioEngine()
+    @State private var speechRecognizer = SFSpeechRecognizer()
+    @State private var recognitionRequest: SFSpeechAudioBufferRecognitionRequest?
+    @State private var recognitionTask: SFSpeechRecognitionTask?
+
     let languages = ["English", "Turkish", "German", "Spanish", "Italian", "Russian", "Arabic"]
-    let languageCodes = ["en", "tr", "de", "es", "it", "ru", "ar"] // Corresponding language codes for API
+    let languageCodes = ["en", "tr", "de", "es", "it", "ru", "ar"]
 
     var body: some View {
         VStack {
             ZStack {
-                Color("color") // Ensure you have this color defined in your asset catalog
+                Color("color")
                     .edgesIgnoringSafeArea(.all)
                 VStack {
                     HStack {
@@ -71,11 +78,26 @@ struct TranslationView: View {
                                     .foregroundColor(.clear)
                                     .frame(width: 373, height: 1)
                                     .background(.white.opacity(0.33))
-                                    .offset(y: 55)
-                                TextField("Enter Text", text: $inputText)
-                                    .font(.title2)
-                                    .offset(x: 45, y: -85)
+                                HStack {
+                                    TextField("Enter Text", text: $inputText)
+                                        .font(.title2)
+                                        .frame(maxWidth: 300)
+                                    
+                                    Button(action: {
+                                        self.isListening.toggle()
+                                        if self.isListening {
+                                            self.startListening()
+                                        } else {
+                                            self.stopListening()
+                                        }
+                                    }) {
+                                        Image(systemName: isListening ? "mic.fill" : "mic.slash.fill")
+                                            .foregroundColor(.white)
+                                    }
+                                    .padding(.vertical)
+                                }
                             }
+                            .padding()
                         }
                     }
                     Button("Translation", action: translationText)
@@ -96,7 +118,6 @@ struct TranslationView: View {
                             TextField("Translated Text", text: $outputText)
                                 .font(.title2)
                                 .foregroundColor(.white)
-                                .offset(x: 45, y: -85)
                         }
                     }
                     .padding()
@@ -146,6 +167,68 @@ struct TranslationView: View {
             }
         }
         task.resume()
+    }
+    
+    func startListening() {
+        if recognitionTask != nil {
+            recognitionTask?.cancel()
+            recognitionTask = nil
+        }
+
+        let audioSession = AVAudioSession.sharedInstance()
+        do {
+            try audioSession.setCategory(.record, mode: .measurement, options: .duckOthers)
+            try audioSession.setActive(true, options: .notifyOthersOnDeactivation)
+        } catch {
+            DispatchQueue.main.async {
+                self.outputText = "Failed to set up audio session."
+            }
+            return
+        }
+
+        recognitionRequest = SFSpeechAudioBufferRecognitionRequest()
+
+        let inputNode = audioEngine.inputNode // Directly using the inputNode as it's no longer optional
+        
+        recognitionRequest?.shouldReportPartialResults = true
+
+        recognitionTask = speechRecognizer?.recognitionTask(with: recognitionRequest!, resultHandler: { result, error in
+            var isFinal = false
+
+            if let result = result {
+                self.inputText = result.bestTranscription.formattedString
+                isFinal = result.isFinal
+            }
+
+            if error != nil || isFinal {
+                self.audioEngine.stop()
+                inputNode.removeTap(onBus: 0)
+                self.recognitionRequest = nil
+                self.recognitionTask = nil
+                self.isListening = false
+            }
+        })
+
+        let recordingFormat = inputNode.outputFormat(forBus: 0)
+        inputNode.installTap(onBus: 0, bufferSize: 1024, format: recordingFormat) { (buffer, when) in
+            self.recognitionRequest?.append(buffer)
+        }
+
+        audioEngine.prepare()
+        do {
+            try audioEngine.start()
+        } catch {
+            DispatchQueue.main.async {
+                self.outputText = "Audio engine could not start."
+            }
+        }
+    }
+
+    
+    func stopListening() {
+        audioEngine.stop()
+        recognitionRequest?.endAudio()
+        isListening = false
     }
 }
 
