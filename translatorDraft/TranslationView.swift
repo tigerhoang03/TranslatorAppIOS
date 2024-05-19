@@ -1,5 +1,6 @@
 import SwiftUI
 import Speech
+import AVFoundation
 
 struct TranslationView: View {
     @State private var sourceLanguageIndex = 0
@@ -14,7 +15,7 @@ struct TranslationView: View {
     @State private var recognitionTask: SFSpeechRecognitionTask?
     @State private var translatePressed = false
     @State private var clearPressed = false
-    
+    @State private var speechSynthesizer = AVSpeechSynthesizer()
     @State private var languageDirection = true
     
     let emptyTranslation = "NO QUERY SPECIFIED. EXAMPLE REQUEST: GET?Q=HELLO&LANGPAIR=EN|IT"
@@ -118,7 +119,7 @@ struct TranslationView: View {
                                 .background(Color(#colorLiteral(red: 0.3137, green: 0.2353, blue: 0.2353, alpha: 1)))
                                 .cornerRadius(22)
                             VStack {
-                                HStack() {
+                                HStack {
 //                                    TextField(" \(languages[sourceLanguageIndex]) Here", text: $inputText)
 //                                        .padding(.all)
 //                                        .font(.title2)
@@ -127,14 +128,26 @@ struct TranslationView: View {
 //                                        .frame(maxWidth:300)
                                     TextEditor(text: $inputText)
                                         .font(.title2)
+                                        .frame(width: 360)
                                         .foregroundColor(Color.black)
                                         .scrollContentBackground(.hidden) // hides the default bg
                                         .background(Color(#colorLiteral(red: 0.3137, green: 0.2353, blue: 0.2353, alpha: 1))) // actual bg color to change
                                         .cornerRadius(10)
-                                    
+                                                                        
                                 }
+                                .overlay(
+                                    Button(action: {
+                                        self.speak(text: self.inputText, languageCode: self.languageCodes[self.sourceLanguageIndex])
+                                    }) {
+                                        Image(systemName: "speaker.wave.2")
+                                            .resizable()
+                                            .frame(width: 25, height: 25)
+                                            .aspectRatio(contentMode: .fit)
+                                    }, alignment: .bottomTrailing
+
+                                ).padding()
                             }
-                            .padding()
+                            .padding([.trailing] , 10)
                         }
                     }
                     
@@ -154,7 +167,7 @@ struct TranslationView: View {
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
                                 .foregroundColor(.white)
-                                .frame(width: 50.0/*@END_MENU_TOKEN@*/, height: /*@START_MENU_TOKEN@*/50.0)
+                                .frame(width: 40.0/*@END_MENU_TOKEN@*/, height: /*@START_MENU_TOKEN@*/40.0)
                         }
                         
                         Spacer()
@@ -221,8 +234,19 @@ struct TranslationView: View {
                                     .background(Color(#colorLiteral(red: 0.3137, green: 0.2353, blue: 0.2353, alpha: 1))) // actual bg color to change
                                     .cornerRadius(10)
                                 
-                            }
-                            .padding()
+                            }.padding().overlay(
+                                Button(action: {
+                                    self.speak(text: self.outputText, languageCode: self.languageCodes[self.targetLanguageIndex])
+                                }) {
+                                    Image(systemName: "speaker.wave.2")
+                                        .resizable()
+                                        .frame(width: 25, height: 25)
+                                        .aspectRatio(contentMode: .fit)
+                                }
+                                .padding([.bottom], 10),
+                                alignment: .bottomTrailing
+                            )
+                            .padding([.trailing], 25) .padding([.bottom], 10)
                         }
                     }
                 }
@@ -381,6 +405,15 @@ struct TranslationView: View {
         inputText = ""
         outputText = ""
     }
+    
+    func speak(text: String, languageCode: String) {
+        let utterance = AVSpeechUtterance(string: text)
+        utterance.voice = AVSpeechSynthesisVoice(language: languageCode)
+        utterance.rate = 0.5
+
+        speechSynthesizer.speak(utterance)
+    }
+
 }
 
 struct TranslationView_Previews: PreviewProvider {
@@ -389,3 +422,4 @@ struct TranslationView_Previews: PreviewProvider {
             .preferredColorScheme(.dark)
     }
 }
+
