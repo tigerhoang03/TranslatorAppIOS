@@ -12,9 +12,10 @@ struct TranslationView: View {
     @State private var speechRecognizer = SFSpeechRecognizer()
     @State private var recognitionRequest: SFSpeechAudioBufferRecognitionRequest?
     @State private var recognitionTask: SFSpeechRecognitionTask?
-    @State private var isPressed = false
+    @State private var translatePressed = false
+    @State private var clearPressed = false
     
-    @State private var languageDirection = false
+    @State private var languageDirection = true
     
     let emptyTranslation = "NO QUERY SPECIFIED. EXAMPLE REQUEST: GET?Q=HELLO&LANGPAIR=EN|IT"
 
@@ -36,12 +37,38 @@ struct TranslationView: View {
                             .multilineTextAlignment(.leading)
                             .padding()
                         
-                        Spacer()
+                        //                        Spacer()
                         
                         Image(systemName: "bell.badge")
                             .padding()
                             .frame(width: 45, height: 45)
                             .foregroundColor(.white)
+                        
+                        Button(action: {
+                            clearText()
+                        }) {
+                            Text("Clear")
+                                .padding()
+                                .background(Color(#colorLiteral(red: 0.4941, green: 0.3882, blue: 0.3882, alpha: 1)))
+                                .foregroundColor(.white)
+                                .cornerRadius(15)
+                                .shadow(color: Color("black"), radius: 5, x: 5, y: 5)
+                                .scaleEffect(clearPressed ? 1.2 : 1.0)
+                                .gesture(
+                                    DragGesture(minimumDistance: 0)
+                                        .onChanged { _ in
+                                            withAnimation {
+                                                clearPressed = true
+                                            }
+                                        }
+                                        .onEnded { _ in
+                                            withAnimation {
+                                                clearPressed = false
+                                            }
+                                            clearText()
+                                        }
+                                )
+                        }
                     }
                     VStack {
                         Rectangle()
@@ -105,44 +132,60 @@ struct TranslationView: View {
                                         .background(Color.white.opacity(0.1))
                                         .cornerRadius(10)
                                     
-                                    Button(action: {
-                                        self.isListening.toggle()
-                                    }) {
-                                        Image(systemName: isListening ? "mic.fill" : "mic.slash.fill")
-                                            .resizable()
-                                            .foregroundColor(.white)
-                                            .frame(width: 50.0/*@END_MENU_TOKEN@*/, height: /*@START_MENU_TOKEN@*/50.0)
-                                    }
                                 }
                             }
                             .padding()
                         }
                     }
-                    Button(action: {
-                        translationText()
-                    }) {
-                        Text("Translate")
-                            .padding()
-                            .background(Color(#colorLiteral(red: 0.4941, green: 0.3882, blue: 0.3882, alpha: 1)))
-                            .foregroundColor(.white)
-                            .cornerRadius(15)
-                            .shadow(color: Color("black"), radius: 5, x: 5, y: 5)
-                            .scaleEffect(isPressed ? 1.2 : 1.0)
-                            .gesture(
-                                DragGesture(minimumDistance: 0)
-                                    .onChanged { _ in
-                                        withAnimation {
-                                            isPressed = true
+                    
+                    HStack{
+                        
+                        Button(action: {
+                            self.isListening.toggle()
+                            print(isListening)
+//                            if self.isListening {
+//                                self.startListening()
+//                            } else {
+//                                self.stopListening()
+//                            }
+                            
+                        }) {
+                            Image(systemName: isListening ? "mic.fill" : "mic.slash.fill")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .foregroundColor(.white)
+                                .frame(width: 50.0/*@END_MENU_TOKEN@*/, height: /*@START_MENU_TOKEN@*/50.0)
+                        }
+                        
+                        Spacer()
+                        
+                        Button(action: {
+                            translationText()
+                        }) {
+                            Text("Translate")
+                                .padding(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
+                                .background(Color(#colorLiteral(red: 0.4941, green: 0.3882, blue: 0.3882, alpha: 1)))
+                                .foregroundColor(.white)
+                                .cornerRadius(15)
+                                .shadow(color: Color("black"), radius: 5, x: 5, y: 5)
+                                .scaleEffect(translatePressed ? 1.2 : 1.0)
+                                .gesture(
+                                    DragGesture(minimumDistance: 0)
+                                        .onChanged { _ in
+                                            withAnimation {
+                                                translatePressed = true
+                                            }
                                         }
-                                    }
-                                    .onEnded { _ in
-                                        withAnimation {
-                                            isPressed = false
+                                        .onEnded { _ in
+                                            withAnimation {
+                                                translatePressed = false
+                                            }
+                                            translationText()
                                         }
-                                        translationText()
-                                    }
-                            )
+                                )
+                        }
                     }
+                    .padding(/*@START_MENU_TOKEN@*/.horizontal, 50.0/*@END_MENU_TOKEN@*/)
                     
                     
                     VStack {
@@ -177,23 +220,6 @@ struct TranslationView: View {
                                     .foregroundColor(.white)
                                     .background(Color.white.opacity(0.1))
                                     .cornerRadius(10)
-                                
-                                Spacer()
-                                
-                                Button(action: {
-                                    self.isListening.toggle()
-                                    
-//                                    if self.isListening == false {
-//                                        self.stopListening()
-//                                    } else {
-//                                        self.startListening()
-//                                    }
-                                }) {
-                                    Image(systemName: isListening ? "mic.fill" : "mic.slash.fill")
-                                        .resizable()
-                                        .foregroundColor(.white)
-                                        .frame(width: 50.0/*@END_MENU_TOKEN@*/, height: /*@START_MENU_TOKEN@*/50.0)
-                                }
                                 
                             }
                             .padding()
@@ -340,6 +366,11 @@ struct TranslationView: View {
         audioEngine.stop()
         recognitionRequest?.endAudio()
         isListening = false
+    }
+    
+    func clearText() {
+        inputText = ""
+        outputText = ""
     }
 }
 
