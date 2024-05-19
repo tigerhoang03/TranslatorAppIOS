@@ -6,12 +6,15 @@ struct TranslationView: View {
     @State private var targetLanguageIndex = 1
     @State private var inputText = ""
     @State private var outputText = ""
+    @State private var tempBox = ""
     @State private var isListening = false
     @State private var audioEngine = AVAudioEngine()
     @State private var speechRecognizer = SFSpeechRecognizer()
     @State private var recognitionRequest: SFSpeechAudioBufferRecognitionRequest?
     @State private var recognitionTask: SFSpeechRecognitionTask?
     @State private var isPressed = false
+    
+    @State private var languageDirection = false
     
     let emptyTranslation = "NO QUERY SPECIFIED. EXAMPLE REQUEST: GET?Q=HELLO&LANGPAIR=EN|IT"
 
@@ -55,11 +58,17 @@ struct TranslationView: View {
                         .pickerStyle(MenuPickerStyle())
                         .padding()
                         
-                        Image(systemName: "arrow.right")
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .foregroundColor(Color(#colorLiteral(red: 0.4941, green: 0.3882, blue: 0.3882, alpha: 1)))
-                            .frame(width: 30.0)
+                        
+                        Button(action: {
+                            self.languageDirection.toggle()
+                            print("Language Direction \(languageDirection)")
+                        }) {
+                            Image(systemName: languageDirection ? "arrow.right" : "arrow.left")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .foregroundColor(Color(#colorLiteral(red: 0.4941, green: 0.3882, blue: 0.3882, alpha: 1)))
+                                .frame(width: 30.0)
+                        }
                         
                         
                         Picker("Target Language", selection: $targetLanguageIndex) {
@@ -71,7 +80,7 @@ struct TranslationView: View {
                         .padding()
                     }
                     VStack {
-                        Text("Translation From \(languages[sourceLanguageIndex])")
+                        Text("Language 1: \(languages[sourceLanguageIndex])")
                             .font(Font.custom("Inter", size: 17).weight(.light))
                             .foregroundColor(.white.opacity(0.43))
                             .padding()
@@ -84,20 +93,20 @@ struct TranslationView: View {
                                 .cornerRadius(22)
                             VStack {
                                 HStack() {
-                                    TextField("Input Text", text: $inputText)
-                                        .padding(.all)
+//                                    TextField(" \(languages[sourceLanguageIndex]) Here", text: $inputText)
+//                                        .padding(.all)
+//                                        .font(.title2)
+//                                        .foregroundColor(.white)
+//                                        .lineLimit(nil)
+//                                        .frame(maxWidth:300)
+                                    TextEditor(text: $inputText)
                                         .font(.title2)
                                         .foregroundColor(.white)
-                                        .lineLimit(nil)
-                                        .frame(maxWidth:300)
+                                        .background(Color.white.opacity(0.1))
+                                        .cornerRadius(10)
                                     
                                     Button(action: {
                                         self.isListening.toggle()
-                                        if self.isListening {
-                                            self.startListening()
-                                        } else {
-                                            self.stopListening()
-                                        }
                                     }) {
                                         Image(systemName: isListening ? "mic.fill" : "mic.slash.fill")
                                             .resizable()
@@ -107,7 +116,6 @@ struct TranslationView: View {
                                 }
                             }
                             .padding()
-                            
                         }
                     }
                     Button(action: {
@@ -138,7 +146,7 @@ struct TranslationView: View {
                     
                     
                     VStack {
-                        Text("Translation To \(languages[targetLanguageIndex])")
+                        Text("Lnaguage 2: \(languages[targetLanguageIndex])")
                             .font(Font.custom("Inter", size: 17).weight(.light))
                             .foregroundColor(.white.opacity(0.43))
                             .padding()
@@ -154,43 +162,84 @@ struct TranslationView: View {
 //                                .font(.title2)
 //                                .foregroundColor(.white)
 //                                .lineLimit(nil)
-                            ScrollView{
-                                Text(outputText)
-                                    .padding()
+                            HStack{
+//                                ScrollView{
+//                                    Text(outputText)
+//                                        .padding()
+//                                        .font(.title2)
+//                                        .lineLimit(nil)
+//                                        .fixedSize(horizontal: false, vertical: true)
+//                                        .foregroundColor(.white)
+//                                    
+//                                }
+                                TextEditor(text: $outputText)
                                     .font(.title2)
-                                    .lineLimit(nil)
-                                    .fixedSize(horizontal: false, vertical: true)
                                     .foregroundColor(.white)
-
+                                    .background(Color.white.opacity(0.1))
+                                    .cornerRadius(10)
+                                
                                 Spacer()
+                                
+                                Button(action: {
+                                    self.isListening.toggle()
+                                    
+//                                    if self.isListening == false {
+//                                        self.stopListening()
+//                                    } else {
+//                                        self.startListening()
+//                                    }
+                                }) {
+                                    Image(systemName: isListening ? "mic.fill" : "mic.slash.fill")
+                                        .resizable()
+                                        .foregroundColor(.white)
+                                        .frame(width: 50.0/*@END_MENU_TOKEN@*/, height: /*@START_MENU_TOKEN@*/50.0)
+                                }
+                                
                             }
+                            .padding()
                         }
                     }
-                    
                 }
             }
         }
     }
     
     func translationText() {
-        let sourceLanguageCode = languageCodes[sourceLanguageIndex]
-        let targetLanguageCode = languageCodes[targetLanguageIndex]
+        let sourceLanguageCode = languageDirection ? languageCodes[sourceLanguageIndex] : languageCodes[targetLanguageIndex]
+        let targetLanguageCode = languageDirection ? languageCodes[targetLanguageIndex] : languageCodes[sourceLanguageIndex]
         
-        translationWithAPI(inputText: inputText, sourceLanguage: sourceLanguageCode, targetLanguage: targetLanguageCode)
+        translationWithAPI(inputText: languageDirection ? inputText : outputText, sourceLanguage: languageDirection ? sourceLanguageCode : targetLanguageCode, targetLanguage: languageDirection ? targetLanguageCode : sourceLanguageCode)
+        
+        print("Language Direction: \(languageDirection), Source Language Code: \(sourceLanguageCode), Target Language Code: \(targetLanguageCode)")
+
+
     }
     
     func translationWithAPI(inputText: String, sourceLanguage: String, targetLanguage: String) {
 //        let urlStr = "https://api.mymemory.translated.net/get?q=\(inputText.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "")&langpair=\(sourceLanguage)|\(targetLanguage)"
-        let urlStr = "https://api.mymemory.translated.net/get?q=\(inputText)&langpair=\(sourceLanguage)|\(targetLanguage)"
+        let sourceLang1 = languageDirection ? sourceLanguage : targetLanguage
+        let targetLang1 = languageDirection ? targetLanguage : sourceLanguage
+        let urlStr = "https://api.mymemory.translated.net/get?q=\(inputText)&langpair=\(sourceLang1)|\(targetLang1)"
+        
+        print(urlStr)
+        
         guard let url = URL(string: urlStr) else {
-            outputText = "Invalid URL"
+            if languageDirection {
+                self.inputText = "Invalid URL"
+            } else {
+                self.outputText = "Invalid URL"
+            }
             return
         }
         
         let task = URLSession.shared.dataTask(with: url) { data, response, error in
             guard let data = data, error == nil else {
                 DispatchQueue.main.async {
-                    self.outputText = "Network error: \(error?.localizedDescription ?? "Unknown error")"
+                    if languageDirection{
+                        self.inputText = "Network error: \(error?.localizedDescription ?? "Unknown error")"
+                    } else {
+                        self.outputText = "Network error: \(error?.localizedDescription ?? "Unknown error")"
+                    }
                 }
                 return
             }
@@ -199,23 +248,32 @@ struct TranslationView: View {
                 if let json = try JSONSerialization.jsonObject(with: data) as? [String: Any],
                    let responseData = json["responseData"] as? [String: Any],
                    let translatedText = responseData["translatedText"] as? String {
+                    print(translatedText)
                     DispatchQueue.main.async {
-                        if translatedText == emptyTranslation {
+                        if translatedText == emptyTranslation && languageDirection == false {
+                            self.inputText = "Empty Input. Please Translate Again"
+                        } else if translatedText == emptyTranslation && languageDirection {
                             self.outputText = "Empty Input. Please Translate Again"
-                        }
-                        else{
+                        } else if languageDirection == false {
+                            self.inputText = translatedText
+                        } else {
                             self.outputText = translatedText
                         }
-                        
                     }
                 } else {
                     DispatchQueue.main.async {
-                        self.outputText = "Translation not found."
+                        if languageDirection == false {
+                            self.inputText = "Translation not found."
+                        }
+                        else {
+                            self.outputText = "Translation not found."
+                        }
+                        
                     }
                 }
             } catch {
                 DispatchQueue.main.async {
-                    self.outputText = "JSON parsing error: \(error.localizedDescription)"
+                    self.tempBox = "JSON parsing error: \(error.localizedDescription)"
                 }
             }
         }
