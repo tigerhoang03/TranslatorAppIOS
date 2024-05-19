@@ -52,7 +52,6 @@ struct TranslationView: View {
                                 .background(Color(#colorLiteral(red: 0.4941, green: 0.3882, blue: 0.3882, alpha: 1)))
                                 .foregroundColor(.white)
                                 .cornerRadius(15)
-                                .shadow(color: Color("black"), radius: 5, x: 5, y: 5)
                                 .scaleEffect(clearPressed ? 1.2 : 1.0)
                                 .gesture(
                                     DragGesture(minimumDistance: 0)
@@ -128,8 +127,9 @@ struct TranslationView: View {
 //                                        .frame(maxWidth:300)
                                     TextEditor(text: $inputText)
                                         .font(.title2)
-                                        .foregroundColor(.white)
-                                        .background(Color.white.opacity(0.1))
+                                        .foregroundColor(Color.black)
+                                        .scrollContentBackground(.hidden) // hides the default bg
+                                        .background(Color(#colorLiteral(red: 0.3137, green: 0.2353, blue: 0.2353, alpha: 1))) // actual bg color to change
                                         .cornerRadius(10)
                                     
                                 }
@@ -143,11 +143,11 @@ struct TranslationView: View {
                         Button(action: {
                             self.isListening.toggle()
                             print(isListening)
-//                            if self.isListening {
-//                                self.startListening()
-//                            } else {
-//                                self.stopListening()
-//                            }
+                            if self.isListening {
+                                self.startListening()
+                            } else {
+                                self.stopListening()
+                            }
                             
                         }) {
                             Image(systemName: isListening ? "mic.fill" : "mic.slash.fill")
@@ -167,7 +167,6 @@ struct TranslationView: View {
                                 .background(Color(#colorLiteral(red: 0.4941, green: 0.3882, blue: 0.3882, alpha: 1)))
                                 .foregroundColor(.white)
                                 .cornerRadius(15)
-                                .shadow(color: Color("black"), radius: 5, x: 5, y: 5)
                                 .scaleEffect(translatePressed ? 1.2 : 1.0)
                                 .gesture(
                                     DragGesture(minimumDistance: 0)
@@ -217,8 +216,9 @@ struct TranslationView: View {
 //                                }
                                 TextEditor(text: $outputText)
                                     .font(.title2)
-                                    .foregroundColor(.white)
-                                    .background(Color.white.opacity(0.1))
+                                    .foregroundColor(Color.black)
+                                    .scrollContentBackground(.hidden) // hides the default bg
+                                    .background(Color(#colorLiteral(red: 0.3137, green: 0.2353, blue: 0.2353, alpha: 1))) // actual bg color to change
                                     .cornerRadius(10)
                                 
                             }
@@ -236,9 +236,6 @@ struct TranslationView: View {
         
         translationWithAPI(inputText: languageDirection ? inputText : outputText, sourceLanguage: languageDirection ? sourceLanguageCode : targetLanguageCode, targetLanguage: languageDirection ? targetLanguageCode : sourceLanguageCode)
         
-        print("Language Direction: \(languageDirection), Source Language Code: \(sourceLanguageCode), Target Language Code: \(targetLanguageCode)")
-
-
     }
     
     func translationWithAPI(inputText: String, sourceLanguage: String, targetLanguage: String) {
@@ -318,7 +315,11 @@ struct TranslationView: View {
             try audioSession.setActive(true, options: .notifyOthersOnDeactivation)
         } catch {
             DispatchQueue.main.async {
-                self.outputText = "Failed to set up audio session."
+                if languageDirection {
+                    self.outputText = "Failed to set up audio session."
+                } else {
+                    self.inputText = "Failed to set up audio session."
+                }
             }
             return
         }
@@ -333,7 +334,11 @@ struct TranslationView: View {
             var isFinal = false
 
             if let result = result {
-                self.inputText = result.bestTranscription.formattedString
+                if languageDirection {
+                    self.inputText = result.bestTranscription.formattedString
+                } else {
+                    self.outputText = result.bestTranscription.formattedString
+                }
                 isFinal = result.isFinal
             }
 
@@ -356,7 +361,11 @@ struct TranslationView: View {
             try audioEngine.start()
         } catch {
             DispatchQueue.main.async {
-                self.outputText = "Audio engine could not start."
+                if languageDirection {
+                    self.outputText = "Audio engine could not start."
+                } else {
+                    self.inputText = "Audio engine could not start."
+                }
             }
         }
     }
