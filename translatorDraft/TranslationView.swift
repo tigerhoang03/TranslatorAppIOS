@@ -32,13 +32,13 @@ struct TranslationView: View {
                 VStack {
                     HStack() {
                         Text("Communicator")
-                            .font(.system(size: 22))
+                            .font(.system(size: 29))
                             .fontWeight(.bold)
                             .foregroundColor(.white)
                             .multilineTextAlignment(.leading)
                             .padding()
+                            
                         
-                        //                        Spacer()
                         
                         Image(systemName: "bell.badge")
                             .padding()
@@ -76,14 +76,22 @@ struct TranslationView: View {
                             .frame(width: 373, height: 1)
                             .background(.white.opacity(0.33))
                     }
-                    HStack {
+                    
+                    HStack(alignment: .top, spacing: 30.0) {
                         Picker("Source Language", selection: $sourceLanguageIndex) {
-                            ForEach(0..<languages.count, id: \.self) { index in
-                                Text(languages[index])
-                            }
+                                ForEach(0..<languages.count, id: \.self) { index in
+                                    Text(languages[index])
+                                }
                         }
+                        .padding(/*@START_MENU_TOKEN@*/.all, 6.0/*@END_MENU_TOKEN@*/)
                         .pickerStyle(MenuPickerStyle())
-                        .padding()
+                        .background(Color(#colorLiteral(red: 0.3137, green: 0.2353, blue: 0.2353, alpha: 1)))
+                        .foregroundColor(Color.white)
+                        .cornerRadius(12)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 8)
+                                .stroke(Color.black, lineWidth: 2)
+                        )
                         
                         
                         Button(action: {
@@ -94,21 +102,32 @@ struct TranslationView: View {
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
                                 .foregroundColor(Color(#colorLiteral(red: 0.4941, green: 0.3882, blue: 0.3882, alpha: 1)))
-                                .frame(width: 30.0)
+                                .frame(width: /*@START_MENU_TOKEN@*/50.0/*@END_MENU_TOKEN@*/)
+                                
                         }
                         
                         
                         Picker("Target Language", selection: $targetLanguageIndex) {
-                            ForEach(0..<languages.count, id: \.self) { index in
-                                Text(languages[index])
-                            }
+                                ForEach(0..<languages.count, id: \.self) { index in
+                                    Text(languages[index])
+                                }
                         }
+                        .padding(/*@START_MENU_TOKEN@*/.all, 6.0/*@END_MENU_TOKEN@*/)
+                            .pickerStyle(MenuPickerStyle())
+                            .background(Color(#colorLiteral(red: 0.3137, green: 0.2353, blue: 0.2353, alpha: 1)))
+                            .foregroundColor(Color("color"))
+                            .cornerRadius(12)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 8)
+                                    .stroke(Color.black, lineWidth: 2)
+                            )
                         .pickerStyle(MenuPickerStyle())
-                        .padding()
+                        
                     }
+                    .padding(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
                     VStack {
                         Text("Language 1: \(languages[sourceLanguageIndex])")
-                            .font(Font.custom("Inter", size: 17).weight(.light))
+//                            .font(Font.custom("Inter", size: 17).weight(.light))
                             .foregroundColor(.white.opacity(0.43))
                             .padding()
                             .offset(x: -80)
@@ -129,7 +148,7 @@ struct TranslationView: View {
                                     TextEditor(text: $inputText)
                                         .font(.title2)
                                         .frame(width: 360)
-                                        .foregroundColor(Color.black)
+                                        .foregroundColor(Color.white)
                                         .scrollContentBackground(.hidden) // hides the default bg
                                         .background(Color(#colorLiteral(red: 0.3137, green: 0.2353, blue: 0.2353, alpha: 1))) // actual bg color to change
                                         .cornerRadius(10)
@@ -141,6 +160,7 @@ struct TranslationView: View {
                                     }) {
                                         Image(systemName: "speaker.wave.2")
                                             .resizable()
+                                            .foregroundColor(.white)
                                             .frame(width: 25, height: 25)
                                             .aspectRatio(contentMode: .fit)
                                     }, alignment: .bottomTrailing
@@ -212,24 +232,10 @@ struct TranslationView: View {
                                 .frame(width: 373, height: 208)
                                 .background(Color(#colorLiteral(red: 0.3137, green: 0.2353, blue: 0.2353, alpha: 1)))
                                 .cornerRadius(22)
-//                            TextField("Translated Text", text: $outputText)
-//                                .padding(.all)
-//                                .font(.title2)
-//                                .foregroundColor(.white)
-//                                .lineLimit(nil)
                             HStack{
-//                                ScrollView{
-//                                    Text(outputText)
-//                                        .padding()
-//                                        .font(.title2)
-//                                        .lineLimit(nil)
-//                                        .fixedSize(horizontal: false, vertical: true)
-//                                        .foregroundColor(.white)
-//                                    
-//                                }
                                 TextEditor(text: $outputText)
                                     .font(.title2)
-                                    .foregroundColor(Color.black)
+                                    .foregroundColor(Color.white)
                                     .scrollContentBackground(.hidden) // hides the default bg
                                     .background(Color(#colorLiteral(red: 0.3137, green: 0.2353, blue: 0.2353, alpha: 1))) // actual bg color to change
                                     .cornerRadius(10)
@@ -240,6 +246,7 @@ struct TranslationView: View {
                                 }) {
                                     Image(systemName: "speaker.wave.2")
                                         .resizable()
+                                        .foregroundColor(.white)
                                         .frame(width: 25, height: 25)
                                         .aspectRatio(contentMode: .fit)
                                 }
