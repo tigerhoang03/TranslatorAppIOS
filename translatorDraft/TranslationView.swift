@@ -17,6 +17,8 @@ struct TranslationView: View {
     @State private var clearPressed = false
     @State private var speechSynthesizer = AVSpeechSynthesizer()
     @State private var languageDirection = true
+    @State private var showStroke1 = false
+    @State private var showStroke2 = false
     
     let emptyTranslation = "NO QUERY SPECIFIED. EXAMPLE REQUEST: GET?Q=HELLO&LANGPAIR=EN|IT"
 
@@ -27,9 +29,9 @@ struct TranslationView: View {
     var body: some View {
         VStack {
             ZStack {
-                    Color(#colorLiteral(red: 0.2431, green: 0.1961, blue: 0.1961, alpha: 1))
+                    Color(#colorLiteral(red: 0.3843, green: 0.4471, blue: 0.3294, alpha: 1))
                     .edgesIgnoringSafeArea(.all)
-                VStack {
+                VStack() {
                     HStack() {
                         Text("Communicator")
                             .font(.system(size: 29))
@@ -50,8 +52,8 @@ struct TranslationView: View {
                         }) {
                             Text("Clear")
                                 .padding()
-                                .background(Color(#colorLiteral(red: 0.4941, green: 0.3882, blue: 0.3882, alpha: 1)))
-                                .foregroundColor(.white)
+                                .background(Color(#colorLiteral(red: 0.8667, green: 0.8667, blue: 0.8667, alpha: 1)))
+                                .foregroundColor(.black)
                                 .cornerRadius(15)
                                 .scaleEffect(clearPressed ? 1.2 : 1.0)
                                 .gesture(
@@ -85,24 +87,25 @@ struct TranslationView: View {
                         }
                         .padding(/*@START_MENU_TOKEN@*/.all, 6.0/*@END_MENU_TOKEN@*/)
                         .pickerStyle(MenuPickerStyle())
-                        .background(Color(#colorLiteral(red: 0.3137, green: 0.2353, blue: 0.2353, alpha: 1)))
+                        .background(Color(#colorLiteral(red: 0.8667, green: 0.8667, blue: 0.8667, alpha: 1)))
                         .foregroundColor(Color.white)
                         .cornerRadius(12)
                         .overlay(
-                            RoundedRectangle(cornerRadius: 8)
+                            RoundedRectangle(cornerRadius: 12)
                                 .stroke(Color.black, lineWidth: 2)
                         )
                         
                         
                         Button(action: {
                             self.languageDirection.toggle()
-                            print("Language Direction \(languageDirection)")
                         }) {
                             Image(systemName: languageDirection ? "arrow.right" : "arrow.left")
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
-                                .foregroundColor(Color(#colorLiteral(red: 0.4941, green: 0.3882, blue: 0.3882, alpha: 1)))
-                                .frame(width: /*@START_MENU_TOKEN@*/50.0/*@END_MENU_TOKEN@*/)
+                                .foregroundColor(Color(#colorLiteral(red: 0.8667, green: 0.8667, blue: 0.8667, alpha: 1)))
+                                .padding()
+                                .frame(width: 50.0)
+                                
                                 
                         }
                         
@@ -114,7 +117,7 @@ struct TranslationView: View {
                         }
                         .padding(/*@START_MENU_TOKEN@*/.all, 6.0/*@END_MENU_TOKEN@*/)
                             .pickerStyle(MenuPickerStyle())
-                            .background(Color(#colorLiteral(red: 0.3137, green: 0.2353, blue: 0.2353, alpha: 1)))
+                            .background(Color(#colorLiteral(red: 0.8667, green: 0.8667, blue: 0.8667, alpha: 1)))
                             .foregroundColor(Color("color"))
                             .cornerRadius(12)
                             .overlay(
@@ -127,30 +130,44 @@ struct TranslationView: View {
                     .padding(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
                     VStack {
                         Text("Language 1: \(languages[sourceLanguageIndex])")
-//                            .font(Font.custom("Inter", size: 17).weight(.light))
+                            .font(Font.custom("Inter", size: 17).weight(.light))
                             .foregroundColor(.white.opacity(0.43))
-                            .padding()
-                            .offset(x: -80)
+//                            .padding()
+                            .padding(/*@START_MENU_TOKEN@*/)
+                            .offset(x: -90)
                         ZStack {
                             Rectangle()
                                 .foregroundColor(.clear)
                                 .frame(width: 373, height: 208)
-                                .background(Color(#colorLiteral(red: 0.3137, green: 0.2353, blue: 0.2353, alpha: 1)))
+                                .background(Color(#colorLiteral(red: 0.4627, green: 0.5333, blue: 0.3569, alpha: 1)))
                                 .cornerRadius(22)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 22)
+                                        .stroke(Color.white, lineWidth: 3)
+                                        .opacity(showStroke1 ? 0 : 1)
+                                    
+                                )
+                                .onChange(of: languageDirection) { newValue in
+                                    if newValue {
+                                        withAnimation(.easeIn(duration: 0.2)) {
+                                            showStroke1 = true
+                                        }
+                                    } else {
+                                        withAnimation(.easeOut(duration: 0.2)) {
+                                            showStroke1 = false
+                                        }
+                                    }
+                                }
+                            
+                            
                             VStack {
                                 HStack {
-//                                    TextField(" \(languages[sourceLanguageIndex]) Here", text: $inputText)
-//                                        .padding(.all)
-//                                        .font(.title2)
-//                                        .foregroundColor(.white)
-//                                        .lineLimit(nil)
-//                                        .frame(maxWidth:300)
                                     TextEditor(text: $inputText)
                                         .font(.title2)
                                         .frame(width: 360)
                                         .foregroundColor(Color.white)
                                         .scrollContentBackground(.hidden) // hides the default bg
-                                        .background(Color(#colorLiteral(red: 0.3137, green: 0.2353, blue: 0.2353, alpha: 1))) // actual bg color to change
+                                        .background(Color(#colorLiteral(red: 0.4627, green: 0.5333, blue: 0.3569, alpha: 1) /* #76885b */)) // actual bg color to change
                                         .cornerRadius(10)
                                                                         
                                 }
@@ -197,8 +214,8 @@ struct TranslationView: View {
                         }) {
                             Text("Translate")
                                 .padding(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
-                                .background(Color(#colorLiteral(red: 0.4941, green: 0.3882, blue: 0.3882, alpha: 1)))
-                                .foregroundColor(.white)
+                                .background(Color(#colorLiteral(red: 0.8667, green: 0.8667, blue: 0.8667, alpha: 1)))
+                                .foregroundColor(.black)
                                 .cornerRadius(15)
                                 .scaleEffect(translatePressed ? 1.2 : 1.0)
                                 .gesture(
@@ -221,23 +238,42 @@ struct TranslationView: View {
                     
                     
                     VStack {
-                        Text("Lnaguage 2: \(languages[targetLanguageIndex])")
+                        Text("Language 2: \(languages[targetLanguageIndex])")
                             .font(Font.custom("Inter", size: 17).weight(.light))
                             .foregroundColor(.white.opacity(0.43))
-                            .padding()
-                            .offset(x: -80)
+//                            .padding()
+                            .padding(/*@START_MENU_TOKEN@*/.top/*@END_MENU_TOKEN@*/)
+                            .offset(x: -90)
                         ZStack {
                             Rectangle()
                                 .foregroundColor(.clear)
                                 .frame(width: 373, height: 208)
-                                .background(Color(#colorLiteral(red: 0.3137, green: 0.2353, blue: 0.2353, alpha: 1)))
+                                .background(Color(#colorLiteral(red: 0.4627, green: 0.5333, blue: 0.3569, alpha: 1)))
                                 .cornerRadius(22)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 22)
+                                        .stroke(Color.white, lineWidth: 3)
+                                        .opacity(showStroke2 ? 1 : 0)
+                                )
+                                .onChange(of: languageDirection) { newValue in
+                                    if newValue {
+                                        withAnimation(.easeIn(duration: 0.2)) {
+                                            showStroke2 = true
+                                        }
+                                    } else {
+                                        withAnimation(.easeOut(duration: 0.2)) {
+                                            showStroke2 = false
+                                        }
+                                    }
+                                }
+                
+                            
                             HStack{
                                 TextEditor(text: $outputText)
                                     .font(.title2)
                                     .foregroundColor(Color.white)
                                     .scrollContentBackground(.hidden) // hides the default bg
-                                    .background(Color(#colorLiteral(red: 0.3137, green: 0.2353, blue: 0.2353, alpha: 1))) // actual bg color to change
+                                    .background(Color(#colorLiteral(red: 0.4627, green: 0.5333, blue: 0.3569, alpha: 1))) // actual bg color to change
                                     .cornerRadius(10)
                                 
                             }.padding().overlay(
@@ -257,6 +293,7 @@ struct TranslationView: View {
                         }
                     }
                 }
+                
             }
         }
     }

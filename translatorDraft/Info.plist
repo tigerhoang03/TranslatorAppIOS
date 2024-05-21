@@ -13,9 +13,5 @@
 			<array/>
 		</dict>
 	</array>
-	<key>NSSpeechRecognitionUsageDescription</key>
-	<string>&quot;used to transcribe sentences for translation&quot;</string>
-	<key>NSMicrophoneUsageDescription</key>
-	<string>&quot;used for transcription of spech, no audio will be saved&quot;</string>
 </dict>
 </plist>
