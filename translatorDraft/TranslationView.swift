@@ -2,8 +2,8 @@ import SwiftUI
 import Speech
 import AVFoundation
 
-let languages = ["English", "Spanish", "Vietnamese", "Turkish", "German", "Italian", "Russian", "Arabic"]
-let languageCodes = ["en", "es", "vi", "tr", "de", "it", "ru", "ar"]
+let languages = ["English", "Spanish", "Hindi", "Vietnamese", "Turkish", "German", "Italian", "Russian", "Arabic"]
+let languageCodes = ["en", "es","hi" ,"vi", "tr", "de", "it", "ru", "ar"]
 
 struct TranslationView: View {
     @StateObject private var viewModel = TranslationViewModel()
@@ -11,7 +11,7 @@ struct TranslationView: View {
     var body: some View {
         VStack {
             ZStack {
-                Color(#colorLiteral(red: 0.3843, green: 0.4471, blue: 0.3294, alpha: 1))
+                Color.background
                     .edgesIgnoringSafeArea(.all)
                 VStack {
                     HeadingView(viewModel : viewModel)
@@ -25,13 +25,6 @@ struct TranslationView: View {
 }
 
 
-struct TranslationView_Previews: PreviewProvider {
-    static var previews: some View {
-        TranslationView()
-            .preferredColorScheme(.dark)
-    }
-}
-
 struct MainContainer: View {
     @ObservedObject var viewModel: TranslationViewModel
     @State var showStroke1 = true
@@ -44,7 +37,7 @@ struct MainContainer: View {
                     Rectangle()
                         .frame(width: geometry.size.width, height: geometry.size.height)
                         .foregroundColor(.clear)
-                        .background(Color(#colorLiteral(red: 0.4627, green: 0.5333, blue: 0.3569, alpha: 1)))
+                        .background(Color.textBoxColors)
                         .cornerRadius(22)
                         .overlay(
                             RoundedRectangle(cornerRadius: 22)
@@ -64,77 +57,32 @@ struct MainContainer: View {
                         }
                 }
                 
-                
                 VStack {
                     LanguageHeading(viewModel: viewModel, languageHeadingType: true)
-                    TextEditor(text: $viewModel.inputText)
-                        .font(.title2)
-                        .frame(width: 330.0)
-                        .foregroundColor(Color.white)
-                        .scrollContentBackground(.hidden) // hides the default bg
-                        .background(Color(#colorLiteral(red: 0.4627, green: 0.5333, blue: 0.3569, alpha: 1) /* #76885b */)) // actual bg color to change
-                        .cornerRadius(10)
+                    GeometryReader{ geometry in
+                        TextEditor(text: $viewModel.inputText)
+                            .font(.title2)
+                            .frame(width: geometry.size.width, height:geometry.size.height)
+                            .foregroundColor(Color.white)
+                            .scrollContentBackground(.hidden) // hides the default bg
+                            .background(Color.textBoxColors) // actual bg color to change
+                            .cornerRadius(10)
+                    }
+                    .padding(/*@START_MENU_TOKEN@*/[.leading, .bottom, .trailing])
+                    
                 }
-                
             }
             .padding(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
             
             
-            HStack {
-                Button(action: {
-                    viewModel.isListening.toggle()
-                    if viewModel.isListening {
-                        viewModel.startListening()
-                    } else {
-                        viewModel.stopListening()
-                    }
-                }) {
-                    Image(systemName: viewModel.isListening ? "mic.circle.fill" : "mic.circle")
-                        .padding()
-                        .font(.system(size: 40))
-                        .foregroundColor(viewModel.isListening ? .green : .white)
-                }
-                
-                Button(action: {
-                    viewModel.speak(text: viewModel.languageDirection ? viewModel.inputText : viewModel.outputText, languageCode: viewModel.languageCodes[viewModel.languageDirection ? viewModel.sourceLanguageIndex : viewModel.targetLanguageIndex])
-                }) {
-                    Image(systemName: "speaker.wave.2.circle")
-                        .padding()
-                        .font(.system(size: 40))
-                        .foregroundColor(.white)
-                }
-                Button(action: {
-                    viewModel.translationText()
-                }) {
-                    Text("Translate")
-                        .padding()
-                        .background(Color(#colorLiteral(red: 0.8667, green: 0.8667, blue: 0.8667, alpha: 1)))
-                        .foregroundColor(.black)
-                        .cornerRadius(15)
-                        .scaleEffect(viewModel.translatePressed ? 1.2 : 1.0)
-                        .gesture(
-                            DragGesture(minimumDistance: 0)
-                                .onChanged { _ in
-                                    withAnimation {
-                                        viewModel.translatePressed = true
-                                    }
-                                }
-                                .onEnded { _ in
-                                    withAnimation {
-                                        viewModel.translatePressed = false
-                                    }
-                                    viewModel.translationText()
-                                }
-                        )
-                }
-            }
+            AudioTranslationHandler(viewModel: viewModel)
             
             ZStack{
                 GeometryReader { geometry in
                     Rectangle()
                         .frame(width: geometry.size.width, height: geometry.size.height)
                         .foregroundColor(.clear)
-                        .background(Color(#colorLiteral(red: 0.4627, green: 0.5333, blue: 0.3569, alpha: 1)))
+                        .background(Color.textBoxColors)
                         .cornerRadius(22)
                         .overlay(
                             RoundedRectangle(cornerRadius: 22)
@@ -156,18 +104,20 @@ struct MainContainer: View {
                 
                 VStack {
                     LanguageHeading(viewModel: viewModel, languageHeadingType: false)
-                    TextEditor(text: $viewModel.outputText)
-                        .font(.title2)
-                        .frame(width: 330.0)
-                        .foregroundColor(Color.white)
-                        .scrollContentBackground(.hidden) // hides the default bg
-                        .background(Color(#colorLiteral(red: 0.4627, green: 0.5333, blue: 0.3569, alpha: 1) /* #76885b */)) // actual bg color to change
-                        .cornerRadius(10)
-                        
+                    GeometryReader { geometry in
+                        TextEditor(text: $viewModel.outputText)
+                            
+                            .font(.title2)
+                            .frame(width: geometry.size.width, height: geometry.size.height)
+                            .foregroundColor(Color.white)
+                            .scrollContentBackground(.hidden) // hides the default bg
+                            .background(Color.textBoxColors) // actual bg color to change
+                            .cornerRadius(10)
+                    }
+                    .padding(/*@START_MENU_TOKEN@*/[.leading, .bottom, .trailing]/*@END_MENU_TOKEN@*/)
                 }
             }
             .padding(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
-            
         }
     }
 }
@@ -195,7 +145,7 @@ struct HeadingView: View {
             }) {
                 Text("Clear")
                     .padding()
-                    .background(Color(#colorLiteral(red: 0.8667, green: 0.8667, blue: 0.8667, alpha: 1)))
+                    .background(Color.btnColors)
                     .foregroundColor(.black)
                     .cornerRadius(15)
                     .scaleEffect(viewModel.clearPressed ? 1.2 : 1.0)
@@ -236,10 +186,11 @@ struct LanguageHeading: View {
     var body: some View {
         HStack{
             Text("Language \(languageHeadingType ? 1 : 2): \(languages[languageHeadingType ? viewModel.sourceLanguageIndex : viewModel.targetLanguageIndex])")
-                .font(Font.custom("Inter", size: 17).weight(.light))
-                .foregroundColor(.white.opacity(0.43))
+//                .font(Font.custom("Inter", size: 17).weight(.bold))
+                .font(.system(size: 17, weight: .semibold))
+                .foregroundColor(.white.opacity(0.8))
                 .padding()
-                .offset(x: -90)
+                .offset(x: -50)
         }
     }
 }
@@ -257,7 +208,7 @@ struct LangaugeSelector: View {
             }
             .padding(.all, 6.0)
             .pickerStyle(MenuPickerStyle())
-            .background(Color(#colorLiteral(red: 0.8667, green: 0.8667, blue: 0.8667, alpha: 1)))
+            .background(Color.txtColors)
             .foregroundColor(Color.white)
             .cornerRadius(12)
             .overlay(
@@ -271,11 +222,10 @@ struct LangaugeSelector: View {
                 Image(systemName: viewModel.languageDirection ? "arrow.right" : "arrow.left")
                         .resizable()
                         .aspectRatio(contentMode: .fit)
-                        .foregroundColor(Color(#colorLiteral(red: 0.8667, green: 0.8667, blue: 0.8667, alpha: 1)))
-                        .frame(width: 20.0)
+                        .foregroundColor(.txtColors)
                 }
             .frame(width: 40.0, height: 40.0)
-            .background(Color(#colorLiteral(red: 0.3843, green: 0.4471, blue: 0.3294, alpha: 1)))
+            .background(.clear)
             
             Picker("Target Language", selection: $viewModel.targetLanguageIndex) {
                 ForEach(0..<viewModel.languages.count, id: \.self) { index in
@@ -285,7 +235,7 @@ struct LangaugeSelector: View {
             }
             .padding(.all, 6.0)
             .pickerStyle(MenuPickerStyle())
-            .background(Color(#colorLiteral(red: 0.8667, green: 0.8667, blue: 0.8667, alpha: 1)))
+            .background(Color.txtColors)
             .foregroundColor(Color.white)
             .cornerRadius(12)
             .overlay(
@@ -294,5 +244,67 @@ struct LangaugeSelector: View {
             )
         }
         .padding()
+    }
+}
+
+struct AudioTranslationHandler: View {
+    @ObservedObject var viewModel: TranslationViewModel
+    
+    var body: some View {
+        HStack {
+            Button(action: {
+                viewModel.isListening.toggle()
+                if viewModel.isListening {
+                    viewModel.startListening()
+                } else {
+                    viewModel.stopListening()
+                }
+            }) {
+                Image(systemName: viewModel.isListening ? "mic.circle.fill" : "mic.circle")
+                    .padding()
+                    .font(.system(size: 40))
+                    .foregroundColor(viewModel.isListening ? .green : .white)
+            }
+            
+            Button(action: {
+                viewModel.speak(text: viewModel.languageDirection ? viewModel.outputText : viewModel.inputText, languageCode: viewModel.languageCodes[viewModel.languageDirection ? viewModel.targetLanguageIndex : viewModel.sourceLanguageIndex])
+            }) {
+                Image(systemName: "speaker.wave.2.circle")
+                    .padding()
+                    .font(.system(size: 40))
+                    .foregroundColor(.white)
+            }
+            Button(action: {
+                viewModel.translationText()
+            }) {
+                Text("Translate")
+                    .padding()
+                    .background(Color.btnColors)
+                    .foregroundColor(.black)
+                    .cornerRadius(15)
+                    .scaleEffect(viewModel.translatePressed ? 1.2 : 1.0)
+                    .gesture(
+                        DragGesture(minimumDistance: 0)
+                            .onChanged { _ in
+                                withAnimation {
+                                    viewModel.translatePressed = true
+                                }
+                            }
+                            .onEnded { _ in
+                                withAnimation {
+                                    viewModel.translatePressed = false
+                                }
+                                viewModel.translationText()
+                            }
+                    )
+            }
+        }
+    }
+}
+
+struct TranslationView_Previews: PreviewProvider {
+    static var previews: some View {
+        TranslationView()
+            .preferredColorScheme(.dark)
     }
 }
