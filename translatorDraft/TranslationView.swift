@@ -29,18 +29,16 @@ struct TranslationView: View {
     var body: some View {
         VStack {
             ZStack {
-                    Color(#colorLiteral(red: 0.3843, green: 0.4471, blue: 0.3294, alpha: 1))
+                Color(#colorLiteral(red: 0.3843, green: 0.4471, blue: 0.3294, alpha: 1))
                     .edgesIgnoringSafeArea(.all)
-                VStack() {
-                    HStack() {
+                VStack {
+                    HStack {
                         Text("Communicator")
                             .font(.system(size: 29))
                             .fontWeight(.bold)
                             .foregroundColor(.white)
                             .multilineTextAlignment(.leading)
                             .padding()
-                            
-                        
                         
                         Image(systemName: "bell.badge")
                             .padding()
@@ -81,11 +79,11 @@ struct TranslationView: View {
                     
                     HStack(alignment: .top, spacing: 30.0) {
                         Picker("Source Language", selection: $sourceLanguageIndex) {
-                                ForEach(0..<languages.count, id: \.self) { index in
-                                    Text(languages[index])
-                                }
+                            ForEach(0..<languages.count, id: \.self) { index in
+                                Text(languages[index])
+                            }
                         }
-                        .padding(/*@START_MENU_TOKEN@*/.all, 6.0/*@END_MENU_TOKEN@*/)
+                        .padding(.all, 6.0)
                         .pickerStyle(MenuPickerStyle())
                         .background(Color(#colorLiteral(red: 0.8667, green: 0.8667, blue: 0.8667, alpha: 1)))
                         .foregroundColor(Color.white)
@@ -94,7 +92,6 @@ struct TranslationView: View {
                             RoundedRectangle(cornerRadius: 12)
                                 .stroke(Color.black, lineWidth: 2)
                         )
-                        
                         
                         Button(action: {
                             self.languageDirection.toggle()
@@ -105,35 +102,29 @@ struct TranslationView: View {
                                 .foregroundColor(Color(#colorLiteral(red: 0.8667, green: 0.8667, blue: 0.8667, alpha: 1)))
                                 .padding()
                                 .frame(width: 50.0)
-                                
-                                
                         }
-                        
                         
                         Picker("Target Language", selection: $targetLanguageIndex) {
-                                ForEach(0..<languages.count, id: \.self) { index in
-                                    Text(languages[index])
-                                }
+                            ForEach(0..<languages.count, id: \.self) { index in
+                                Text(languages[index])
+                            }
                         }
-                        .padding(/*@START_MENU_TOKEN@*/.all, 6.0/*@END_MENU_TOKEN@*/)
-                            .pickerStyle(MenuPickerStyle())
-                            .background(Color(#colorLiteral(red: 0.8667, green: 0.8667, blue: 0.8667, alpha: 1)))
-                            .foregroundColor(Color("color"))
-                            .cornerRadius(12)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 8)
-                                    .stroke(Color.black, lineWidth: 2)
-                            )
+                        .padding(.all, 6.0)
                         .pickerStyle(MenuPickerStyle())
-                        
+                        .background(Color(#colorLiteral(red: 0.8667, green: 0.8667, blue: 0.8667, alpha: 1)))
+                        .foregroundColor(Color("color"))
+                        .cornerRadius(12)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 8)
+                                .stroke(Color.black, lineWidth: 2)
+                        )
                     }
-                    .padding(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
+                    .padding(.all)
                     VStack {
                         Text("Language 1: \(languages[sourceLanguageIndex])")
                             .font(Font.custom("Inter", size: 17).weight(.light))
                             .foregroundColor(.white.opacity(0.43))
-//                            .padding()
-                            .padding(/*@START_MENU_TOKEN@*/)
+                            .padding()
                             .offset(x: -90)
                         ZStack {
                             Rectangle()
@@ -145,7 +136,6 @@ struct TranslationView: View {
                                     RoundedRectangle(cornerRadius: 22)
                                         .stroke(Color.white, lineWidth: 3)
                                         .opacity(showStroke1 ? 0 : 1)
-                                    
                                 )
                                 .onChange(of: languageDirection) { newValue in
                                     if newValue {
@@ -159,7 +149,6 @@ struct TranslationView: View {
                                     }
                                 }
                             
-                            
                             VStack {
                                 HStack {
                                     TextEditor(text: $inputText)
@@ -169,7 +158,6 @@ struct TranslationView: View {
                                         .scrollContentBackground(.hidden) // hides the default bg
                                         .background(Color(#colorLiteral(red: 0.4627, green: 0.5333, blue: 0.3569, alpha: 1) /* #76885b */)) // actual bg color to change
                                         .cornerRadius(10)
-                                                                        
                                 }
                                 .overlay(
                                     Button(action: {
@@ -181,15 +169,13 @@ struct TranslationView: View {
                                             .frame(width: 25, height: 25)
                                             .aspectRatio(contentMode: .fit)
                                     }, alignment: .bottomTrailing
-
                                 ).padding()
                             }
-                            .padding([.trailing] , 10)
+                            .padding([.trailing], 10)
                         }
                     }
                     
-                    HStack{
-                        
+                    HStack {
                         Button(action: {
                             self.isListening.toggle()
                             print(isListening)
@@ -198,13 +184,12 @@ struct TranslationView: View {
                             } else {
                                 self.stopListening()
                             }
-                            
                         }) {
                             Image(systemName: isListening ? "mic.fill" : "mic.slash.fill")
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
                                 .foregroundColor(.white)
-                                .frame(width: 40.0/*@END_MENU_TOKEN@*/, height: /*@START_MENU_TOKEN@*/40.0)
+                                .frame(width: 40.0, height: 40.0)
                         }
                         
                         Spacer()
@@ -213,7 +198,7 @@ struct TranslationView: View {
                             translationText()
                         }) {
                             Text("Translate")
-                                .padding(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
+                                .padding(.all)
                                 .background(Color(#colorLiteral(red: 0.8667, green: 0.8667, blue: 0.8667, alpha: 1)))
                                 .foregroundColor(.black)
                                 .cornerRadius(15)
@@ -234,15 +219,13 @@ struct TranslationView: View {
                                 )
                         }
                     }
-                    .padding(/*@START_MENU_TOKEN@*/.horizontal, 50.0/*@END_MENU_TOKEN@*/)
-                    
+                    .padding(.horizontal, 50.0)
                     
                     VStack {
                         Text("Language 2: \(languages[targetLanguageIndex])")
                             .font(Font.custom("Inter", size: 17).weight(.light))
                             .foregroundColor(.white.opacity(0.43))
-//                            .padding()
-                            .padding(/*@START_MENU_TOKEN@*/.top/*@END_MENU_TOKEN@*/)
+                            .padding(.top)
                             .offset(x: -90)
                         ZStack {
                             Rectangle()
@@ -266,17 +249,17 @@ struct TranslationView: View {
                                         }
                                     }
                                 }
-                
-                            
-                            HStack{
+                        
+                            HStack {
                                 TextEditor(text: $outputText)
                                     .font(.title2)
                                     .foregroundColor(Color.white)
                                     .scrollContentBackground(.hidden) // hides the default bg
                                     .background(Color(#colorLiteral(red: 0.4627, green: 0.5333, blue: 0.3569, alpha: 1))) // actual bg color to change
                                     .cornerRadius(10)
-                                
-                            }.padding().overlay(
+                            }
+                            .padding()
+                            .overlay(
                                 Button(action: {
                                     self.speak(text: self.outputText, languageCode: self.languageCodes[self.targetLanguageIndex])
                                 }) {
@@ -289,7 +272,8 @@ struct TranslationView: View {
                                 .padding([.bottom], 10),
                                 alignment: .bottomTrailing
                             )
-                            .padding([.trailing], 25) .padding([.bottom], 10)
+                            .padding([.trailing], 25)
+                            .padding([.bottom], 10)
                         }
                     }
                 }
@@ -303,11 +287,9 @@ struct TranslationView: View {
         let targetLanguageCode = languageDirection ? languageCodes[targetLanguageIndex] : languageCodes[sourceLanguageIndex]
         
         translationWithAPI(inputText: languageDirection ? inputText : outputText, sourceLanguage: languageDirection ? sourceLanguageCode : targetLanguageCode, targetLanguage: languageDirection ? targetLanguageCode : sourceLanguageCode)
-        
     }
     
     func translationWithAPI(inputText: String, sourceLanguage: String, targetLanguage: String) {
-//        let urlStr = "https://api.mymemory.translated.net/get?q=\(inputText.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "")&langpair=\(sourceLanguage)|\(targetLanguage)"
         let sourceLang1 = languageDirection ? sourceLanguage : targetLanguage
         let targetLang1 = languageDirection ? targetLanguage : sourceLanguage
         let urlStr = "https://api.mymemory.translated.net/get?q=\(inputText)&langpair=\(sourceLang1)|\(targetLang1)"
@@ -326,7 +308,7 @@ struct TranslationView: View {
         let task = URLSession.shared.dataTask(with: url) { data, response, error in
             guard let data = data, error == nil else {
                 DispatchQueue.main.async {
-                    if languageDirection{
+                    if languageDirection {
                         self.inputText = "Network error: \(error?.localizedDescription ?? "Unknown error")"
                     } else {
                         self.outputText = "Network error: \(error?.localizedDescription ?? "Unknown error")"
@@ -355,11 +337,9 @@ struct TranslationView: View {
                     DispatchQueue.main.async {
                         if languageDirection == false {
                             self.inputText = "Translation not found."
-                        }
-                        else {
+                        } else {
                             self.outputText = "Translation not found."
                         }
-                        
                     }
                 }
             } catch {
@@ -437,11 +417,11 @@ struct TranslationView: View {
             }
         }
     }
-
     
     func stopListening() {
         audioEngine.stop()
         recognitionRequest?.endAudio()
+        recognitionTask?.cancel()
         isListening = false
     }
     
@@ -451,13 +431,20 @@ struct TranslationView: View {
     }
     
     func speak(text: String, languageCode: String) {
+        let audioSession = AVAudioSession.sharedInstance()
+        do {
+            try audioSession.setCategory(.playback, mode: .default, options: [])
+            try audioSession.setActive(true, options: .notifyOthersOnDeactivation)
+        } catch {
+            print("Failed to set audio session category for playback: \(error.localizedDescription)")
+        }
+        
         let utterance = AVSpeechUtterance(string: text)
         utterance.voice = AVSpeechSynthesisVoice(language: languageCode)
         utterance.rate = 0.5
-
+        
         speechSynthesizer.speak(utterance)
     }
-
 }
 
 struct TranslationView_Previews: PreviewProvider {
@@ -466,4 +453,3 @@ struct TranslationView_Previews: PreviewProvider {
             .preferredColorScheme(.dark)
     }
 }
-
