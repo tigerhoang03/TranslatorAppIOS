@@ -2,9 +2,6 @@ import SwiftUI
 import Speech
 import AVFoundation
 
-let languages = ["English", "Spanish", "Hindi", "Vietnamese", "Turkish", "German", "Italian", "Russian", "Arabic"]
-let languageCodes = ["en", "es","hi" ,"vi", "tr", "de", "it", "ru", "ar"]
-
 struct TranslationView: View {
     @StateObject private var viewModel = TranslationViewModel()
     
@@ -41,7 +38,7 @@ struct MainContainer: View {
                         .cornerRadius(22)
                         .overlay(
                             RoundedRectangle(cornerRadius: 22)
-                                .stroke(Color.white, lineWidth: 3)
+                                .stroke(Color.highlighting, lineWidth: 3)
                                 .opacity(showStroke1 ? 0 : 1)
                         )
                         .onChange(of: viewModel.languageDirection) { newValue in
@@ -86,7 +83,7 @@ struct MainContainer: View {
                         .cornerRadius(22)
                         .overlay(
                             RoundedRectangle(cornerRadius: 22)
-                                .stroke(Color.white, lineWidth: 3)
+                                .stroke(Color.highlighting, lineWidth: 3)
                                 .opacity(showStroke2 ? 1 : 0)
                         )
                         .onChange(of: viewModel.languageDirection) { newValue in
@@ -185,8 +182,7 @@ struct LanguageHeading: View {
     
     var body: some View {
         HStack{
-            Text("Language \(languageHeadingType ? 1 : 2): \(languages[languageHeadingType ? viewModel.sourceLanguageIndex : viewModel.targetLanguageIndex])")
-//                .font(Font.custom("Inter", size: 17).weight(.bold))
+            Text("Language \(languageHeadingType ? 1 : 2): \(viewModel.languages[languageHeadingType ? viewModel.sourceLanguageIndex : viewModel.targetLanguageIndex])")
                 .font(.system(size: 17, weight: .semibold))
                 .foregroundColor(.white.opacity(0.8))
                 .padding()

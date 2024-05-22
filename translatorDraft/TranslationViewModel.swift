@@ -26,8 +26,8 @@ class TranslationViewModel: ObservableObject {
     
     let emptyTranslation = "NO QUERY SPECIFIED. EXAMPLE REQUEST: GET?Q=HELLO&LANGPAIR=EN|IT"
     
-    let languages = ["English", "Spanish", "Vietnamese", "Turkish", "German", "Italian", "Russian", "Arabic"]
-    let languageCodes = ["en", "es", "vi", "tr", "de", "it", "ru", "ar"]
+    let languages = ["English", "Spanish", "Hindi", "Vietnamese", "Turkish", "German", "Italian", "Russian", "Arabic"]
+    let languageCodes = ["en", "es", "hi" ,"vi", "tr", "de", "it", "ru", "ar"]
     
     func translationText() {
         let sourceLanguageCode = languageDirection ? languageCodes[sourceLanguageIndex] : languageCodes[targetLanguageIndex]
@@ -68,7 +68,7 @@ class TranslationViewModel: ObservableObject {
                 if let json = try JSONSerialization.jsonObject(with: data) as? [String: Any],
                    let responseData = json["responseData"] as? [String: Any],
                    let translatedText = responseData["translatedText"] as? String {
-                    print(translatedText)
+                    print(translatedText) //translated output
                     DispatchQueue.main.async {
                         if translatedText == self.emptyTranslation && self.languageDirection == false {
                             self.inputText = "Empty Input. Please Translate Again"
@@ -188,7 +188,7 @@ class TranslationViewModel: ObservableObject {
         
         let utterance = AVSpeechUtterance(string: text)
         utterance.voice = AVSpeechSynthesisVoice(language: languageCode)
-        utterance.rate = 0.5
+        utterance.rate = 0.39
         
         speechSynthesizer.speak(utterance)
     }
