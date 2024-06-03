@@ -33,8 +33,9 @@ class testViewModel: ObservableObject {
     let emptyTranslation = "NO QUERY SPECIFIED. EXAMPLE REQUEST: GET?Q=HELLO&LANGPAIR=EN|IT"
     
     //let languages = ["English", "Spanish", "Hindi", "Vietnamese", "Turkish", "German", "Italian", "Russian", "Arabic"]
-    let language = ["English":"en", "Spanish":"es", "Hindi":"hi", "Vietnamese":"vi", "Turkish":"tr", "German":"de", "Italian":"it", "Russian":"ru", "Arabic":"ar"]
+    let language = ["English":"en", "Spanish":"es", "Hindi":"hi", "Vietnamese":"vi", "Greek":"el","Turkish":"tr", "German":"de", "Italian":"it", "Russian":"ru", "Arabic":"ar"]
     
+    //the correct source and target language will always be selected 
    public var sourceLanguageCode: String { languageDirection ? language[selectedSourceLanguage]! : language[selectedTargetLanguage]! }
    public var targetLanguageCode: String { languageDirection ? language[selectedTargetLanguage]! : language[selectedSourceLanguage]! }
     
@@ -44,8 +45,8 @@ class testViewModel: ObservableObject {
     }
     
     func translationWithAPI(inputText: String, sourceLanguage: String, targetLanguage: String) {
-        let sourceLang1 = languageDirection ? sourceLanguage : targetLanguage
-        let targetLang1 = languageDirection ? targetLanguage : sourceLanguage
+//        let sourceLang1 = languageDirection ? sourceLanguage : targetLanguage
+//        let targetLang1 = languageDirection ? targetLanguage : sourceLanguage
         let urlStr = "https://api.mymemory.translated.net/get?q=\(inputText)&langpair=\(sourceLanguage)|\(targetLanguage)"
         
         print(urlStr)

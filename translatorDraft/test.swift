@@ -5,12 +5,15 @@ struct test: View {
     
     @State private var selectedSourceLanguage = "English"
     @State private var selectedTargetLanguage = "Spanish"
-    @FocusState private var isFocused: Bool
+    @FocusState private var isFocused1: Bool
+    @FocusState private var isFocused2: Bool
     @State private var inputText = ""
     @State private var outputText = ""
     
-    let languages = ["English", "Spanish", "Hindi", "Vietnamese", "Turkish", "German", "Italian", "Russian", "Arabic"]
-    let language = ["English":"en", "Spanish":"es", "Hindi":"hi", "Vietnamese":"vi", "Turkish":"tr", "German":"de", "Italian":"it", "Russian":"ru", "Arabic":"ar"]
+    
+    let languages = ["English", "Spanish", "Hindi", "Vietnamese", "Greek", "Turkish", "German", "Italian", "Russian", "Arabic"]
+    let language = ["English":"en", "Spanish":"es", "Hindi":"hi", "Vietnamese":"vi", "Greek":"el","Turkish":"tr", "German":"de", "Italian":"it", "Russian":"ru", "Arabic":"ar"]
+    
     
     //@State private var languageDirection = true // true means left language -> right language
     
@@ -91,8 +94,8 @@ struct test: View {
                         )
                 }.padding()
                 
-                Text("first: \(viewModel.sourceLanguageCode),\nsecond: \(viewModel.targetLanguageCode),\ndirection:\(viewModel.languageDirection)")
-                    .font(.caption2)
+//                Text("first: \(viewModel.sourceLanguageCode),\nsecond: \(viewModel.targetLanguageCode),\ndirection:\(viewModel.languageDirection)")
+//                    .font(.caption2)
                 
                 // First TextField (Language 1)
                 ZStack(alignment: .top) {
@@ -109,10 +112,10 @@ struct test: View {
                     TextField("", text: $viewModel.inputText, prompt: Text("Language 1 \(viewModel.selectedSourceLanguage)").foregroundColor(.gray), axis: .vertical)
                         .lineLimit(7)
                         .padding()
-                        .focused($isFocused) // Bind the focus state
+                        .focused($isFocused1) // Bind the focus state
                 }.overlay(
                     VStack() {
-                        if isFocused {
+                        if isFocused1 {
                             Button("Done") {
                                 hideKeyboard()
                             }
@@ -141,8 +144,19 @@ struct test: View {
                     TextField("", text: $viewModel.outputText, prompt: Text("Language 2 \(viewModel.selectedTargetLanguage)").foregroundColor(.gray), axis: .vertical)
                         .lineLimit(7)
                         .padding()
-                        .focused($isFocused) // Bind the focus state
-                }
+                        .focused($isFocused2) // Bind the focus state
+                }.overlay(
+                    VStack() {
+                        if isFocused2 {
+                            Button("Done") {
+                                hideKeyboard()
+                            }
+                            .padding(.trailing, 20)
+                            .padding(.top, 15)
+                            .transition(.opacity) // Optional: Add a fade transition
+                                                }
+                }, alignment: .topTrailing
+                )
                 .padding()
                 
                 
@@ -151,7 +165,8 @@ struct test: View {
     }
     
     func hideKeyboard() {
-        isFocused = false // Remove focus from the TextField
+        isFocused1 = false // Remove focus from the TextField
+        isFocused2 = false
     }
 }
 
