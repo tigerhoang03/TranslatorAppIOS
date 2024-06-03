@@ -15,6 +15,7 @@
 		4979F0972BF8D75500A62A2A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4979F0962BF8D75500A62A2A /* Assets.xcassets */; };
 		4979F09A2BF8D75500A62A2A /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4979F0992BF8D75500A62A2A /* Preview Assets.xcassets */; };
 		4979F0A12BF8D91200A62A2A /* TranslationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4979F0A02BF8D91200A62A2A /* TranslationView.swift */; };
+		499C3E3F2C0E33B30073DD4F /* SplashScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 499C3E3E2C0E33B30073DD4F /* SplashScreen.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -29,6 +30,7 @@
 		4979F0A02BF8D91200A62A2A /* TranslationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranslationView.swift; sourceTree = "<group>"; };
 		4979F0A22BF9094E00A62A2A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		4979F0FF2BFC563100A62A2A /* translatorDraft-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "translatorDraft-Bridging-Header.h"; sourceTree = "<group>"; };
+		499C3E3E2C0E33B30073DD4F /* SplashScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashScreen.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -65,6 +67,7 @@
 				490458982C0D09850030696A /* testViewModel.swift */,
 				4979F0A22BF9094E00A62A2A /* Info.plist */,
 				4979F0922BF8D75400A62A2A /* translatorDraftApp.swift */,
+				499C3E3E2C0E33B30073DD4F /* SplashScreen.swift */,
 				4979F0A02BF8D91200A62A2A /* TranslationView.swift */,
 				490458962C0CA89F0030696A /* test.swift */,
 				4979F0942BF8D75400A62A2A /* ContentView.swift */,
@@ -156,6 +159,7 @@
 			files = (
 				473E4D4B2BFD4275001A415F /* TranslationViewModel.swift in Sources */,
 				4979F0A12BF8D91200A62A2A /* TranslationView.swift in Sources */,
+				499C3E3F2C0E33B30073DD4F /* SplashScreen.swift in Sources */,
 				4979F0952BF8D75400A62A2A /* ContentView.swift in Sources */,
 				490458972C0CA89F0030696A /* test.swift in Sources */,
 				490458992C0D09850030696A /* testViewModel.swift in Sources */,
