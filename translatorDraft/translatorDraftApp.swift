@@ -11,7 +11,7 @@ import SwiftUI
 struct translatorDraftApp: App {
     var body: some Scene {
         WindowGroup {
-            TranslationView()
+            test()
         }
     }
 }

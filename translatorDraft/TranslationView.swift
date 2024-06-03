@@ -65,7 +65,7 @@ struct MainContainer: View {
                             .background(Color.textBoxColors) // actual bg color to change
                             .cornerRadius(10)
                     }
-                    .padding(/*@START_MENU_TOKEN@*/[.leading, .bottom, .trailing])
+                    .padding([.leading, .bottom, .trailing])
                     
                 }
             }
@@ -139,11 +139,12 @@ struct HeadingView: View {
             
             Button(action: {
                 viewModel.clearText()
-            }) {
+            }
+            ) {
                 Text("Clear")
                     .padding()
                     .background(Color.btnColors)
-                    .foregroundColor(.black)
+                    .foregroundColor(.white)
                     .cornerRadius(15)
                     .scaleEffect(viewModel.clearPressed ? 1.2 : 1.0)
                     .gesture(
@@ -276,7 +277,7 @@ struct AudioTranslationHandler: View {
                 Text("Translate")
                     .padding()
                     .background(Color.btnColors)
-                    .foregroundColor(.black)
+                    .foregroundColor(.white)
                     .cornerRadius(15)
                     .scaleEffect(viewModel.translatePressed ? 1.2 : 1.0)
                     .gesture(

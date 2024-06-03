@@ -12,6 +12,7 @@ struct ContentView: View {
     @State private var targetLanguageIndex = 1
     @State private var inputText = ""
     @State private var outputText = ""
+
     let language = ["English", "Turkish", "German", "Spanish", "Italian", "Russian", "Arabic"]
     
     var body: some View {
@@ -39,6 +40,7 @@ struct ContentView: View {
                             .frame(width: 373, height: 1)
                             .background(.white.opacity(0.33))
                     }
+                    
                     HStack {
                         Picker("Source Language", selection: $sourceLanguageIndex) {
                             ForEach(0..<language.count, id: \.self) { index in
@@ -60,6 +62,7 @@ struct ContentView: View {
                         .pickerStyle(MenuPickerStyle())
                         .padding()
                     }
+                    
                     VStack {
                         Text("Translation From \(language[sourceLanguageIndex])")
                             .font(Font.custom("Inter", size: 17).weight(.light))
