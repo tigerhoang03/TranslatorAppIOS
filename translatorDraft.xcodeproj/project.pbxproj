@@ -44,6 +44,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		476CE78C2C0FC6E800AB822B /* Archive */ = {
+			isa = PBXGroup;
+			children = (
+				473E4D4A2BFD4275001A415F /* TranslationViewModel.swift */,
+				4979F0A02BF8D91200A62A2A /* TranslationView.swift */,
+				4979F0942BF8D75400A62A2A /* ContentView.swift */,
+			);
+			path = Archive;
+			sourceTree = "<group>";
+		};
 		4979F0862BF8D75400A62A2A = {
 			isa = PBXGroup;
 			children = (
@@ -63,14 +73,12 @@
 		4979F0912BF8D75400A62A2A /* translatorDraft */ = {
 			isa = PBXGroup;
 			children = (
-				473E4D4A2BFD4275001A415F /* TranslationViewModel.swift */,
 				490458982C0D09850030696A /* testViewModel.swift */,
 				4979F0A22BF9094E00A62A2A /* Info.plist */,
 				4979F0922BF8D75400A62A2A /* translatorDraftApp.swift */,
 				499C3E3E2C0E33B30073DD4F /* SplashScreen.swift */,
-				4979F0A02BF8D91200A62A2A /* TranslationView.swift */,
+				476CE78C2C0FC6E800AB822B /* Archive */,
 				490458962C0CA89F0030696A /* test.swift */,
-				4979F0942BF8D75400A62A2A /* ContentView.swift */,
 				4979F0962BF8D75500A62A2A /* Assets.xcassets */,
 				4979F0982BF8D75500A62A2A /* Preview Content */,
 				4979F0FF2BFC563100A62A2A /* translatorDraft-Bridging-Header.h */,

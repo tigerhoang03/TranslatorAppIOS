@@ -230,7 +230,7 @@ struct testAudioTranslationHandler: View {
                 Image(systemName: viewModel.isListening ? "mic.circle.fill" : "mic.circle")
                     .padding()
                     .font(.system(size: 40))
-                    .foregroundColor(viewModel.isListening ? .green : .white)
+                    .foregroundColor(viewModel.isListening ? .green : .txtColors)
             }
             
             Button(action: {
@@ -239,7 +239,7 @@ struct testAudioTranslationHandler: View {
                 Image(systemName: "speaker.wave.2.circle")
                     .padding()
                     .font(.system(size: 40))
-                    .foregroundColor(.white)
+                    .foregroundColor(.txtColors)
             }
             Button(action: {
                 viewModel.translationText()
@@ -247,7 +247,7 @@ struct testAudioTranslationHandler: View {
                 Text("Translate")
                     .padding()
                     .background(Color.btnColors)
-                    .foregroundColor(.white)
+                    .foregroundColor(.txtColors)
                     .cornerRadius(15)
                     .scaleEffect(viewModel.translatePressed ? 1.2 : 1.0)
                     .gesture(

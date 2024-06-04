@@ -27,21 +27,22 @@ struct test: View {
             VStack {
                 HStack{
                     Spacer()
-                    Text("Communicator")
-                        .frame(width: 220, height: 50)
-                        .font(.title.bold())
-                        .foregroundColor(.white)
-                    
                     Image(systemName: "bell.badge")
                         .padding()
                         .frame(width: 45, height: 45)
-                        .foregroundColor(.white)
+                        .foregroundColor(.txtColors)
+                    
+                    Text("Communicator")
+                        .frame(width: 220, height: 50)
+                        .font(.title.bold())
+                        .foregroundColor(.txtColors)
+                    
                     
                     Button(action: viewModel.clearText) {
                         Text("Clear")
                             .padding()
                             .background(Color.btnColors)
-                            .foregroundColor(.white)
+                            .foregroundColor(.txtColors)
                             .cornerRadius(15)
                             .scaleEffect(viewModel.clearPressed ? 1.2 : 1.0)
                             .gesture(
@@ -65,6 +66,7 @@ struct test: View {
                 Divider()
                 
                 HStack {
+                    
                     Picker("FIRST LANGUAGE", selection: $viewModel.selectedSourceLanguage) {
                         ForEach(languages, id: \.self) { language in
                             Text(language)
@@ -72,7 +74,7 @@ struct test: View {
                     }.padding(EdgeInsets())
                         .background(
                             RoundedRectangle(cornerRadius: 25.0)
-                                .fill(Color(red: 0.12, green: 0.262, blue: 0.386))
+                                .fill(.textBoxColors)
                         )
                     
                     Button {
@@ -82,6 +84,7 @@ struct test: View {
                     } label: {
                         Image(systemName: viewModel.languageDirection ? "arrow.right" : "arrow.left")
                     }
+                    .foregroundColor(.highlighting)
                     
                     Picker("SECOND LANGUAGE", selection: $viewModel.selectedTargetLanguage) {
                         ForEach(languages, id: \.self) { language in
@@ -90,7 +93,7 @@ struct test: View {
                     }.padding(EdgeInsets())
                         .background(
                             RoundedRectangle(cornerRadius: 25.0)
-                                .fill(Color(red: 0.12, green: 0.262, blue: 0.386))
+                                .fill(.textBoxColors)
                         )
                 }.padding()
                 
@@ -100,7 +103,7 @@ struct test: View {
                 // First TextField (Language 1)
                 ZStack(alignment: .top) {
                     RoundedRectangle(cornerRadius: 25.0)
-                        .fill(Color(red: 0.12, green: 0.262, blue: 0.386))
+                        .fill(.textBoxColors)
                         .frame(width: 375, height: 200)
                         .overlay(
                             RoundedRectangle(cornerRadius: 25.0)
@@ -132,7 +135,7 @@ struct test: View {
                 // Second TextField (Language 2)
                 ZStack(alignment: .top) {
                     RoundedRectangle(cornerRadius: 25.0)
-                        .fill(Color(red: 0.12, green: 0.262, blue: 0.386))
+                        .fill(.textBoxColors)
                         .frame(width: 375, height: 200)
                         .overlay(
                             RoundedRectangle(cornerRadius: 25.0)
