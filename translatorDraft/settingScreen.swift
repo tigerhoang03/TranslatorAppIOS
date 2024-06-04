@@ -7,8 +7,40 @@
 
 import SwiftUI
 
-struct settingScreen: View {
+struct SettingScreen: View {
     var body: some View {
-        Text("This is the settings page")
+        NavigationView {
+            ZStack {
+                Color.background.ignoresSafeArea()
+                List {
+                    Section(header: Text("General")) {
+                        NavigationLink(destination: AboutScreen()) {
+                            Text("How To Use")
+                        }
+                        NavigationLink(destination: underConstructionScreen()) {
+                            Text("Account")
+                        }
+                        NavigationLink(destination: underConstructionScreen()) {
+                            Text("Themes")
+                        }
+                    }
+                    
+                    
+                    Section(header: Text("Legal")) {
+                        NavigationLink(destination: underConstructionScreen()) {
+                            Text("Licensing")
+                        }
+                    }
+                }
+                .listStyle(GroupedListStyle())
+            }
+            .navigationTitle("Settings")
+        }
+    }
+}
+
+struct SettingScreen_Previews: PreviewProvider {
+    static var previews: some View {
+        SettingScreen()
     }
 }

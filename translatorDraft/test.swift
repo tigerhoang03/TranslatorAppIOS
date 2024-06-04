@@ -23,24 +23,16 @@ struct test: View {
     var body: some View {
         NavigationView {
             ZStack {
-                Color.background
-                    .ignoresSafeArea()
+                Color.background.ignoresSafeArea()
                 VStack {
                     HStack{
                         Spacer()
-                        NavigationLink(destination: settingScreen()) {
-                            Image(systemName: "gear")
-                                .padding()
-                                .frame(width: 45, height: 45)
-                                .foregroundColor(.txtColors)
-                        }
-                        
                         Text("Communicator")
                             .frame(width: 220, height: 50)
                             .font(.title.bold())
                             .foregroundColor(.txtColors)
                         
-                        
+                        Spacer()
                         Button(action: viewModel.clearText) {
                             Text("Clear")
                                 .padding()
@@ -64,9 +56,18 @@ struct test: View {
                                 )
                         }
                         Spacer()
+                        NavigationLink(destination: SettingScreen()) {
+                            Image(systemName: "gear")
+                                .resizable(resizingMode: .tile)
+                                .aspectRatio(contentMode: .fit)
+                                .foregroundColor(.txtColors)
+                                .frame(width: 30, height: 30)
+                        }
+                        Spacer()
                     }
                     
                     Divider()
+                        
                     
                     HStack {
                         
