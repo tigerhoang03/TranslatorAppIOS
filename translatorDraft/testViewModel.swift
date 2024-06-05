@@ -76,7 +76,8 @@ class testViewModel: ObservableObject {
                 if let json = try JSONSerialization.jsonObject(with: data) as? [String: Any],
                    let responseData = json["responseData"] as? [String: Any],
                    let translatedText = responseData["translatedText"] as? String {
-                    print(translatedText) //translated output
+                    print(translatedText) // translated text output
+                    
                     DispatchQueue.main.async {
                         if translatedText == self.emptyTranslation && self.languageDirection == false {
                             self.inputText = "Empty Input. Please Translate Again"
@@ -219,12 +220,31 @@ struct testAudioTranslationHandler: View {
     
     var body: some View {
         HStack {
+            Text("Status : ")
+
+//            Button(action: {
+//                viewModel.isListening.toggle()
+//                if viewModel.isListening {
+//                    viewModel.startListening()
+//                } else {
+//                    viewModel.stopListening()
+//                }
+//            }) {
+//                Image(systemName: viewModel.isListening ? "mic.circle.fill" : "mic.circle")
+//                    .padding()
+//                    .font(.system(size: 40))
+//                    .foregroundColor(viewModel.isListening ? .green : .txtColors)
+//            }
+            
             Button(action: {
                 viewModel.isListening.toggle()
+                print(viewModel.isListening)
                 if viewModel.isListening {
+                    viewModel.clearText()
                     viewModel.startListening()
                 } else {
                     viewModel.stopListening()
+                    viewModel.translationText()
                 }
             }) {
                 Image(systemName: viewModel.isListening ? "mic.circle.fill" : "mic.circle")
@@ -240,30 +260,6 @@ struct testAudioTranslationHandler: View {
                     .padding()
                     .font(.system(size: 40))
                     .foregroundColor(.txtColors)
-            }
-            Button(action: {
-                viewModel.translationText()
-            }) {
-                Text("Translate")
-                    .padding()
-                    .background(Color.btnColors)
-                    .foregroundColor(.txtColors)
-                    .cornerRadius(15)
-                    .scaleEffect(viewModel.translatePressed ? 1.2 : 1.0)
-                    .gesture(
-                        DragGesture(minimumDistance: 0)
-                            .onChanged { _ in
-                                withAnimation {
-                                    viewModel.translatePressed = true
-                                }
-                            }
-                            .onEnded { _ in
-                                withAnimation {
-                                    viewModel.translatePressed = false
-                                }
-                                viewModel.translationText()
-                            }
-                    )
             }
         }
     }
