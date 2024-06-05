@@ -67,7 +67,7 @@ struct CardView: View {
             Text(plan)
                 .font(.title3)
                 .fontWeight(.bold)
-                .foregroundColor(.primary)
+                .foregroundColor(.txtColors)
                 .padding()
             
             if isSelected {
@@ -82,7 +82,7 @@ struct CardView: View {
                     .padding(.bottom, 5)
             }
         }
-        .background(Color.white)
+        .background(Color.background)
         .cornerRadius(10)
         .shadow(color: Color.gray.opacity(0.4), radius: 4, x: 0, y: 2)
         .padding([.horizontal, .top])
