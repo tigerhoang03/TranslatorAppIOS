@@ -15,6 +15,7 @@ class testViewModel: ObservableObject {
     @Published var inputText = ""
     @Published var outputText = ""
     @Published var isListening = false
+    @Published var isSpeaking = false // not being used
     @Published var audioEngine = AVAudioEngine()
     @Published var speechRecognizer = SFSpeechRecognizer()
     @Published var recognitionRequest: SFSpeechAudioBufferRecognitionRequest?
@@ -40,7 +41,6 @@ class testViewModel: ObservableObject {
    public var targetLanguageCode: String { languageDirection ? language[selectedTargetLanguage]! : language[selectedSourceLanguage]! }
     
     func translationText() {
-        
         translationWithAPI(inputText: languageDirection ? inputText : outputText, sourceLanguage: sourceLanguageCode , targetLanguage:targetLanguageCode)
     }
     
@@ -88,6 +88,8 @@ class testViewModel: ObservableObject {
                         } else {
                             self.outputText = translatedText
                         }
+                        //added for speaking translated text
+                        self.speak(text: translatedText, languageCode: self.targetLanguageCode)
                     }
                 } else {
                     DispatchQueue.main.async {
@@ -106,7 +108,8 @@ class testViewModel: ObservableObject {
         }
         task.resume()
     }
-    
+
+
     func startListening() {
         if recognitionTask != nil {
             recognitionTask?.cancel()
@@ -182,12 +185,12 @@ class testViewModel: ObservableObject {
         recognitionRequest?.endAudio()
         recognitionTask?.cancel()
         isListening = false
-        // Ensure the text is retained after stopping the recognition
+        
         if recognitionTask == nil {
             if languageDirection {
-                inputText = inputText // Retain the transcribed text
+                inputText = inputText
             } else {
-                outputText = outputText // Retain the transcribed text
+                outputText = outputText
             }
         }
     }
@@ -220,25 +223,8 @@ struct testAudioTranslationHandler: View {
     
     var body: some View {
         HStack {
-            Text("Status : ")
-
-//            Button(action: {
-//                viewModel.isListening.toggle()
-//                if viewModel.isListening {
-//                    viewModel.startListening()
-//                } else {
-//                    viewModel.stopListening()
-//                }
-//            }) {
-//                Image(systemName: viewModel.isListening ? "mic.circle.fill" : "mic.circle")
-//                    .padding()
-//                    .font(.system(size: 40))
-//                    .foregroundColor(viewModel.isListening ? .green : .txtColors)
-//            }
-            
             Button(action: {
                 viewModel.isListening.toggle()
-                print(viewModel.isListening)
                 if viewModel.isListening {
                     viewModel.clearText()
                     viewModel.startListening()
@@ -253,14 +239,14 @@ struct testAudioTranslationHandler: View {
                     .foregroundColor(viewModel.isListening ? .green : .txtColors)
             }
             
-            Button(action: {
-                viewModel.speak(text: viewModel.languageDirection ? viewModel.outputText : viewModel.inputText, languageCode: viewModel.targetLanguageCode)
-            }) {
-                Image(systemName: "speaker.wave.2.circle")
-                    .padding()
-                    .font(.system(size: 40))
-                    .foregroundColor(.txtColors)
-            }
+//            Button(action: {
+//                viewModel.speak(text: viewModel.languageDirection ? viewModel.outputText : viewModel.inputText, languageCode: viewModel.targetLanguageCode)
+//            }) {
+//                Image(systemName: "speaker.wave.2.circle")
+//                    .padding()
+//                    .font(.system(size: 40))
+//                    .foregroundColor(.txtColors)
+//            }
         }
     }
 }
