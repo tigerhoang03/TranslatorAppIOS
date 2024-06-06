@@ -28,6 +28,7 @@ struct SettingScreen: View {
                                 }
                             }
                             .padding()
+                            
                         }
                     }
                     
@@ -46,7 +47,7 @@ struct SettingScreen: View {
                     
                     Section(header: Text("Legal")) {
                         NavigationLink(destination: underConstructionScreen()) {
-                            Text("Licensing")
+                            Text("Liscensing")
                         }
                     }
                 }
@@ -77,7 +78,7 @@ struct CardView: View {
                     .padding(.bottom, 5)
             } else {
                 Image(systemName: "circle")
-                    .foregroundColor(.secondary)
+                    .foregroundColor(.txtColors)
                     .font(.title)
                     .padding(.bottom, 5)
             }

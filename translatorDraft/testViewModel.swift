@@ -15,6 +15,7 @@ class testViewModel: ObservableObject {
     @Published var inputText = ""
     @Published var outputText = ""
     @Published var isListening = false
+    @Published var isSpeaking = false // not being used
     @Published var audioEngine = AVAudioEngine()
     @Published var speechRecognizer = SFSpeechRecognizer()
     @Published var recognitionRequest: SFSpeechAudioBufferRecognitionRequest?
@@ -40,7 +41,6 @@ class testViewModel: ObservableObject {
    public var targetLanguageCode: String { languageDirection ? language[selectedTargetLanguage]! : language[selectedSourceLanguage]! }
     
     func translationText() {
-        
         translationWithAPI(inputText: languageDirection ? inputText : outputText, sourceLanguage: sourceLanguageCode , targetLanguage:targetLanguageCode)
     }
     
@@ -76,7 +76,8 @@ class testViewModel: ObservableObject {
                 if let json = try JSONSerialization.jsonObject(with: data) as? [String: Any],
                    let responseData = json["responseData"] as? [String: Any],
                    let translatedText = responseData["translatedText"] as? String {
-                    print(translatedText) //translated output
+                    print(translatedText) // translated text output
+                    
                     DispatchQueue.main.async {
                         if translatedText == self.emptyTranslation && self.languageDirection == false {
                             self.inputText = "Empty Input. Please Translate Again"
@@ -87,6 +88,9 @@ class testViewModel: ObservableObject {
                         } else {
                             self.outputText = translatedText
                         }
+                        //added for speaking translated text
+                        self.speak(text: translatedText, languageCode: self.targetLanguageCode)
+                        self.languageDirection.toggle()
                     }
                 } else {
                     DispatchQueue.main.async {
@@ -105,7 +109,8 @@ class testViewModel: ObservableObject {
         }
         task.resume()
     }
-    
+
+
     func startListening() {
         if recognitionTask != nil {
             recognitionTask?.cancel()
@@ -181,12 +186,12 @@ class testViewModel: ObservableObject {
         recognitionRequest?.endAudio()
         recognitionTask?.cancel()
         isListening = false
-        // Ensure the text is retained after stopping the recognition
+        
         if recognitionTask == nil {
             if languageDirection {
-                inputText = inputText // Retain the transcribed text
+                inputText = inputText
             } else {
-                outputText = outputText // Retain the transcribed text
+                outputText = outputText
             }
         }
     }
@@ -222,9 +227,11 @@ struct testAudioTranslationHandler: View {
             Button(action: {
                 viewModel.isListening.toggle()
                 if viewModel.isListening {
+                    viewModel.clearText()
                     viewModel.startListening()
                 } else {
                     viewModel.stopListening()
+                    viewModel.translationText()
                 }
             }) {
                 Image(systemName: viewModel.isListening ? "mic.circle.fill" : "mic.circle")
@@ -233,38 +240,14 @@ struct testAudioTranslationHandler: View {
                     .foregroundColor(viewModel.isListening ? .green : .txtColors)
             }
             
-            Button(action: {
-                viewModel.speak(text: viewModel.languageDirection ? viewModel.outputText : viewModel.inputText, languageCode: viewModel.targetLanguageCode)
-            }) {
-                Image(systemName: "speaker.wave.2.circle")
-                    .padding()
-                    .font(.system(size: 40))
-                    .foregroundColor(.txtColors)
-            }
-            Button(action: {
-                viewModel.translationText()
-            }) {
-                Text("Translate")
-                    .padding()
-                    .background(Color.btnColors)
-                    .foregroundColor(.txtColors)
-                    .cornerRadius(15)
-                    .scaleEffect(viewModel.translatePressed ? 1.2 : 1.0)
-                    .gesture(
-                        DragGesture(minimumDistance: 0)
-                            .onChanged { _ in
-                                withAnimation {
-                                    viewModel.translatePressed = true
-                                }
-                            }
-                            .onEnded { _ in
-                                withAnimation {
-                                    viewModel.translatePressed = false
-                                }
-                                viewModel.translationText()
-                            }
-                    )
-            }
+//            Button(action: {
+//                viewModel.speak(text: viewModel.languageDirection ? viewModel.outputText : viewModel.inputText, languageCode: viewModel.targetLanguageCode)
+//            }) {
+//                Image(systemName: "speaker.wave.2.circle")
+//                    .padding()
+//                    .font(.system(size: 40))
+//                    .foregroundColor(.txtColors)
+//            }
         }
     }
 }
