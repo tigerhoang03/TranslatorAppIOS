@@ -1,10 +1,3 @@
-//
-//  settingScreen.swift
-//  translatorDraft
-//
-//  Created by Aman Sahu on 6/4/24.
-//
-
 import SwiftUI
 
 struct SettingScreen: View {
@@ -13,51 +6,47 @@ struct SettingScreen: View {
     let plans = ["Free Plan", "Premium Plan"]
     
     var body: some View {
-        NavigationView {
-            ZStack {
-                Color.background.ignoresSafeArea()
-                List {
-                    Section(header: Text("Plan")) {
-                        ScrollView(.vertical) {
-                            LazyHGrid(rows: [GridItem(.flexible())], spacing: 20) {
-                                ForEach(plans, id: \.self) { plan in
-                                    CardView(plan: plan, isSelected: plan == selectedPlan)
-                                        .onTapGesture {
-                                            selectedPlan = plan
-                                        }
+        ZStack {
+            Color.background.ignoresSafeArea()
+            List {
+                // Plan Section
+                Section(header: Text("Plan")) {
+                    LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 20) {
+                        ForEach(plans, id: \.self) { plan in
+                            CardView(plan: plan, isSelected: plan == selectedPlan)
+                                .onTapGesture {
+                                    selectedPlan = plan
                                 }
-                            }
-                            .padding()
-                            
                         }
                     }
-                    
-                    Section(header: Text("General")) {
-                        NavigationLink(destination: AboutScreen()) {
-                            Text("How To Use")
-                        }
-                        NavigationLink(destination: underConstructionScreen()) {
-                            Text("Account")
-                        }
-                        NavigationLink(destination: underConstructionScreen()) {
-                            Text("Themes")
-                        }
+//                    .padding()
+                }
+                
+                // General Section
+                Section(header: Text("General")) {
+                    NavigationLink(destination: AboutScreen()) {
+                        Text("How To Use")
                     }
-                    
-                    
-                    Section(header: Text("Legal")) {
-                        NavigationLink(destination: underConstructionScreen()) {
-                            Text("Liscensing")
-                        }
+                    NavigationLink(destination: underConstructionScreen()) {
+                        Text("Account")
+                    }
+                    NavigationLink(destination: underConstructionScreen()) {
+                        Text("Themes")
                     }
                 }
-                .listStyle(GroupedListStyle())
+                
+                // Legal Section
+                Section(header: Text("Legal")) {
+                    NavigationLink(destination: underConstructionScreen()) {
+                        Text("Licensing")
+                    }
+                }
             }
-            .navigationTitle("Settings")
+            .listStyle(InsetGroupedListStyle())
         }
+        .navigationTitle("Settings")
     }
 }
-
 
 struct CardView: View {
     let plan: String
@@ -86,12 +75,15 @@ struct CardView: View {
         .background(Color.background)
         .cornerRadius(10)
         .shadow(color: Color.gray.opacity(0.4), radius: 4, x: 0, y: 2)
-        .padding([.horizontal, .top])
+//        .padding([.top])
+        .frame(width: 200, height: 150)
     }
 }
 
 struct SettingScreen_Previews: PreviewProvider {
     static var previews: some View {
-        SettingScreen()
+        NavigationStack {
+            SettingScreen()
+        }
     }
 }

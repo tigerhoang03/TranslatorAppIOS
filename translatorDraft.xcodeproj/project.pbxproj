@@ -80,7 +80,6 @@
 			isa = PBXGroup;
 			children = (
 				490458982C0D09850030696A /* testViewModel.swift */,
-				4979F0A22BF9094E00A62A2A /* Info.plist */,
 				4979F0922BF8D75400A62A2A /* translatorDraftApp.swift */,
 				499C3E3E2C0E33B30073DD4F /* SplashScreen.swift */,
 				476CE78C2C0FC6E800AB822B /* Archive */,
@@ -88,6 +87,7 @@
 				476CE78D2C0FD02100AB822B /* settingScreen.swift */,
 				476CE78F2C0FD73100AB822B /* aboutScreen.swift */,
 				476CE7912C0FD7AF00AB822B /* underConstructionScreen.swift */,
+				4979F0A22BF9094E00A62A2A /* Info.plist */,
 				4979F0962BF8D75500A62A2A /* Assets.xcassets */,
 				4979F0982BF8D75500A62A2A /* Preview Content */,
 				4979F0FF2BFC563100A62A2A /* translatorDraft-Bridging-Header.h */,

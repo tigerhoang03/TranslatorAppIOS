@@ -225,6 +225,7 @@ struct testAudioTranslationHandler: View {
     var body: some View {
         HStack {
             Button(action: {
+                viewModel.speak(text: viewModel.languageDirection ? viewModel.outputText : viewModel.inputText, languageCode: viewModel.targetLanguageCode)
                 viewModel.isListening.toggle()
                 if viewModel.isListening {
                     viewModel.clearText()
@@ -232,6 +233,7 @@ struct testAudioTranslationHandler: View {
                 } else {
                     viewModel.stopListening()
                     viewModel.translationText()
+                    
                 }
             }) {
                 Image(systemName: viewModel.isListening ? "mic.circle.fill" : "mic.circle")

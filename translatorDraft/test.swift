@@ -107,7 +107,8 @@ struct test: View {
                     // First TextField (Language 1)
                     ZStack(alignment: .top) {
                         RoundedRectangle(cornerRadius: 25.0)
-                            .fill(.textBoxColors)
+//                            .fill(.textBoxColors)
+                            .fill(.regularMaterial)
                             .frame(width: 375, height: 200)
                             .overlay(
                                 RoundedRectangle(cornerRadius: 25.0)
@@ -139,7 +140,8 @@ struct test: View {
                     // Second TextField (Language 2)
                     ZStack(alignment: .top) {
                         RoundedRectangle(cornerRadius: 25.0)
-                            .fill(.textBoxColors)
+//                            .fill(.textBoxColors)
+                            .fill(.regularMaterial)
                             .frame(width: 375, height: 200)
                             .overlay(
                                 RoundedRectangle(cornerRadius: 25.0)
