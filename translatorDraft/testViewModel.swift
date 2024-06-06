@@ -90,6 +90,7 @@ class testViewModel: ObservableObject {
                         }
                         //added for speaking translated text
                         self.speak(text: translatedText, languageCode: self.targetLanguageCode)
+                        self.languageDirection.toggle()
                     }
                 } else {
                     DispatchQueue.main.async {
