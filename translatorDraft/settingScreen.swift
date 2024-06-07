@@ -8,6 +8,7 @@ struct SettingScreen: View {
     var body: some View {
         ZStack {
             Color.background.ignoresSafeArea()
+            
             List {
                 // Plan Section
                 Section(header: Text("Plan")) {
@@ -24,9 +25,6 @@ struct SettingScreen: View {
                 
                 // General Section
                 Section(header: Text("General")) {
-                    NavigationLink(destination: AboutScreen()) {
-                        Text("How To Use")
-                    }
                     NavigationLink(destination: underConstructionScreen()) {
                         Text("Account")
                     }
@@ -34,6 +32,7 @@ struct SettingScreen: View {
                         Text("Themes")
                     }
                 }
+                
                 
                 // Legal Section
                 Section(header: Text("Legal")) {
@@ -72,7 +71,9 @@ struct CardView: View {
                     .padding(.bottom, 5)
             }
         }
-        .background(Color.background)
+        .background(LinearGradient(gradient: Gradient(colors: [Color.background, Color.highlighting]),
+                                   startPoint: .topLeading,
+                           endPoint: .bottomTrailing).ignoresSafeArea())
         .cornerRadius(10)
         .shadow(color: Color.gray.opacity(0.4), radius: 4, x: 0, y: 2)
 //        .padding([.top])

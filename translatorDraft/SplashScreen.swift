@@ -16,31 +16,40 @@ struct SplashScreen: View {
         if isActive{
             test()
         }else{
-            VStack{
-                        VStack{
-                            Image(systemName: "globe.americas.fill")
-                                .font(.system(size: 80))
-                                .foregroundColor(.textBoxColors)
-                            Text("Communicator")
-                                .font(.title)
-                                .foregroundStyle(.black.opacity(0.80))
-                        }
-                        .scaleEffect(size)
-                        .opacity(opacity)
-                        .onAppear{
-                            withAnimation(.easeIn(duration: 1.2)){
-                                self.size = 0.9
-                                self.opacity = 1.0
-                            }
-                        }
+            ZStack{
+                LinearGradient(gradient: Gradient(colors: [Color.background, Color.highlighting]),
+                                       startPoint: .topLeading,
+                               endPoint: .bottomTrailing).ignoresSafeArea()
+                VStack{
+                    Image(systemName: "globe.americas.fill")
+                        .font(.system(size: 80))
+                        .foregroundColor(.white)
+                        .shadow(color: .black, radius: 10, x: 5, y: 2)
+                        .padding()
+                    
+                    
+                    Text("Communicator")
+                        .font(.title)
+                        .fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
+                        .foregroundStyle(.txtColors)
+                        .kerning(1.2)
+                }
+                .scaleEffect(size)
+                .opacity(opacity)
+                .onAppear{
+                    withAnimation(.easeIn(duration: 1.7)){
+                        self.size = 0.9
+                        self.opacity = 1.0
                     }
-                    .onAppear{
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0){
-                            withAnimation{
-                                self.isActive = true
-                            }
-                        }
+                }
+            }
+            .onAppear{
+                DispatchQueue.main.asyncAfter(deadline: .now() + 2.0){
+                    withAnimation{
+                        self.isActive = true
                     }
+                }
+            }
         }
         
     }

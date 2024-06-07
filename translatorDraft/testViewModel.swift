@@ -225,7 +225,6 @@ struct testAudioTranslationHandler: View {
     var body: some View {
         HStack {
             Button(action: {
-                viewModel.speak(text: viewModel.languageDirection ? viewModel.outputText : viewModel.inputText, languageCode: viewModel.targetLanguageCode)
                 viewModel.isListening.toggle()
                 if viewModel.isListening {
                     viewModel.clearText()
@@ -240,6 +239,29 @@ struct testAudioTranslationHandler: View {
                     .padding()
                     .font(.system(size: 40))
                     .foregroundColor(viewModel.isListening ? .green : .txtColors)
+            }
+            
+            Button(action: viewModel.clearText) {
+                Text("Clear")
+                    .padding()
+                    .background(Color.btnColors)
+                    .foregroundColor(.txtColors)
+                    .cornerRadius(15)
+                    .scaleEffect(viewModel.clearPressed ? 1.2 : 1.0)
+                    .gesture(
+                        DragGesture(minimumDistance: 0)
+                            .onChanged { _ in
+                                withAnimation {
+                                    viewModel.clearPressed = true
+                                }
+                            }
+                            .onEnded { _ in
+                                withAnimation {
+                                    viewModel.clearPressed = false
+                                }
+                                viewModel.clearText()
+                            }
+                    )
             }
             
 //            Button(action: {

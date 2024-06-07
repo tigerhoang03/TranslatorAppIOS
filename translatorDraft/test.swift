@@ -24,6 +24,7 @@ struct test: View {
         NavigationView {
             ZStack {
                 Color.background.ignoresSafeArea()
+                
                 VStack {
                     HStack{
                         Spacer()
@@ -33,29 +34,16 @@ struct test: View {
                             .foregroundColor(.txtColors)
                         
                         Spacer()
-                        Button(action: viewModel.clearText) {
-                            Text("Clear")
-                                .padding()
-                                .background(Color.btnColors)
-                                .foregroundColor(.txtColors)
-                                .cornerRadius(15)
-                                .scaleEffect(viewModel.clearPressed ? 1.2 : 1.0)
-                                .gesture(
-                                    DragGesture(minimumDistance: 0)
-                                        .onChanged { _ in
-                                            withAnimation {
-                                                viewModel.clearPressed = true
-                                            }
-                                        }
-                                        .onEnded { _ in
-                                            withAnimation {
-                                                viewModel.clearPressed = false
-                                            }
-                                            viewModel.clearText()
-                                        }
-                                )
+                        
+                        NavigationLink(destination: AboutScreen()) {
+                            Image(systemName: "info.circle")
+                                .resizable(resizingMode: .tile)
+                                .foregroundColor(.highlighting)
+                                .frame(width: /*@START_MENU_TOKEN@*/30.0/*@END_MENU_TOKEN@*/, height: /*@START_MENU_TOKEN@*/30.0/*@END_MENU_TOKEN@*/)
                         }
+                        
                         Spacer()
+
                         NavigationLink(destination: SettingScreen()) {
                             Image(systemName: "gear")
                                 .resizable(resizingMode: .tile)
@@ -70,17 +58,17 @@ struct test: View {
                         
                     
                     HStack {
-                        
                         Picker("FIRST LANGUAGE", selection: $viewModel.selectedSourceLanguage) {
                             ForEach(languages, id: \.self) { language in
                                 Text(language)
+                                    .foregroundColor(.highlighting)
                             }
-                        }.padding(EdgeInsets())
-                            .background(
-                                RoundedRectangle(cornerRadius: 25.0)
-                                    .fill(.textBoxColors)
-                            )
-                        
+                        }
+                        .background(
+                            RoundedRectangle(cornerRadius: 10.0)
+                                .fill(Color.textBoxColors)
+                        )
+
                         Button {
                             withAnimation {
                                 viewModel.languageDirection.toggle()
@@ -89,25 +77,23 @@ struct test: View {
                             Image(systemName: viewModel.languageDirection ? "arrow.right" : "arrow.left")
                         }
                         .foregroundColor(.highlighting)
-                        
+
                         Picker("SECOND LANGUAGE", selection: $viewModel.selectedTargetLanguage) {
                             ForEach(languages, id: \.self) { language in
                                 Text(language)
                             }
-                        }.padding(EdgeInsets())
-                            .background(
-                                RoundedRectangle(cornerRadius: 25.0)
-                                    .fill(.textBoxColors)
-                            )
-                    }.padding()
-                    
-                    //                Text("first: \(viewModel.sourceLanguageCode),\nsecond: \(viewModel.targetLanguageCode),\ndirection:\(viewModel.languageDirection)")
-                    //                    .font(.caption2)
-                    
+                        }
+                        .background(
+                            RoundedRectangle(cornerRadius: 10.0)
+                                .fill(Color.textBoxColors)
+                        )
+                    }
+                    .padding()
+
+                
                     // First TextField (Language 1)
                     ZStack(alignment: .top) {
                         RoundedRectangle(cornerRadius: 25.0)
-//                            .fill(.textBoxColors)
                             .fill(.regularMaterial)
                             .frame(width: 375, height: 200)
                             .overlay(
@@ -117,7 +103,7 @@ struct test: View {
                             )
                             .animation(.easeInOut, value: viewModel.languageDirection)
                         
-                        TextField("", text: $viewModel.inputText, prompt: Text("Language 1 \(viewModel.selectedSourceLanguage)").foregroundColor(.gray), axis: .vertical)
+                        TextField("", text: $viewModel.inputText, prompt: Text("\(viewModel.selectedSourceLanguage)").foregroundColor(.gray), axis: .vertical)
                             .lineLimit(7)
                             .padding()
                             .focused($isFocused1) // Bind the focus state
@@ -150,7 +136,8 @@ struct test: View {
                             )
                             .animation(.easeInOut, value: viewModel.languageDirection)
                         
-                        TextField("", text: $viewModel.outputText, prompt: Text("Language 2 \(viewModel.selectedTargetLanguage)").foregroundColor(.gray), axis: .vertical)
+                        TextField("", text: $viewModel.outputText, prompt: Text("\(viewModel.selectedTargetLanguage)")
+                            .foregroundColor(.gray), axis: .vertical)
                             .lineLimit(7)
                             .padding()
                             .focused($isFocused2) // Bind the focus state
