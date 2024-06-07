@@ -7,7 +7,7 @@ struct SettingScreen: View {
     
     var body: some View {
         ZStack {
-            Color.background.ignoresSafeArea()
+            
             
             List {
                 // Plan Section
@@ -42,8 +42,12 @@ struct SettingScreen: View {
                 }
             }
             .listStyle(InsetGroupedListStyle())
+//            .background(Color.background)
+//            .scrollContentBackground(.hidden)
+            
         }
         .navigationTitle("Settings")
+        
     }
 }
 
@@ -76,7 +80,7 @@ struct CardView: View {
                            endPoint: .bottomTrailing).ignoresSafeArea())
         .cornerRadius(10)
         .shadow(color: Color.gray.opacity(0.4), radius: 4, x: 0, y: 2)
-//        .padding([.top])
+        .padding([.trailing])
         .frame(width: 200, height: 150)
     }
 }

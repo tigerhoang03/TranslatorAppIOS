@@ -63,7 +63,7 @@ struct test: View {
                                 Text(language)
                                     .foregroundColor(.highlighting)
                             }
-                        }
+                        }.tint(.highlighting)
                         .background(
                             RoundedRectangle(cornerRadius: 10.0)
                                 .fill(Color.textBoxColors)
@@ -82,7 +82,7 @@ struct test: View {
                             ForEach(languages, id: \.self) { language in
                                 Text(language)
                             }
-                        }
+                        }.tint(.highlighting)
                         .background(
                             RoundedRectangle(cornerRadius: 10.0)
                                 .fill(Color.textBoxColors)
@@ -158,7 +158,7 @@ struct test: View {
                     
                 }
             }
-        }
+        }.tint(.blue) //for back buttons
         .navigationTitle("Home")
     }
     
