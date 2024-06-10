@@ -273,5 +273,6 @@ struct testAudioTranslationHandler: View {
 //                    .foregroundColor(.txtColors)
 //            }
         }
+        .background(.highlighting).ignoresSafeArea()
     }
 }

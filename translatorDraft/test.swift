@@ -63,7 +63,7 @@ struct test: View {
                                 Text(language)
                                     .foregroundColor(.highlighting)
                             }
-                        }.tint(.highlighting)
+                        }.tint(.langSelector)
                         .background(
                             RoundedRectangle(cornerRadius: 10.0)
                                 .fill(Color.textBoxColors)
@@ -82,7 +82,7 @@ struct test: View {
                             ForEach(languages, id: \.self) { language in
                                 Text(language)
                             }
-                        }.tint(.highlighting)
+                        }.tint(.langSelector)
                         .background(
                             RoundedRectangle(cornerRadius: 10.0)
                                 .fill(Color.textBoxColors)
@@ -121,7 +121,6 @@ struct test: View {
                     )
                     .padding()
                     
-                    testAudioTranslationHandler(viewModel: viewModel)
                     
                     // Second TextField (Language 2)
                     ZStack(alignment: .top) {
@@ -155,11 +154,18 @@ struct test: View {
                     )
                     .padding()
                     
-                    
+                    Spacer()
+
+                    HStack {
+                        testAudioTranslationHandler(viewModel: viewModel)
+                            .frame(maxWidth: .infinity)
+                            .background(Color.highlighting)
+                    }
                 }
             }
-        }.tint(.blue) //for back buttons
+        }.tint(.highlighting) //for back buttons
         .navigationTitle("Home")
+        
     }
     
     func hideKeyboard() {
