@@ -7,8 +7,6 @@ struct SettingScreen: View {
     
     var body: some View {
         ZStack {
-            
-            
             List {
                 // Plan Section
                 Section(header: Text("Plan")) {
@@ -40,6 +38,7 @@ struct SettingScreen: View {
                         Text("Licensing")
                     }
                 }
+                
             }
             .listStyle(InsetGroupedListStyle())
 //            .background(Color.background)

@@ -199,7 +199,6 @@ class testViewModel: ObservableObject {
     func clearText() {
         inputText = ""
         outputText = ""
-        
     }
     
     func speak(text: String, languageCode: String) {
@@ -242,27 +241,12 @@ struct testAudioTranslationHandler: View {
             }
             
             Button(action: viewModel.clearText) {
-                Text("Clear")
+                Image(systemName: "trash")
                     .padding()
-                    .background(Color.btnColors)
+                    .font(.system(size: 40))
                     .foregroundColor(.txtColors)
-                    .cornerRadius(15)
-                    .scaleEffect(viewModel.clearPressed ? 1.2 : 1.0)
-                    .gesture(
-                        DragGesture(minimumDistance: 0)
-                            .onChanged { _ in
-                                withAnimation {
-                                    viewModel.clearPressed = true
-                                }
-                            }
-                            .onEnded { _ in
-                                withAnimation {
-                                    viewModel.clearPressed = false
-                                }
-                                viewModel.clearText()
-                            }
-                    )
             }
+
             
 //            Button(action: {
 //                viewModel.speak(text: viewModel.languageDirection ? viewModel.outputText : viewModel.inputText, languageCode: viewModel.targetLanguageCode)
@@ -273,6 +257,6 @@ struct testAudioTranslationHandler: View {
 //                    .foregroundColor(.txtColors)
 //            }
         }
-        .background(.highlighting).ignoresSafeArea()
+//        .background(.highlighting).ignoresSafeArea()
     }
 }

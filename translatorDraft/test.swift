@@ -55,34 +55,7 @@ struct test: View {
                     }
                     
                     Divider()
-                        
-                    
-                    HStack {
-//                        Picker("FIRST LANGUAGE", selection: $viewModel.selectedSourceLanguage) {
-//                            ForEach(languages, id: \.self) { language in
-//                                Text(language)
-//                                    .foregroundColor(.highlighting)
-//                            }
-//                        }.tint(.langSelector)
-//                        .background(
-//                            RoundedRectangle(cornerRadius: 10.0)
-//                                .fill(Color.textBoxColors)
-//                        )
-
-                        
-//                        Picker("SECOND LANGUAGE", selection: $viewModel.selectedTargetLanguage) {
-//                            ForEach(languages, id: \.self) { language in
-//                                Text(language)
-//                            }
-//                        }.tint(.langSelector)
-//                        .background(
-//                            RoundedRectangle(cornerRadius: 10.0)
-//                                .fill(Color.textBoxColors)
-//                        )
-                    }
-                    .padding()
-
-                
+  
                     // First TextField (Language 1)
                     ZStack(alignment: .topLeading) {
                         RoundedRectangle(cornerRadius: 25.0)
@@ -112,7 +85,6 @@ struct test: View {
                                 .lineLimit(7)
                                 .padding(.leading)
                                 .focused($isFocused1)
-                            
                         }
                         
                         
@@ -121,6 +93,7 @@ struct test: View {
                             if isFocused1 {
                                 Button("Done") {
                                     hideKeyboard()
+                                    viewModel.translationText()
                                 }
                                 .padding(.trailing, 20)
                                 .padding(.bottom, 15)
@@ -130,6 +103,7 @@ struct test: View {
                     )
                     .padding()
                     
+                    
                     Button {
                         withAnimation {
                             viewModel.languageDirection.toggle()
@@ -138,6 +112,7 @@ struct test: View {
                         Image(systemName: viewModel.languageDirection ? "arrow.down" : "arrow.up")
                     }
                     .foregroundColor(.highlighting)
+                    
                     
                     // Second TextField (Language 2)
                     ZStack(alignment: .topLeading) {
@@ -166,20 +141,16 @@ struct test: View {
                             
                             
                             TextField("", text: $viewModel.outputText)
-                                .lineLimit(7)
+                                .lineLimit(10)
                                 .padding(.leading)
                                 .focused($isFocused2) // Bind the focus state
                         }
-                    
-                        
-                        
-
-                        
                     }.overlay(
                         VStack() {
                             if isFocused2 {
                                 Button("Done") {
                                     hideKeyboard()
+                                    viewModel.translationText()
                                 }
                                 .padding(.trailing, 20)
                                 .padding(.top, 15)
@@ -189,16 +160,14 @@ struct test: View {
                     )
                     .padding()
                     
-                    Spacer()
-
                     HStack {
                         testAudioTranslationHandler(viewModel: viewModel)
-                            .frame(maxWidth: .infinity)
-                            .background(Color.highlighting)
+//                            .frame(maxWidth: .infinity)
+//                            .background(Color.highlighting)
                     }
                 }
             }
-        }.tint(.highlighting) //for back buttons
+        }.tint(.highlighting) // for back buttons
         .navigationTitle("Home")
         
     }
