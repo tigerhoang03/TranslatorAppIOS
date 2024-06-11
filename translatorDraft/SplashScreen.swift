@@ -17,8 +17,8 @@ struct SplashScreen: View {
             test()
         }else{
             ZStack{
-                LinearGradient(gradient: Gradient(colors: [Color.background, Color.highlighting]),
-                                       startPoint: .topLeading,
+                LinearGradient(gradient: Gradient(colors: [Color.background, Color.black]),
+                                       startPoint: .top,
                                endPoint: .bottomTrailing).ignoresSafeArea()
                 VStack{
                     Image(systemName: "globe.americas.fill")

@@ -26,7 +26,7 @@ struct test: View {
                 Color.background.ignoresSafeArea()
                 
                 VStack {
-                    HStack{
+                    HStack {
                         Spacer()
                         Text("Communicator")
                             .frame(width: 220, height: 50)
@@ -55,44 +55,9 @@ struct test: View {
                     }
                     
                     Divider()
-                        
-                    
-                    HStack {
-                        Picker("FIRST LANGUAGE", selection: $viewModel.selectedSourceLanguage) {
-                            ForEach(languages, id: \.self) { language in
-                                Text(language)
-                                    .foregroundColor(.highlighting)
-                            }
-                        }.tint(.highlighting)
-                        .background(
-                            RoundedRectangle(cornerRadius: 10.0)
-                                .fill(Color.textBoxColors)
-                        )
-
-                        Button {
-                            withAnimation {
-                                viewModel.languageDirection.toggle()
-                            }
-                        } label: {
-                            Image(systemName: viewModel.languageDirection ? "arrow.right" : "arrow.left")
-                        }
-                        .foregroundColor(.highlighting)
-
-                        Picker("SECOND LANGUAGE", selection: $viewModel.selectedTargetLanguage) {
-                            ForEach(languages, id: \.self) { language in
-                                Text(language)
-                            }
-                        }.tint(.highlighting)
-                        .background(
-                            RoundedRectangle(cornerRadius: 10.0)
-                                .fill(Color.textBoxColors)
-                        )
-                    }
-                    .padding()
-
-                
+  
                     // First TextField (Language 1)
-                    ZStack(alignment: .top) {
+                    ZStack(alignment: .topLeading) {
                         RoundedRectangle(cornerRadius: 25.0)
                             .fill(.regularMaterial)
                             .frame(width: 375, height: 200)
@@ -103,15 +68,32 @@ struct test: View {
                             )
                             .animation(.easeInOut, value: viewModel.languageDirection)
                         
-                        TextField("", text: $viewModel.inputText, prompt: Text("\(viewModel.selectedSourceLanguage)").foregroundColor(.gray), axis: .vertical)
-                            .lineLimit(7)
-                            .padding()
-                            .focused($isFocused1) // Bind the focus state
+                        VStack(alignment: .leading) {
+                            Picker("FIRST LANGUAGE", selection: $viewModel.selectedSourceLanguage) {
+                                ForEach(languages, id: \.self) { language in
+                                    Text(language)
+                                        .foregroundColor(.highlighting)
+                                }
+                            }.tint(.langSelector)
+                            .background(
+                                RoundedRectangle(cornerRadius: 10.0)
+                                    .fill(Color.color)
+                            )
+                            .padding([.top, .leading], 10.0)
+                            
+                            TextField("", text: $viewModel.inputText, axis: .vertical)
+                                .lineLimit(7)
+                                .padding(.leading)
+                                .focused($isFocused1)
+                        }
+                        
+                        
                     }.overlay(
                         VStack() {
                             if isFocused1 {
                                 Button("Done") {
                                     hideKeyboard()
+                                    viewModel.translationText()
                                 }
                                 .padding(.trailing, 20)
                                 .padding(.bottom, 15)
@@ -121,12 +103,20 @@ struct test: View {
                     )
                     .padding()
                     
-                    testAudioTranslationHandler(viewModel: viewModel)
+                    
+                    Button {
+                        withAnimation {
+                            viewModel.languageDirection.toggle()
+                        }
+                    } label: {
+                        Image(systemName: viewModel.languageDirection ? "arrow.down" : "arrow.up")
+                    }
+                    .foregroundColor(.highlighting)
+                    
                     
                     // Second TextField (Language 2)
-                    ZStack(alignment: .top) {
+                    ZStack(alignment: .topLeading) {
                         RoundedRectangle(cornerRadius: 25.0)
-//                            .fill(.textBoxColors)
                             .fill(.regularMaterial)
                             .frame(width: 375, height: 200)
                             .overlay(
@@ -136,16 +126,31 @@ struct test: View {
                             )
                             .animation(.easeInOut, value: viewModel.languageDirection)
                         
-                        TextField("", text: $viewModel.outputText, prompt: Text("\(viewModel.selectedTargetLanguage)")
-                            .foregroundColor(.gray), axis: .vertical)
-                            .lineLimit(7)
-                            .padding()
-                            .focused($isFocused2) // Bind the focus state
+                        VStack(alignment: .leading) {
+                            Picker("SECOND LANGUAGE", selection: $viewModel.selectedTargetLanguage) {
+                                ForEach(languages, id: \.self) { language in
+                                    Text(language)
+                                }
+                            }
+                            .tint(.langSelector)
+                            .background(
+                                RoundedRectangle(cornerRadius: 10.0)
+                                    .fill(Color.color)
+                            )
+                            .padding([.top, .leading], 10.0)
+                            
+                            
+                            TextField("", text: $viewModel.outputText , axis: .vertical)
+                                .lineLimit(7)
+                                .padding(.leading)
+                                .focused($isFocused2) // Bind the focus state
+                        }
                     }.overlay(
                         VStack() {
                             if isFocused2 {
                                 Button("Done") {
                                     hideKeyboard()
+                                    viewModel.translationText()
                                 }
                                 .padding(.trailing, 20)
                                 .padding(.top, 15)
@@ -155,11 +160,16 @@ struct test: View {
                     )
                     .padding()
                     
-                    
+                    HStack {
+                        testAudioTranslationHandler(viewModel: viewModel)
+//                            .frame(maxWidth: .infinity)
+//                            .background(Color.highlighting)
+                    }
                 }
             }
-        }.tint(.blue) //for back buttons
+        }.tint(.highlighting) // for back buttons
         .navigationTitle("Home")
+        
     }
     
     func hideKeyboard() {
