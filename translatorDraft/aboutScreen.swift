@@ -10,60 +10,80 @@ import SwiftUI
 struct AboutScreen: View {
     var body: some View {
         ZStack {
-//            Color.background.ignoresSafeArea()
-            LinearGradient(gradient: Gradient(colors: [Color.background, Color.highlighting]),
-                                   startPoint: .topLeading,
+            LinearGradient(gradient: Gradient(colors: [Color.background, Color.black]),
+                           startPoint: .topTrailing,
                            endPoint: .bottomTrailing).ignoresSafeArea()
             ScrollView {
                 VStack(alignment: .leading, spacing: 20) {
                     SectionView(systemName: "questionmark.circle", title: "How To Use", color: .txtColors) {
-                        VStack(alignment: .leading) {
-                            Text("Welcome to Communicator! Click on the")
-                            Image(systemName: "mic.circle")
-                                .font(.system(size: 20))
-                                .foregroundColor(.txtColors)
-                                
-                            Text("to start recording your speech you want to translate.")
-                            Text("Click on the")
-                            Image(systemName: "mic.circle.fill")
-                                .font(.system(size: 20))
-                                .foregroundColor(.green)
-                            Text("to stop recording and get your translated speech output.")
+                        VStack(alignment: .leading, spacing: 10) {
+                            Text("Welcome to Communicator!")
+                            HStack{
+                                Text("Click on the")
+                                Image(systemName: "mic.circle")
+                                    .font(.system(size: 20))
+                                    .foregroundColor(.txtColors)
+                                Text("to start recording")
+                            }
+                            
+                            HStack {
+                                Text("Click on the")
+                                Image(systemName: "mic.circle.fill")
+                                    .font(.system(size: 20))
+                                    .foregroundColor(.green)
+                                Text("to stop recording.")
+                            }
+                            
+                            Text("After you stop recording, the translated text will appear in the highlighted box.")
+                            Text("Make sure to have your volume up to hear the translated speech.")
+                            
                         }
                     }
                     
-                    SectionView(systemName: "globe", title: "Language Selector and Direction", color: .txtColors) {
-                        VStack(alignment: .leading, spacing: 5) {
-                            Text("Select languages from the drop-down menus.")
-                            Text("To change the direction of the translation, click on the arrow between the language selectors. It will look like")
-                            HStack {
-                                Image(systemName: "arrow.right")
+                    SectionView(systemName: "globe", title: "Language Direction", color: .txtColors) {
+                        VStack(alignment: .center, spacing: 10) {
+                            Text("To change the 'direction' of the translation, click on the arrow in the middle of the two language boxes The arrow can have the following orientations:")
+                            HStack (alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/){
+                                Spacer()
+                                Spacer()
+                                Image(systemName: "arrow.up")
                                     .foregroundColor(.highlighting)
-                                Text("or")
-                                Image(systemName: "arrow.left")
+                                Spacer()
+                                Image(systemName: "arrow.down")
                                     .foregroundColor(.highlighting)
+                                Spacer()
+                                Spacer()
                             }
-                            Text("arrow to switch translation direction.")
+                            Text("The arrow will point towards the text box which will have the translated text.")
                         }
                     }
                     
                     SectionView(systemName: "trash", title: "Clearing Existing Text", color: .txtColors) {
-                        Text("To clear text, simply click on the 'Clear' button next to the microphone button.")
-                    }
-                    
-                    SectionView(systemName: "waveform", title: "How it Works", color: .txtColors) {
-                        VStack(alignment: .leading, spacing: 5) {
-                            Text("Once you click the microphone icon to start recording, it will look like:")
-                            Image(systemName: "mic.circle.fill")
-                                .font(.system(size: 20))
-                                .foregroundColor(.green)
-                            Text("Your speech will appear in the non-highlighted box. Click the microphone again to stop, it will look like:")
+                        HStack {
+                            Text("Click on the")
+                            Image(systemName: "trash")
+                                .foregroundColor(.highlighting)
+                            Text("button next to the")
                             Image(systemName: "mic.circle")
                                 .font(.system(size: 20))
                                 .foregroundColor(.txtColors)
-                            Text("The translated text will appear in the highlighted box. After the text has been successfully translated, a speech output will be heard of the translated text.")
                         }
+                        
                     }
+                    
+//                    SectionView(systemName: "waveform", title: "How it Works", color: .txtColors) {
+//                        VStack(alignment: .leading, spacing: 10) {
+//                            Text("Once you click the microphone icon to start recording, it will look like:")
+//                            Image(systemName: "mic.circle.fill")
+//                                .font(.system(size: 20))
+//                                .foregroundColor(.green)
+//                            Text("Your speech will appear in the non-highlighted box. Click the microphone again to stop, it will look like:")
+//                            Image(systemName: "mic.circle")
+//                                .font(.system(size: 20))
+//                                .foregroundColor(.txtColors)
+//                            Text("The translated text will appear in the highlighted box. After the text has been successfully translated, a speech output will be heard of the translated text.")
+//                        }
+//                    }
                 }
                 .padding()
             }
@@ -89,13 +109,17 @@ struct SectionView<Content: View>: View {
                     .foregroundColor(color)
             }
             .padding()
-            .background(
-                RoundedRectangle(cornerRadius: 10)
-                    .fill(Color.gray.opacity(0.2))
-            )
+//            .background(
+//                RoundedRectangle(cornerRadius: 10)
+//                    .fill(Color.background.opacity(0.2))
+//            )
             
             content()
                 .padding()
+                .background(
+                    RoundedRectangle(cornerRadius: 10)
+                        .fill(Color.gray.opacity(0.2))
+                )
         }
         .foregroundColor(color)
     }

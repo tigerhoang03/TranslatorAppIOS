@@ -243,7 +243,7 @@ struct testAudioTranslationHandler: View {
             Button(action: viewModel.clearText) {
                 Image(systemName: "trash")
                     .padding()
-                    .font(.system(size: 40))
+                    .font(.system(size: 37))
                     .foregroundColor(.txtColors)
             }
 

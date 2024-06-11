@@ -81,7 +81,7 @@ struct test: View {
                             )
                             .padding([.top, .leading], 10.0)
                             
-                            TextField("", text: $viewModel.inputText)
+                            TextField("", text: $viewModel.inputText, axis: .vertical)
                                 .lineLimit(7)
                                 .padding(.leading)
                                 .focused($isFocused1)
@@ -140,8 +140,8 @@ struct test: View {
                             .padding([.top, .leading], 10.0)
                             
                             
-                            TextField("", text: $viewModel.outputText)
-                                .lineLimit(10)
+                            TextField("", text: $viewModel.outputText , axis: .vertical)
+                                .lineLimit(7)
                                 .padding(.leading)
                                 .focused($isFocused2) // Bind the focus state
                         }
