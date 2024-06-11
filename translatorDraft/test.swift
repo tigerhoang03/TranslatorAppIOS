@@ -26,7 +26,7 @@ struct test: View {
                 Color.background.ignoresSafeArea()
                 
                 VStack {
-                    HStack{
+                    HStack {
                         Spacer()
                         Text("Communicator")
                             .frame(width: 220, height: 50)

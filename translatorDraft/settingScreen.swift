@@ -74,8 +74,8 @@ struct CardView: View {
                     .padding(.bottom, 5)
             }
         }
-        .background(LinearGradient(gradient: Gradient(colors: [Color.background, Color.highlighting]),
-                                   startPoint: .topLeading,
+        .background(LinearGradient(gradient: Gradient(colors: [Color.black, Color.background]),
+                                   startPoint: .topTrailing,
                            endPoint: .bottomTrailing).ignoresSafeArea())
         .cornerRadius(10)
         .shadow(color: Color.gray.opacity(0.4), radius: 4, x: 0, y: 2)
