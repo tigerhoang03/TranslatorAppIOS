@@ -27,40 +27,17 @@ struct test: View {
                 
                 VStack {
                     HStack {
-                        Spacer()
-                        Text("Communicator")
-                            .frame(width: 220, height: 50)
-                            .font(.title.bold())
-                            .foregroundColor(.txtColors)
-                        
-                        Spacer()
-                        
-                        NavigationLink(destination: AboutScreen()) {
-                            Image(systemName: "info.circle")
-                                .resizable(resizingMode: .tile)
-                                .foregroundColor(.highlighting)
-                                .frame(width: /*@START_MENU_TOKEN@*/30.0/*@END_MENU_TOKEN@*/, height: /*@START_MENU_TOKEN@*/30.0/*@END_MENU_TOKEN@*/)
-                        }
-                        
-                        Spacer()
-
-                        NavigationLink(destination: SettingScreen()) {
-                            Image(systemName: "gear")
-                                .resizable(resizingMode: .tile)
-                                .aspectRatio(contentMode: .fit)
-                                .foregroundColor(.txtColors)
-                                .frame(width: 30, height: 30)
-                        }
-                        Spacer()
+//                        Text("Communicator")
+//                            .frame(width: 220, height: 50)
+//                            .font(.title.bold())
+//                            .foregroundColor(.txtColors)
                     }
-                    
-                    Divider()
   
                     // First TextField (Language 1)
                     ZStack(alignment: .topLeading) {
                         RoundedRectangle(cornerRadius: 25.0)
-                            .fill(.regularMaterial)
-                            .frame(width: 375, height: 200)
+                            .fill(.textBoxColors)
+                            .frame(maxWidth: .infinity)
                             .overlay(
                                 RoundedRectangle(cornerRadius: 25.0)
                                     .stroke(Color.highlighting, lineWidth: 3)
@@ -97,28 +74,66 @@ struct test: View {
                                 }
                                 .padding(.trailing, 20)
                                 .padding(.bottom, 15)
-                                .transition(.opacity) // Optional: Add a fade transition
+                                .transition(.opacity)
                             }
                         }, alignment: .bottomTrailing
                     )
                     .padding()
                     
-                    
-                    Button {
-                        withAnimation {
-                            viewModel.languageDirection.toggle()
+                    HStack{
+                        Spacer()
+                        Spacer()
+                        ZStack{
+                            RoundedRectangle(cornerRadius: 50.0)
+                                .fill(Color.btnColors)
+                                .frame(maxWidth: 60, maxHeight: 60)
+                            
+                            NavigationLink(destination: SettingScreen()) {
+                                Image(systemName: "gearshape")
+                                    .resizable(resizingMode: .tile)
+                                    .aspectRatio(contentMode: .fit)
+                                    .foregroundColor(.txtColors)
+                                    .frame(width: 30, height: 30)
+                            }
                         }
-                    } label: {
-                        Image(systemName: viewModel.languageDirection ? "arrow.down" : "arrow.up")
+                        
+                        ZStack {
+                            Divider()
+                            
+                            RoundedRectangle(cornerRadius: 50.0)
+                                .fill(Color.btnColors)
+                                .frame(maxWidth: 210, maxHeight: 60)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 25.0)
+                                        .stroke(Color.highlighting, lineWidth: 3)
+                                        .opacity(viewModel.isListening ? 1 : 0)
+                                )
+                            
+                            testAudioTranslationHandler(viewModel: viewModel)
+                                .frame(maxWidth: .infinity, maxHeight: 50)
+                                .clipShape(RoundedRectangle(cornerRadius: 25.0))
+                        }
+                        ZStack{
+                            RoundedRectangle(cornerRadius: 50.0)
+                                .fill(Color.btnColors)
+                                .frame(maxWidth: 60, maxHeight: 60)
+                            
+                            NavigationLink(destination: AboutScreen()) {
+                                Image(systemName: "info.circle")
+                                    .resizable(resizingMode: .tile)
+                                    .foregroundColor(.txtColors)
+                                    .frame(width: /*@START_MENU_TOKEN@*/30.0/*@END_MENU_TOKEN@*/, height: /*@START_MENU_TOKEN@*/30.0/*@END_MENU_TOKEN@*/)
+                            }
+                        }
+                        Spacer()
+                        Spacer()
                     }
-                    .foregroundColor(.highlighting)
-                    
                     
                     // Second TextField (Language 2)
                     ZStack(alignment: .topLeading) {
                         RoundedRectangle(cornerRadius: 25.0)
-                            .fill(.regularMaterial)
-                            .frame(width: 375, height: 200)
+                            .fill(.textBoxColors)
+                            .frame(maxWidth: .infinity) // Set maxWidth to .infinity
                             .overlay(
                                 RoundedRectangle(cornerRadius: 25.0)
                                     .stroke(Color.highlighting, lineWidth: 3)
@@ -159,12 +174,6 @@ struct test: View {
                         }, alignment: .topTrailing
                     )
                     .padding()
-                    
-                    HStack {
-                        testAudioTranslationHandler(viewModel: viewModel)
-//                            .frame(maxWidth: .infinity)
-//                            .background(Color.highlighting)
-                    }
                 }
             }
         }.tint(.highlighting) // for back buttons

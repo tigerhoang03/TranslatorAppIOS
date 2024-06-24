@@ -61,29 +61,15 @@ struct AboutScreen: View {
                     SectionView(systemName: "trash", title: "Clearing Existing Text", color: .txtColors) {
                         HStack {
                             Text("Click on the")
-                            Image(systemName: "trash")
+                            Image(systemName: "trash.circle")
                                 .foregroundColor(.highlighting)
                             Text("button next to the")
                             Image(systemName: "mic.circle")
-                                .font(.system(size: 20))
                                 .foregroundColor(.txtColors)
                         }
                         
                     }
                     
-//                    SectionView(systemName: "waveform", title: "How it Works", color: .txtColors) {
-//                        VStack(alignment: .leading, spacing: 10) {
-//                            Text("Once you click the microphone icon to start recording, it will look like:")
-//                            Image(systemName: "mic.circle.fill")
-//                                .font(.system(size: 20))
-//                                .foregroundColor(.green)
-//                            Text("Your speech will appear in the non-highlighted box. Click the microphone again to stop, it will look like:")
-//                            Image(systemName: "mic.circle")
-//                                .font(.system(size: 20))
-//                                .foregroundColor(.txtColors)
-//                            Text("The translated text will appear in the highlighted box. After the text has been successfully translated, a speech output will be heard of the translated text.")
-//                        }
-//                    }
                 }
                 .padding()
             }
