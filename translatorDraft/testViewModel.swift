@@ -240,23 +240,24 @@ struct testAudioTranslationHandler: View {
                     .foregroundColor(viewModel.isListening ? .green : .txtColors)
             }
             
+            
+            Button {
+                withAnimation {
+                    viewModel.languageDirection.toggle()
+                }
+            } label: {
+                Image(systemName: viewModel.languageDirection ? "arrow.down" : "arrow.up")
+            }
+            .foregroundColor(.highlighting)
+            .font(.system(size: 20))
+            
+            
             Button(action: viewModel.clearText) {
-                Image(systemName: "trash")
+                Image(systemName: "trash.circle")
                     .padding()
-                    .font(.system(size: 37))
+                    .font(.system(size: 40))
                     .foregroundColor(.txtColors)
             }
-
-            
-//            Button(action: {
-//                viewModel.speak(text: viewModel.languageDirection ? viewModel.outputText : viewModel.inputText, languageCode: viewModel.targetLanguageCode)
-//            }) {
-//                Image(systemName: "speaker.wave.2.circle")
-//                    .padding()
-//                    .font(.system(size: 40))
-//                    .foregroundColor(.txtColors)
-//            }
         }
-//        .background(.highlighting).ignoresSafeArea()
     }
 }
