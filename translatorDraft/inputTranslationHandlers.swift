@@ -82,13 +82,31 @@ struct inputTranslationHandlers: View {
                 .foregroundColor(.highlighting)
                 .font(.system(size: 20))
                 
-                
-                Button(action: newviewModel.getAudioInfo) {
-                    Image(systemName: "questionmark.circle")
+                Button(action: viewModel.clearText) {
+                    Image(systemName: "trash.circle")
                         .padding()
                         .font(.system(size: 40))
                         .foregroundColor(.txtColors)
                 }
+                
+//                Button(action: newviewModel.getAudioInfo) {
+//                    Image(systemName: "questionmark.circle")
+//                        .padding()
+//                        .font(.system(size: 40))
+//                        .foregroundColor(.txtColors)
+//                }
+//                
+//                Button(action: {
+//                    if let audioData = newviewModel.audioFileToArray() {
+//                        print(audioData)
+//                    }
+//                }) {
+//                    Image(systemName: "questionmark.diamond")
+//                        .padding()
+//                        .font(.system(size: 40))
+//                        .foregroundColor(.txtColors)
+//                }
+
             }
         }
     }

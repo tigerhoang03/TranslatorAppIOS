@@ -66,6 +66,38 @@ class premiumViewModel: NSObject, ObservableObject {
             print("Failed to read audio file: \(error.localizedDescription)")
         }
     }
+    
+    func audioFileToArray() -> [Float]? {
+        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+        let recordingPath = paths[0].appendingPathComponent("recording.wav")
+        
+        do {
+            let file = try AVAudioFile(forReading: recordingPath)
+            let format = file.processingFormat
+            let frameCount = AVAudioFrameCount(file.length)
+            
+            guard let buffer = AVAudioPCMBuffer(pcmFormat: format, frameCapacity: frameCount) else {
+                print("Failed to create buffer")
+                return nil
+            }
+            
+            try file.read(into: buffer, frameCount: frameCount)
+            
+            guard let channelData = buffer.floatChannelData else {
+                print("No channel data found")
+                return nil
+            }
+            
+            let channelDataPointer = channelData.pointee
+            let channelDataArray = Array(UnsafeBufferPointer(start: channelDataPointer, count: Int(buffer.frameLength)))
+            
+            return channelDataArray
+            
+        } catch {
+            print("Failed to read audio file: \(error.localizedDescription)")
+            return nil
+        }
+    }
 }
 
 extension premiumViewModel: AVAudioRecorderDelegate {}
