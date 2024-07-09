@@ -10,7 +10,7 @@ import SwiftUI
 import Speech
 import AVFoundation
 
-class testViewModel: ObservableObject {
+class mainViewModel: ObservableObject {
     @Published var targetLanguageIndex = 1
     @Published var inputText = ""
     @Published var outputText = ""
@@ -219,7 +219,7 @@ class testViewModel: ObservableObject {
 }
 
 struct testAudioTranslationHandler: View {
-    @ObservedObject var viewModel: testViewModel
+    @ObservedObject var viewModel: mainViewModel
     
     var body: some View {
         HStack {

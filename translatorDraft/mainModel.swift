@@ -1,7 +1,7 @@
 import SwiftUI
 
-struct test: View {
-    @ObservedObject var viewModel = testViewModel()
+struct mainModel: View {
+    @ObservedObject var viewModel = mainViewModel()
     
     @State private var selectedSourceLanguage = "English"
     @State private var selectedTargetLanguage = "Spanish"
@@ -196,5 +196,5 @@ extension View {
 #endif
 
 #Preview {
-    test(viewModel: testViewModel())
+    mainModel(viewModel: mainViewModel())
 }

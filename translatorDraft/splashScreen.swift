@@ -7,14 +7,14 @@
 
 import SwiftUI
 
-struct SplashScreen: View {
+struct splashScreen: View {
     @State private var isActive = false
     @State private var size = 0.8
     @State private var opacity = 0.5
     
     var body: some View {
         if isActive{
-            test()
+            mainModel()
         }else{
             ZStack{
                 LinearGradient(gradient: Gradient(colors: [Color.background, Color.black]),
@@ -55,8 +55,8 @@ struct SplashScreen: View {
     }
 }
 
-struct SplashScreen_Previews: PreviewProvider{
+struct splashScreen_Previews: PreviewProvider{
     static var previews: some View{
-        SplashScreen()
+        splashScreen()
     }
 }
