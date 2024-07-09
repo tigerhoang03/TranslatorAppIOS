@@ -2,6 +2,9 @@ import SwiftUI
 
 struct mainModel: View {
     @ObservedObject var viewModel = mainViewModel()
+    @ObservedObject var newviewModel = premiumViewModel()
+    
+    @AppStorage("selectedPlan") private var selectedPlan: String = ""
     
     @State private var selectedSourceLanguage = "English"
     @State private var selectedTargetLanguage = "Spanish"
@@ -10,15 +13,8 @@ struct mainModel: View {
     @State private var inputText = ""
     @State private var outputText = ""
     
-    
     let languages = ["English", "Spanish", "Hindi", "Vietnamese", "Greek", "Turkish", "German", "Italian", "Russian", "Arabic"]
     let language = ["English":"en", "Spanish":"es", "Hindi":"hi", "Vietnamese":"vi", "Greek":"el","Turkish":"tr", "German":"de", "Italian":"it", "Russian":"ru", "Arabic":"ar"]
-    
-    
-    //@State private var languageDirection = true // true means left language -> right language
-    
-//    var sourceLanguageCode: String { languageDirection ? language[selectedSourceLanguage]! : language[selectedTargetLanguage]! }
-//    var targetLanguageCode: String { languageDirection ? language[selectedTargetLanguage]! : language[selectedSourceLanguage]! }
     
     var body: some View {
         NavigationView {
@@ -26,13 +22,7 @@ struct mainModel: View {
                 Color.background.ignoresSafeArea()
                 
                 VStack {
-                    HStack {
-//                        Text("Communicator")
-//                            .frame(width: 220, height: 50)
-//                            .font(.title.bold())
-//                            .foregroundColor(.txtColors)
-                    }
-  
+                    Text("Plan selected: \(selectedPlan)")
                     // First TextField (Language 1)
                     ZStack(alignment: .topLeading) {
                         RoundedRectangle(cornerRadius: 25.0)
@@ -109,7 +99,7 @@ struct mainModel: View {
                                         .opacity(viewModel.isListening ? 1 : 0)
                                 )
                             
-                            testAudioTranslationHandler(viewModel: viewModel)
+                            inputTranslationHandlers(newviewModel: premiumViewModel())
                                 .frame(maxWidth: .infinity, maxHeight: 50)
                                 .clipShape(RoundedRectangle(cornerRadius: 25.0))
                         }
@@ -133,7 +123,7 @@ struct mainModel: View {
                     ZStack(alignment: .topLeading) {
                         RoundedRectangle(cornerRadius: 25.0)
                             .fill(.textBoxColors)
-                            .frame(maxWidth: .infinity) // Set maxWidth to .infinity
+                            .frame(maxWidth: .infinity)
                             .overlay(
                                 RoundedRectangle(cornerRadius: 25.0)
                                     .stroke(Color.highlighting, lineWidth: 3)
@@ -182,7 +172,7 @@ struct mainModel: View {
     }
     
     func hideKeyboard() {
-        isFocused1 = false // Remove focus from the TextField
+        isFocused1 = false
         isFocused2 = false
     }
 }
