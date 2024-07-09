@@ -4,7 +4,7 @@ struct mainModel: View {
     @ObservedObject var viewModel = mainViewModel()
     @ObservedObject var newviewModel = premiumViewModel()
     
-    @AppStorage("selectedPlan") private var selectedPlan: String = ""
+    @AppStorage("selectedPlan") private var selectedPlan: String = "Free Plan"
     
     @State private var selectedSourceLanguage = "English"
     @State private var selectedTargetLanguage = "Spanish"
@@ -99,7 +99,7 @@ struct mainModel: View {
                                         .opacity(viewModel.isListening ? 1 : 0)
                                 )
                             
-                            inputTranslationHandlers(newviewModel: premiumViewModel())
+                            inputTranslationHandlers(viewModel: mainViewModel(), newviewModel: premiumViewModel())
                                 .frame(maxWidth: .infinity, maxHeight: 50)
                                 .clipShape(RoundedRectangle(cornerRadius: 25.0))
                         }
