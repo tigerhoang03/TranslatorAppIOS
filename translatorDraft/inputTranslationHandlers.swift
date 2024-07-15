@@ -10,6 +10,9 @@ import SwiftUI
 
 struct inputTranslationHandlers: View {
     @AppStorage("selectedPlan") private var selectedPlan: String = ""
+    @AppStorage("languageDirection") var languageDirection: Bool = true
+    
+    @AppStorage("continueConversation") var continueConversation: Bool = false
     
     @ObservedObject var viewModel: mainViewModel
     @ObservedObject var newviewModel: premiumViewModel
@@ -37,10 +40,10 @@ struct inputTranslationHandlers: View {
                 
                 Button {
                     withAnimation {
-                        viewModel.languageDirection.toggle()
+                        languageDirection.toggle()
                     }
                 } label: {
-                    Image(systemName: viewModel.languageDirection ? "arrow.down" : "arrow.up")
+                    Image(systemName: languageDirection ? "arrow.down" : "arrow.up")
                 }
                 .foregroundColor(.highlighting)
                 .font(.system(size: 20))
@@ -58,32 +61,38 @@ struct inputTranslationHandlers: View {
         else if selectedPlan == "Premium Plan" {
             HStack {
                 Button(action: {
-                    newviewModel.isRecording.toggle()
-                    if newviewModel.isRecording {
-                        newviewModel.startRecording()
-                    } else {
-                        newviewModel.stopRecording()
+                    continueConversation.toggle()
+                    if continueConversation {
+                        newviewModel.conversation()
                     }
+                    else {
+                        print("Variable is false")
+                    }
+                    print(continueConversation)
                 }) {
-                    Image(systemName: newviewModel.isRecording ? "mic.circle.fill" : "mic.circle")
+                    Image(systemName: continueConversation ? "mic.circle.fill" : "mic.circle")
                         .padding()
                         .font(.system(size: 40))
-                        .foregroundColor(newviewModel.isRecording ? .green : .txtColors)
+                        .foregroundColor(continueConversation ? .green : .txtColors)
                 }
                 
                 
                 Button {
                     withAnimation {
-                        viewModel.languageDirection.toggle()
+                        languageDirection.toggle()
                     }
                 } label: {
-                    Image(systemName: viewModel.languageDirection ? "arrow.down" : "arrow.up")
+                    Image(systemName: languageDirection ? "arrow.down" : "arrow.up")
                 }
                 .foregroundColor(.highlighting)
                 .font(.system(size: 20))
                 
-                Button(action: viewModel.clearText) {
-                    Image(systemName: "trash.circle")
+                Button(action: {
+                    continueConversation = false
+                    print(continueConversation)
+                    print(newviewModel.continueConversation)
+                }) {
+                    Image(systemName: continueConversation ? "stop.circle" : "stop.circle.fill")
                         .padding()
                         .font(.system(size: 40))
                         .foregroundColor(.txtColors)

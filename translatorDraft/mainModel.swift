@@ -2,9 +2,11 @@ import SwiftUI
 
 struct mainModel: View {
     @ObservedObject var viewModel = mainViewModel()
-    @ObservedObject var newviewModel = premiumViewModel()
+//    @ObservedObject var newviewModel = premiumViewModel()
     
     @AppStorage("selectedPlan") private var selectedPlan: String = "Free Plan"
+    @AppStorage("languageDirection") var languageDirection: Bool = true
+    
     
     @State private var selectedSourceLanguage = "English"
     @State private var selectedTargetLanguage = "Spanish"
@@ -31,9 +33,9 @@ struct mainModel: View {
                             .overlay(
                                 RoundedRectangle(cornerRadius: 25.0)
                                     .stroke(Color.highlighting, lineWidth: 3)
-                                    .opacity(viewModel.languageDirection ? 0 : 1)
+                                    .opacity(languageDirection ? 0 : 1)
                             )
-                            .animation(.easeInOut, value: viewModel.languageDirection)
+                            .animation(.easeInOut, value: languageDirection)
                         
                         VStack(alignment: .leading) {
                             Picker("FIRST LANGUAGE", selection: $viewModel.selectedSourceLanguage) {
@@ -127,9 +129,9 @@ struct mainModel: View {
                             .overlay(
                                 RoundedRectangle(cornerRadius: 25.0)
                                     .stroke(Color.highlighting, lineWidth: 3)
-                                    .opacity(viewModel.languageDirection ? 1 : 0)
+                                    .opacity(languageDirection ? 1 : 0)
                             )
-                            .animation(.easeInOut, value: viewModel.languageDirection)
+                            .animation(.easeInOut, value: languageDirection)
                         
                         VStack(alignment: .leading) {
                             Picker("SECOND LANGUAGE", selection: $viewModel.selectedTargetLanguage) {

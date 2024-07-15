@@ -9,12 +9,18 @@ import SwiftUI
 import AVFoundation
 
 class premiumViewModel: NSObject, ObservableObject {
+    
+    @AppStorage("languageDirection") var languageDirection: Bool = true
+    @AppStorage("continueConversation") var continueConversation: Bool = false
+    
     var audioRecorder: AVAudioRecorder?
-    @Published var isRecording = false
+    @State var isRecordingVoice = false
+    var timer: Timer?
+    var silenceTimer: Timer?
     
     let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
     
-    func startRecording() {
+    func startRecording(completion: @escaping () -> Void) {
         let audioSession = AVAudioSession.sharedInstance()
         do {
             try audioSession.setCategory(.playAndRecord, mode: .default)
@@ -32,8 +38,14 @@ class premiumViewModel: NSObject, ObservableObject {
             let url = paths[0].appendingPathComponent("recording.wav")
             audioRecorder = try AVAudioRecorder(url: url, settings: settings)
             audioRecorder?.delegate = self
+            audioRecorder?.isMeteringEnabled = true
             audioRecorder?.record()
-            isRecording = true
+            isRecordingVoice = true
+            
+            timer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { [weak self] _ in
+                self?.checkAudioLevel(completion: completion)
+            }
+            
         } catch {
             print("Failed to set up audio session: \(error)")
         }
@@ -41,10 +53,33 @@ class premiumViewModel: NSObject, ObservableObject {
     
     func stopRecording() {
         audioRecorder?.stop()
-        isRecording = false
+        isRecordingVoice = false
+        timer?.invalidate()
+        timer = nil
     }
     
-    func getAudioInfo() {
+    private func checkAudioLevel(completion: @escaping () -> Void) {
+        audioRecorder?.updateMeters()
+        
+        guard let level = audioRecorder?.averagePower(forChannel: 0) else { return }
+        
+        if level < -50 {
+            if silenceTimer == nil {
+                silenceTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false) { [weak self] _ in
+                    self?.stopRecording()
+                    self?.silenceTimer = nil
+                    completion()
+                }
+            }
+        } else {
+            silenceTimer?.invalidate()
+            silenceTimer = nil
+        }
+    }
+    
+    
+    
+    private func getAudioInfo() {
         let recordingPath = paths[0].appendingPathComponent("recording.wav")
         
         if !FileManager.default.fileExists(atPath: recordingPath.path) {
@@ -96,6 +131,31 @@ class premiumViewModel: NSObject, ObservableObject {
         } catch {
             print("Failed to read audio file: \(error.localizedDescription)")
             return nil
+        }
+    }
+    
+    func conversation() {
+        DispatchQueue.global(qos: .background).async {
+            while self.continueConversation {
+                DispatchQueue.main.async {
+                    next()
+                }
+                
+                if self.continueConversation == false {
+                    break
+                }
+                // sleep for a short duration to prevent tight looping
+                Thread.sleep(forTimeInterval: 0.5)
+            }
+        }
+        func next() {
+            startRecording{
+                print("started recording conversation")
+                self.getAudioInfo()
+                self.languageDirection.toggle()
+                print("Pipeline Completed")
+                print(self.continueConversation ? "Continuing" : "Exiting")
+            }
         }
     }
 }

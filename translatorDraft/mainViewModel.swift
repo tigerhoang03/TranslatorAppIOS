@@ -11,6 +11,9 @@ import Speech
 import AVFoundation
 
 class mainViewModel: ObservableObject {
+    
+    @AppStorage("languageDirection") var languageDirection: Bool = true
+    
     @Published var targetLanguageIndex = 1
     @Published var inputText = ""
     @Published var outputText = ""
@@ -23,7 +26,7 @@ class mainViewModel: ObservableObject {
     @Published var translatePressed = false
     @Published var clearPressed = false
     @Published var speechSynthesizer = AVSpeechSynthesizer()
-    @Published var languageDirection = true
+    
     @Published var sourceLanguageIndex = 0
 //    @Published var sourceLanguageCode = ""
 //    @Published var targetLanguageCode = ""
@@ -189,16 +192,16 @@ class mainViewModel: ObservableObject {
         
         if recognitionTask == nil {
             if languageDirection {
-                inputText = inputText
+                self.inputText = inputText
             } else {
-                outputText = outputText
+                self.outputText = outputText
             }
         }
     }
     
     func clearText() {
-        inputText = ""
-        outputText = ""
+        self.inputText = ""
+        self.outputText = ""
     }
     
     func speak(text: String, languageCode: String) {
