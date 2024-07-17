@@ -101,7 +101,7 @@ struct mainModel: View {
                                         .opacity(viewModel.isListening ? 1 : 0)
                                 )
                             
-                            inputTranslationHandlers(viewModel: mainViewModel(), newviewModel: premiumViewModel())
+                            inputTranslationHandlers(viewModel: mainViewModel())
                                 .frame(maxWidth: .infinity, maxHeight: 50)
                                 .clipShape(RoundedRectangle(cornerRadius: 25.0))
                         }

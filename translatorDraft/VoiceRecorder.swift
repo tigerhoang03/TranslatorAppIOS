@@ -1,5 +1,5 @@
 //
-//  premiumViewModel.swift
+//  VoiceRecorder.swift
 //  translatorDraft
 //
 //  Created by Aman Sahu on 7/9/24.
@@ -8,13 +8,9 @@
 import SwiftUI
 import AVFoundation
 
-class premiumViewModel: NSObject, ObservableObject {
-    
-    @AppStorage("languageDirection") var languageDirection: Bool = true
-    @AppStorage("continueConversation") var continueConversation: Bool = false
-    
+class VoiceRecording: NSObject, ObservableObject, AVAudioRecorderDelegate {
     var audioRecorder: AVAudioRecorder?
-    @State var isRecordingVoice = false
+    var isRecordingVoice = false
     var timer: Timer?
     var silenceTimer: Timer?
     
@@ -46,12 +42,15 @@ class premiumViewModel: NSObject, ObservableObject {
                 self?.checkAudioLevel(completion: completion)
             }
             
+            
         } catch {
             print("Failed to set up audio session: \(error)")
         }
     }
     
+    
     func stopRecording() {
+        print("Stopping Voice Recording")
         audioRecorder?.stop()
         isRecordingVoice = false
         timer?.invalidate()
@@ -63,7 +62,9 @@ class premiumViewModel: NSObject, ObservableObject {
         
         guard let level = audioRecorder?.averagePower(forChannel: 0) else { return }
         
-        if level < -50 {
+        print(level)
+        
+        if level < -40 {
             if silenceTimer == nil {
                 silenceTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false) { [weak self] _ in
                     self?.stopRecording()
@@ -77,9 +78,7 @@ class premiumViewModel: NSObject, ObservableObject {
         }
     }
     
-    
-    
-    private func getAudioInfo() {
+    func getAudioInfo() {
         let recordingPath = paths[0].appendingPathComponent("recording.wav")
         
         if !FileManager.default.fileExists(atPath: recordingPath.path) {
@@ -134,30 +133,4 @@ class premiumViewModel: NSObject, ObservableObject {
         }
     }
     
-    func conversation() {
-        DispatchQueue.global(qos: .background).async {
-            while self.continueConversation {
-                DispatchQueue.main.async {
-                    next()
-                }
-                
-                if self.continueConversation == false {
-                    break
-                }
-                // sleep for a short duration to prevent tight looping
-                Thread.sleep(forTimeInterval: 0.5)
-            }
-        }
-        func next() {
-            startRecording{
-                print("started recording conversation")
-                self.getAudioInfo()
-                self.languageDirection.toggle()
-                print("Pipeline Completed")
-                print(self.continueConversation ? "Continuing" : "Exiting")
-            }
-        }
-    }
 }
-
-extension premiumViewModel: AVAudioRecorderDelegate {}
