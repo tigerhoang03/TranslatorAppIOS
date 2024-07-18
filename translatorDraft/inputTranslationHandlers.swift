@@ -9,37 +9,37 @@ import Foundation
 import SwiftUI
 
 class Conversation: ObservableObject {
-    var voiceNote: VoiceRecording? = VoiceRecording()
+    private var voiceNote: VoiceRecording? = VoiceRecording()
     var timer: Timer?
     @AppStorage("languageDirection") var languageDirection: Bool = true
     @AppStorage("continueConversation") var continueConversation: Bool = false
         
-        func startConversation() {
-            print("Started recording Conversation")
-            DispatchQueue.global().async {
-                while self.continueConversation {
-                    DispatchQueue.main.async {
-                        self.voiceNote?.startRecording {
-                            print(self.continueConversation ? "Continuing" : "Exiting")
-                            self.voiceNote?.getAudioInfo()
-                            //implement grab languages
-                            //implement send audio array
-                            guard self.continueConversation else { return }
-                        }
-                        self.languageDirection.toggle()
-                        print(Thread.isMainThread)
+    func startConversation() {
+        print("Started recording Conversation")
+        DispatchQueue.global().async {
+            while self.continueConversation {
+                DispatchQueue.main.async {
+                    self.voiceNote?.startRecording {
+                        print(self.continueConversation ? "Continuing" : "Exiting")
+                        self.voiceNote?.getAudioInfo()
+                        //implement grab languages
+                        //implement send audio array
+                        guard self.continueConversation else { return }
                     }
-    
-    
-                    Thread.sleep(forTimeInterval: 1.0)
+                    self.languageDirection.toggle()
+                    print(Thread.isMainThread)
                 }
+
+
+                Thread.sleep(forTimeInterval: 1.0)
             }
         }
-    
-        func stopConversation() {
-            continueConversation = false
-            print("Conversation has been stopped")
-        }
+    }
+
+    func stopConversation() {
+        continueConversation = false
+        print("Conversation has been stopped")
+    }
         
         //    func startConversation() {
         //        DispatchQueue.global().async {
@@ -68,94 +68,96 @@ class Conversation: ObservableObject {
         //        // imcomplete
         //        print("ConversationHandler deinitialized")
         //    }
-    }
+}
+
     
     
-    struct inputTranslationHandlers: View {
-        @AppStorage("selectedPlan") private var selectedPlan: String = ""
-        @AppStorage("languageDirection") var languageDirection: Bool = true
-        @AppStorage("continueConversation") var continueConversation: Bool = false
-        
-        @ObservedObject var freemodel: freeModel
-        
-        var body: some View {
-            if selectedPlan == "Free Plan" {
-                HStack {
-                    Button(action: {
-                        freemodel.isListening.toggle()
-                        if freemodel.isListening {
-                            freemodel.clearText()
-                            freemodel.startListening()
-                        } else {
-                            freemodel.stopListening()
-                            freemodel.translationText()
-                            
-                        }
-                    }) {
-                        Image(systemName: freemodel.isListening ? "mic.circle.fill" : "mic.circle")
-                            .padding()
-                            .font(.system(size: 40))
-                            .foregroundColor(freemodel.isListening ? .green : .txtColors)
+struct inputTranslationHandlers: View {
+    @AppStorage("selectedPlan") private var selectedPlan: String = ""
+    @AppStorage("languageDirection") var languageDirection: Bool = true
+    @AppStorage("continueConversation") var continueConversation: Bool = false
+    
+    @ObservedObject var freemodel: freeModel
+    @ObservedObject var voiceNote: VoiceRecording
+    
+    var body: some View {
+        if selectedPlan == "Free Plan" {
+            HStack {
+                Button(action: {
+                    freemodel.isListening.toggle()
+                    if freemodel.isListening {
+                        freemodel.clearText()
+                        freemodel.startListening()
+                    } else {
+                        freemodel.stopListening()
+                        freemodel.translationText()
+                        
                     }
-                    
-                    
-                    Button {
-                        withAnimation {
-                            languageDirection.toggle()
-                        }
-                    } label: {
-                        Image(systemName: languageDirection ? "arrow.down" : "arrow.up")
+                }) {
+                    Image(systemName: freemodel.isListening ? "mic.circle.fill" : "mic.circle")
+                        .padding()
+                        .font(.system(size: 40))
+                        .foregroundColor(freemodel.isListening ? .green : .txtColors)
+                }
+                
+                
+                Button {
+                    withAnimation {
+                        languageDirection.toggle()
                     }
-                    .foregroundColor(.highlighting)
-                    .font(.system(size: 20))
-                    
-                    
-                    Button(action: freemodel.clearText) {
-                        Image(systemName: "trash.circle")
-                            .padding()
-                            .font(.system(size: 40))
-                            .foregroundColor(.txtColors)
-                    }
+                } label: {
+                    Image(systemName: languageDirection ? "arrow.down" : "arrow.up")
+                }
+                .foregroundColor(.highlighting)
+                .font(.system(size: 20))
+                
+                
+                Button(action: freemodel.clearText) {
+                    Image(systemName: "trash.circle")
+                        .padding()
+                        .font(.system(size: 40))
+                        .foregroundColor(.txtColors)
                 }
             }
-            
-            else if selectedPlan == "Premium Plan" {
-                HStack {
-//                    var conversation: Conversation? = Conversation()
-                    var voiceNote: VoiceRecording? = VoiceRecording()
-                    
-                    Button(action: {
-                        continueConversation.toggle()
-                        if continueConversation {
-                            voiceNote?.startRecording() {
-                                print("Stopping Recording...")
-                                voiceNote?.getAudioInfo()
-                                voiceNote?.audioFileToArray()
-                            }
-                        }
-                        else {
-                            voiceNote?.stopRecording()
-//                            conversation = nil
-                        }
-                        
-                    }) {
-                        Image(systemName: "mic.circle")
-                            .padding()
-                            .font(.system(size: 40))
-                            .foregroundColor(continueConversation ? .green : .txtColors)
-                            .opacity(continueConversation ? 0.0 : 1.0)
-                    }
-                    
-                    Button {
-                        withAnimation {
+        }
+        
+        else if selectedPlan == "Premium Plan" {
+            HStack {
+//                var conversation: Conversation? = Conversation()
+//                var voiceNote: VoiceRecording? = VoiceRecording()
+                
+                Button(action: {
+                    voiceNote.isRecordingVoice.toggle()
+                    if voiceNote.isRecordingVoice {
+                        voiceNote.startRecording() {
+                            print("Stopping Recording...")
+                            voiceNote.getAudioInfo()
+//                            voiceNote.audioFileToArray()
                             languageDirection.toggle()
                         }
-                    } label: {
-                        Image(systemName: languageDirection ? "arrow.down" : "arrow.up")
                     }
-                    .foregroundColor(.highlighting)
-                    .font(.system(size: 20))
+                    else {
+                        voiceNote.stopRecording()
+//                            conversation = nil
+                    }
                     
+                }) {
+                    Image(systemName: "mic.circle")
+                        .padding()
+                        .font(.system(size: 40))
+                        .foregroundColor(voiceNote.isRecordingVoice ? .green : .txtColors)
+                }
+                
+                Button {
+                    withAnimation {
+                        languageDirection.toggle()
+                    }
+                } label: {
+                    Image(systemName: languageDirection ? "arrow.down" : "arrow.up")
+                }
+                .foregroundColor(.highlighting)
+                .font(.system(size: 20))
+                
 //                    Button(action: {
 //                        conversation?.stopConversation()
 //                        conversation = nil
@@ -166,8 +168,8 @@ class Conversation: ObservableObject {
 //                            .foregroundColor(.txtColors)
 //                            .opacity(continueConversation ? 1.0 : 0)
 //                    }
-                    
-                }
+                
             }
         }
     }
+}

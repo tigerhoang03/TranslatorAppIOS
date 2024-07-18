@@ -2,7 +2,7 @@ import SwiftUI
 
 struct mainScreen: View {
     @ObservedObject var freemodel = freeModel()
-//    @ObservedObject var newviewModel = premiumViewModel()
+    @ObservedObject var voiceNote = VoiceRecording()
     
     @AppStorage("selectedPlan") private var selectedPlan: String = "Free Plan"
     @AppStorage("languageDirection") var languageDirection: Bool = true
@@ -24,7 +24,6 @@ struct mainScreen: View {
                 Color.background.ignoresSafeArea()
                 
                 VStack {
-                    Text("Plan selected: \(selectedPlan)")
                     // First TextField (Language 1)
                     ZStack(alignment: .topLeading) {
                         RoundedRectangle(cornerRadius: 25.0)
@@ -101,7 +100,7 @@ struct mainScreen: View {
                                         .opacity(freemodel.isListening ? 1 : 0)
                                 )
                             
-                            inputTranslationHandlers(viewModel: freemodel)
+                            inputTranslationHandlers(freemodel: freemodel, voiceNote: voiceNote)
                                 .frame(maxWidth: .infinity, maxHeight: 50)
                                 .clipShape(RoundedRectangle(cornerRadius: 25.0))
                         }
