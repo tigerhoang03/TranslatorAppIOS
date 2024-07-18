@@ -13,8 +13,8 @@
 		476CE78E2C0FD02100AB822B /* settingScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 476CE78D2C0FD02100AB822B /* settingScreen.swift */; };
 		476CE7902C0FD73100AB822B /* aboutScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 476CE78F2C0FD73100AB822B /* aboutScreen.swift */; };
 		476CE7922C0FD7AF00AB822B /* underConstructionScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 476CE7912C0FD7AF00AB822B /* underConstructionScreen.swift */; };
-		490458972C0CA89F0030696A /* mainModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 490458962C0CA89F0030696A /* mainModel.swift */; };
-		490458992C0D09850030696A /* mainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 490458982C0D09850030696A /* mainViewModel.swift */; };
+		490458972C0CA89F0030696A /* mainScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 490458962C0CA89F0030696A /* mainScreen.swift */; };
+		490458992C0D09850030696A /* freeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 490458982C0D09850030696A /* freeModel.swift */; };
 		4979F0932BF8D75400A62A2A /* communicatorApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4979F0922BF8D75400A62A2A /* communicatorApp.swift */; };
 		4979F0952BF8D75400A62A2A /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4979F0942BF8D75400A62A2A /* ContentView.swift */; };
 		4979F0972BF8D75500A62A2A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4979F0962BF8D75500A62A2A /* Assets.xcassets */; };
@@ -30,8 +30,8 @@
 		476CE78D2C0FD02100AB822B /* settingScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = settingScreen.swift; sourceTree = "<group>"; };
 		476CE78F2C0FD73100AB822B /* aboutScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = aboutScreen.swift; sourceTree = "<group>"; };
 		476CE7912C0FD7AF00AB822B /* underConstructionScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = underConstructionScreen.swift; sourceTree = "<group>"; };
-		490458962C0CA89F0030696A /* mainModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = mainModel.swift; sourceTree = "<group>"; };
-		490458982C0D09850030696A /* mainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = mainViewModel.swift; sourceTree = "<group>"; };
+		490458962C0CA89F0030696A /* mainScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = mainScreen.swift; sourceTree = "<group>"; };
+		490458982C0D09850030696A /* freeModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = freeModel.swift; sourceTree = "<group>"; };
 		4979F08F2BF8D75400A62A2A /* translatorDraft.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = translatorDraft.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4979F0922BF8D75400A62A2A /* communicatorApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = communicatorApp.swift; sourceTree = "<group>"; };
 		4979F0942BF8D75400A62A2A /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -83,11 +83,11 @@
 		4979F0912BF8D75400A62A2A /* translatorDraft */ = {
 			isa = PBXGroup;
 			children = (
-				490458982C0D09850030696A /* mainViewModel.swift */,
+				490458982C0D09850030696A /* freeModel.swift */,
 				4979F0922BF8D75400A62A2A /* communicatorApp.swift */,
 				499C3E3E2C0E33B30073DD4F /* splashScreen.swift */,
 				476CE78C2C0FC6E800AB822B /* Archive */,
-				490458962C0CA89F0030696A /* mainModel.swift */,
+				490458962C0CA89F0030696A /* mainScreen.swift */,
 				476CE78D2C0FD02100AB822B /* settingScreen.swift */,
 				476CE78F2C0FD73100AB822B /* aboutScreen.swift */,
 				476CE7912C0FD7AF00AB822B /* underConstructionScreen.swift */,
@@ -188,9 +188,9 @@
 				476CE7902C0FD73100AB822B /* aboutScreen.swift in Sources */,
 				4979F0952BF8D75400A62A2A /* ContentView.swift in Sources */,
 				476CE78E2C0FD02100AB822B /* settingScreen.swift in Sources */,
-				490458972C0CA89F0030696A /* mainModel.swift in Sources */,
+				490458972C0CA89F0030696A /* mainScreen.swift in Sources */,
 				476CE7922C0FD7AF00AB822B /* underConstructionScreen.swift in Sources */,
-				490458992C0D09850030696A /* mainViewModel.swift in Sources */,
+				490458992C0D09850030696A /* freeModel.swift in Sources */,
 				4979F0932BF8D75400A62A2A /* communicatorApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

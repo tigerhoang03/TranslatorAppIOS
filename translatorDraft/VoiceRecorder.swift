@@ -125,6 +125,7 @@ class VoiceRecording: NSObject, ObservableObject, AVAudioRecorderDelegate {
             let channelDataPointer = channelData.pointee
             let channelDataArray = Array(UnsafeBufferPointer(start: channelDataPointer, count: Int(buffer.frameLength)))
             
+            print(channelDataArray)
             return channelDataArray
             
         } catch {

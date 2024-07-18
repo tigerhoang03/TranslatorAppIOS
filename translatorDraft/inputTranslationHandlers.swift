@@ -76,26 +76,26 @@ class Conversation: ObservableObject {
         @AppStorage("languageDirection") var languageDirection: Bool = true
         @AppStorage("continueConversation") var continueConversation: Bool = false
         
-        @ObservedObject var viewModel: mainViewModel
+        @ObservedObject var freemodel: freeModel
         
         var body: some View {
             if selectedPlan == "Free Plan" {
                 HStack {
                     Button(action: {
-                        viewModel.isListening.toggle()
-                        if viewModel.isListening {
-                            viewModel.clearText()
-                            viewModel.startListening()
+                        freemodel.isListening.toggle()
+                        if freemodel.isListening {
+                            freemodel.clearText()
+                            freemodel.startListening()
                         } else {
-                            viewModel.stopListening()
-                            viewModel.translationText()
+                            freemodel.stopListening()
+                            freemodel.translationText()
                             
                         }
                     }) {
-                        Image(systemName: viewModel.isListening ? "mic.circle.fill" : "mic.circle")
+                        Image(systemName: freemodel.isListening ? "mic.circle.fill" : "mic.circle")
                             .padding()
                             .font(.system(size: 40))
-                            .foregroundColor(viewModel.isListening ? .green : .txtColors)
+                            .foregroundColor(freemodel.isListening ? .green : .txtColors)
                     }
                     
                     
@@ -110,7 +110,7 @@ class Conversation: ObservableObject {
                     .font(.system(size: 20))
                     
                     
-                    Button(action: viewModel.clearText) {
+                    Button(action: freemodel.clearText) {
                         Image(systemName: "trash.circle")
                             .padding()
                             .font(.system(size: 40))
@@ -121,16 +121,21 @@ class Conversation: ObservableObject {
             
             else if selectedPlan == "Premium Plan" {
                 HStack {
-                    var conversation: Conversation? = Conversation()
+//                    var conversation: Conversation? = Conversation()
+                    var voiceNote: VoiceRecording? = VoiceRecording()
                     
                     Button(action: {
                         continueConversation.toggle()
                         if continueConversation {
-                            conversation?.startConversation()
+                            voiceNote?.startRecording() {
+                                print("Stopping Recording...")
+                                voiceNote?.getAudioInfo()
+                                voiceNote?.audioFileToArray()
+                            }
                         }
                         else {
-                            conversation?.stopConversation()
-                            conversation = nil
+                            voiceNote?.stopRecording()
+//                            conversation = nil
                         }
                         
                     }) {
@@ -151,16 +156,16 @@ class Conversation: ObservableObject {
                     .foregroundColor(.highlighting)
                     .font(.system(size: 20))
                     
-                    Button(action: {
-                        conversation?.stopConversation()
-                        conversation = nil
-                    }) {
-                        Image(systemName: continueConversation ? "stop.circle" : "stop.circle.fill")
-                            .padding()
-                            .font(.system(size: 40))
-                            .foregroundColor(.txtColors)
-                            .opacity(continueConversation ? 1.0 : 0)
-                    }
+//                    Button(action: {
+//                        conversation?.stopConversation()
+//                        conversation = nil
+//                    }) {
+//                        Image(systemName: continueConversation ? "stop.circle" : "stop.circle.fill")
+//                            .padding()
+//                            .font(.system(size: 40))
+//                            .foregroundColor(.txtColors)
+//                            .opacity(continueConversation ? 1.0 : 0)
+//                    }
                     
                 }
             }

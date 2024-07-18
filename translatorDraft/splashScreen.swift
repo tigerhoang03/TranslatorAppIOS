@@ -14,7 +14,7 @@ struct splashScreen: View {
     
     var body: some View {
         if isActive{
-            mainModel()
+            mainScreen()
         }else{
             ZStack{
                 LinearGradient(gradient: Gradient(colors: [Color.background, Color.black]),

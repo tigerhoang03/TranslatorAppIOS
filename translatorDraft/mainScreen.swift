@@ -1,7 +1,7 @@
 import SwiftUI
 
-struct mainModel: View {
-    @ObservedObject var viewModel = mainViewModel()
+struct mainScreen: View {
+    @ObservedObject var freemodel = freeModel()
 //    @ObservedObject var newviewModel = premiumViewModel()
     
     @AppStorage("selectedPlan") private var selectedPlan: String = "Free Plan"
@@ -38,7 +38,7 @@ struct mainModel: View {
                             .animation(.easeInOut, value: languageDirection)
                         
                         VStack(alignment: .leading) {
-                            Picker("FIRST LANGUAGE", selection: $viewModel.selectedSourceLanguage) {
+                            Picker("FIRST LANGUAGE", selection: $freemodel.selectedSourceLanguage) {
                                 ForEach(languages, id: \.self) { language in
                                     Text(language)
                                         .foregroundColor(.highlighting)
@@ -50,7 +50,7 @@ struct mainModel: View {
                             )
                             .padding([.top, .leading], 10.0)
                             
-                            TextField("", text: $viewModel.inputText, axis: .vertical)
+                            TextField("", text: $freemodel.inputText, axis: .vertical)
                                 .lineLimit(7)
                                 .padding(.leading)
                                 .focused($isFocused1)
@@ -62,7 +62,7 @@ struct mainModel: View {
                             if isFocused1 {
                                 Button("Done") {
                                     hideKeyboard()
-                                    viewModel.translationText()
+                                    freemodel.translationText()
                                 }
                                 .padding(.trailing, 20)
                                 .padding(.bottom, 15)
@@ -98,10 +98,10 @@ struct mainModel: View {
                                 .overlay(
                                     RoundedRectangle(cornerRadius: 25.0)
                                         .stroke(Color.highlighting, lineWidth: 3)
-                                        .opacity(viewModel.isListening ? 1 : 0)
+                                        .opacity(freemodel.isListening ? 1 : 0)
                                 )
                             
-                            inputTranslationHandlers(viewModel: mainViewModel())
+                            inputTranslationHandlers(viewModel: freemodel)
                                 .frame(maxWidth: .infinity, maxHeight: 50)
                                 .clipShape(RoundedRectangle(cornerRadius: 25.0))
                         }
@@ -134,7 +134,7 @@ struct mainModel: View {
                             .animation(.easeInOut, value: languageDirection)
                         
                         VStack(alignment: .leading) {
-                            Picker("SECOND LANGUAGE", selection: $viewModel.selectedTargetLanguage) {
+                            Picker("SECOND LANGUAGE", selection: $freemodel.selectedTargetLanguage) {
                                 ForEach(languages, id: \.self) { language in
                                     Text(language)
                                 }
@@ -147,7 +147,7 @@ struct mainModel: View {
                             .padding([.top, .leading], 10.0)
                             
                             
-                            TextField("", text: $viewModel.outputText , axis: .vertical)
+                            TextField("", text: $freemodel.outputText , axis: .vertical)
                                 .lineLimit(7)
                                 .padding(.leading)
                                 .focused($isFocused2) // Bind the focus state
@@ -157,7 +157,7 @@ struct mainModel: View {
                             if isFocused2 {
                                 Button("Done") {
                                     hideKeyboard()
-                                    viewModel.translationText()
+                                    freemodel.translationText()
                                 }
                                 .padding(.trailing, 20)
                                 .padding(.top, 15)
@@ -188,5 +188,5 @@ extension View {
 #endif
 
 #Preview {
-    mainModel(viewModel: mainViewModel())
+    mainScreen(freemodel: freeModel())
 }

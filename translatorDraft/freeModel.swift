@@ -10,7 +10,7 @@ import SwiftUI
 import Speech
 import AVFoundation
 
-class mainViewModel: ObservableObject {
+class freeModel: ObservableObject {
     
     @AppStorage("languageDirection") var languageDirection: Bool = true
     
