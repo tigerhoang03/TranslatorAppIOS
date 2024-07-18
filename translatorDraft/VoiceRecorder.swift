@@ -10,7 +10,7 @@ import AVFoundation
 
 class VoiceRecording: NSObject, ObservableObject, AVAudioRecorderDelegate {
     var audioRecorder: AVAudioRecorder?
-    var isRecordingVoice = false
+    @Published var isRecordingVoice = false
     var timer: Timer?
     var silenceTimer: Timer?
     
@@ -64,7 +64,7 @@ class VoiceRecording: NSObject, ObservableObject, AVAudioRecorderDelegate {
         
         print(level)
         
-        if level < -40 {
+        if level < -35 {
             if silenceTimer == nil {
                 silenceTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false) { [weak self] _ in
                     self?.stopRecording()

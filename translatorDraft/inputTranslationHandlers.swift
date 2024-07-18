@@ -77,7 +77,9 @@ struct inputTranslationHandlers: View {
     @AppStorage("languageDirection") var languageDirection: Bool = true
     @AppStorage("continueConversation") var continueConversation: Bool = false
     
+    //do not change, required for text in main screen
     @ObservedObject var freemodel: freeModel
+    
     @ObservedObject var voiceNote: VoiceRecording
     
     var body: some View {
@@ -99,7 +101,6 @@ struct inputTranslationHandlers: View {
                         .font(.system(size: 40))
                         .foregroundColor(freemodel.isListening ? .green : .txtColors)
                 }
-                
                 
                 Button {
                     withAnimation {
@@ -138,11 +139,13 @@ struct inputTranslationHandlers: View {
                     }
                     else {
                         voiceNote.stopRecording()
+                        voiceNote.getAudioInfo()
+                        languageDirection.toggle()
 //                            conversation = nil
                     }
                     
                 }) {
-                    Image(systemName: "mic.circle")
+                    Image(systemName: voiceNote.isRecordingVoice ? "mic.circle.fill" : "mic.circle")
                         .padding()
                         .font(.system(size: 40))
                         .foregroundColor(voiceNote.isRecordingVoice ? .green : .txtColors)
