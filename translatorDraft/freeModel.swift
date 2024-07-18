@@ -10,7 +10,10 @@ import SwiftUI
 import Speech
 import AVFoundation
 
-class testViewModel: ObservableObject {
+class freeModel: ObservableObject {
+    
+    @AppStorage("languageDirection") var languageDirection: Bool = true
+    
     @Published var targetLanguageIndex = 1
     @Published var inputText = ""
     @Published var outputText = ""
@@ -23,7 +26,7 @@ class testViewModel: ObservableObject {
     @Published var translatePressed = false
     @Published var clearPressed = false
     @Published var speechSynthesizer = AVSpeechSynthesizer()
-    @Published var languageDirection = true
+    
     @Published var sourceLanguageIndex = 0
 //    @Published var sourceLanguageCode = ""
 //    @Published var targetLanguageCode = ""
@@ -189,16 +192,16 @@ class testViewModel: ObservableObject {
         
         if recognitionTask == nil {
             if languageDirection {
-                inputText = inputText
+                self.inputText = inputText
             } else {
-                outputText = outputText
+                self.outputText = outputText
             }
         }
     }
     
     func clearText() {
-        inputText = ""
-        outputText = ""
+        self.inputText = ""
+        self.outputText = ""
     }
     
     func speak(text: String, languageCode: String) {
@@ -215,49 +218,5 @@ class testViewModel: ObservableObject {
         utterance.rate = 0.39
         
         speechSynthesizer.speak(utterance)
-    }
-}
-
-struct testAudioTranslationHandler: View {
-    @ObservedObject var viewModel: testViewModel
-    
-    var body: some View {
-        HStack {
-            Button(action: {
-                viewModel.isListening.toggle()
-                if viewModel.isListening {
-                    viewModel.clearText()
-                    viewModel.startListening()
-                } else {
-                    viewModel.stopListening()
-                    viewModel.translationText()
-                    
-                }
-            }) {
-                Image(systemName: viewModel.isListening ? "mic.circle.fill" : "mic.circle")
-                    .padding()
-                    .font(.system(size: 40))
-                    .foregroundColor(viewModel.isListening ? .green : .txtColors)
-            }
-            
-            
-            Button {
-                withAnimation {
-                    viewModel.languageDirection.toggle()
-                }
-            } label: {
-                Image(systemName: viewModel.languageDirection ? "arrow.down" : "arrow.up")
-            }
-            .foregroundColor(.highlighting)
-            .font(.system(size: 20))
-            
-            
-            Button(action: viewModel.clearText) {
-                Image(systemName: "trash.circle")
-                    .padding()
-                    .font(.system(size: 40))
-                    .foregroundColor(.txtColors)
-            }
-        }
     }
 }
