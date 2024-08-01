@@ -8,15 +8,12 @@ struct mainScreen: View {
     @AppStorage("languageDirection") var languageDirection: Bool = true
     
     
-    @State private var selectedSourceLanguage = "English"
-    @State private var selectedTargetLanguage = "Spanish"
     @FocusState private var isFocused1: Bool
     @FocusState private var isFocused2: Bool
     @State private var inputText = ""
     @State private var outputText = ""
     
     let languages = ["English", "Spanish", "Hindi", "Vietnamese", "Greek", "Turkish", "German", "Italian", "Russian", "Arabic"]
-    let language = ["English":"en", "Spanish":"es", "Hindi":"hi", "Vietnamese":"vi", "Greek":"el","Turkish":"tr", "German":"de", "Italian":"it", "Russian":"ru", "Arabic":"ar"]
     
     var body: some View {
         NavigationView {
@@ -37,7 +34,7 @@ struct mainScreen: View {
                             .animation(.easeInOut, value: languageDirection)
                         
                         VStack(alignment: .leading) {
-                            Picker("FIRST LANGUAGE", selection: $freemodel.selectedSourceLanguage) {
+                            Picker("FIRST LANGUAGE", selection: selectedPlan == "Free Plan" ? $freemodel.selectedSourceLanguage : $voiceNote.selectedSourceLanguage) {
                                 ForEach(languages, id: \.self) { language in
                                     Text(language)
                                         .foregroundColor(.highlighting)
@@ -133,7 +130,7 @@ struct mainScreen: View {
                             .animation(.easeInOut, value: languageDirection)
                         
                         VStack(alignment: .leading) {
-                            Picker("SECOND LANGUAGE", selection: $freemodel.selectedTargetLanguage) {
+                            Picker("SECOND LANGUAGE", selection: selectedPlan == "Free Plan" ? $freemodel.selectedTargetLanguage : $voiceNote.selectedTargetLanguage) {
                                 ForEach(languages, id: \.self) { language in
                                     Text(language)
                                 }

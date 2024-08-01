@@ -84,15 +84,18 @@ class freeModel: ObservableObject {
                     DispatchQueue.main.async {
                         if translatedText == self.emptyTranslation && self.languageDirection == false {
                             self.inputText = "Empty Input. Please Translate Again"
+                            self.speak(text: "Empty Input. Please Translate Again", languageCode: self.targetLanguageCode)
                         } else if translatedText == self.emptyTranslation && self.languageDirection {
                             self.outputText = "Empty Input. Please Translate Again"
+                            self.speak(text: "Empty Input. Please Translate Again", languageCode: self.targetLanguageCode)
                         } else if self.languageDirection == false {
                             self.inputText = translatedText
+                            self.speak(text: translatedText, languageCode: self.targetLanguageCode)
                         } else {
                             self.outputText = translatedText
+                            self.speak(text: translatedText, languageCode: self.targetLanguageCode)
                         }
-                        //added for speaking translated text
-                        self.speak(text: translatedText, languageCode: self.targetLanguageCode)
+                        
                         self.languageDirection.toggle()
                     }
                 } else {
