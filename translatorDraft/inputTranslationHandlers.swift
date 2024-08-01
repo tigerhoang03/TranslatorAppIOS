@@ -26,7 +26,7 @@ class Conversation: ObservableObject {
                         //implement send audio array
                         guard self.continueConversation else { return }
                     }
-                    self.languageDirection.toggle()
+//                    self.languageDirection.toggle()
                     print(Thread.isMainThread)
                 }
 
@@ -124,23 +124,19 @@ struct inputTranslationHandlers: View {
         
         else if selectedPlan == "Premium Plan" {
             HStack {
-//                var conversation: Conversation? = Conversation()
-//                var voiceNote: VoiceRecording? = VoiceRecording()
-                
                 Button(action: {
                     voiceNote.isRecordingVoice.toggle()
                     if voiceNote.isRecordingVoice {
                         voiceNote.startRecording() {
                             print("Stopping Recording...")
                             voiceNote.getAudioInfo()
-//                            voiceNote.audioFileToArray()
+                            voiceNote.translationAudioFile()
                             languageDirection.toggle()
                         }
                     }
                     else {
                         voiceNote.stopRecording()
                         voiceNote.getAudioInfo()
-                        languageDirection.toggle()
 //                            conversation = nil
                     }
                     
@@ -160,17 +156,6 @@ struct inputTranslationHandlers: View {
                 }
                 .foregroundColor(.highlighting)
                 .font(.system(size: 20))
-                
-//                    Button(action: {
-//                        conversation?.stopConversation()
-//                        conversation = nil
-//                    }) {
-//                        Image(systemName: continueConversation ? "stop.circle" : "stop.circle.fill")
-//                            .padding()
-//                            .font(.system(size: 40))
-//                            .foregroundColor(.txtColors)
-//                            .opacity(continueConversation ? 1.0 : 0)
-//                    }
                 
             }
         }
