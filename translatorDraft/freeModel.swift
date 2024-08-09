@@ -15,6 +15,7 @@ class freeModel: ObservableObject {
     let fileHandler = TextFileHandler()
     
     @AppStorage("languageDirection") var languageDirection: Bool = true
+    @AppStorage("conversationNumber") private var conversationNumber: Int = 0
     
     @Published var targetLanguageIndex = 1
     @Published var inputText = ""
@@ -210,6 +211,22 @@ class freeModel: ObservableObject {
           print("Text appended successfully!")
         } else {
           print("Error appending text to file.")
+        }
+    }
+    
+    func sendPatientTranslation() {
+        let patientFileURL = fileHandler.createFileURL(fileName: "patient.txt")
+
+        do {
+            let data = try String(contentsOf: patientFileURL, encoding: .utf8)
+
+            let fileTranslationData: [String: Any] = [
+                "value": data
+            ]
+            firestoreManager.addDataToConversation(data: fileTranslationData, conversationNumber: conversationNumber)
+            
+        } catch {
+            print("Error reading file: \(error)")
         }
     }
     

@@ -11,15 +11,19 @@ import Combine
 class FirestoreManager: ObservableObject {
     private var db = Firestore.firestore()
     
-    func addData(collection: String, data: [String: Any]) {
-        db.collection(collection).addDocument(data: data) { err in
+    func addDataToConversation(data: [String: Any], conversationNumber: Int) {
+        let db = Firestore.firestore()
+        let docRef = db.collection("conversations").document("\(conversationNumber)").collection("data").document("patient")
+
+        docRef.setData(data) { err in
             if let err = err {
-                print("Error adding document: \(err)")
+                print("Error writing document: \(err)")
             } else {
-                print("Document added successfully")
+                print("Document written successfully")
             }
         }
     }
+
     
     func getData(collection: String, document: String, completion: @escaping ([String: Any]?) -> Void) {
         let docRef = db.collection(collection).document(document)

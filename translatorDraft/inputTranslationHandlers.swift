@@ -94,7 +94,6 @@ struct inputTranslationHandlers: View {
                     } else {
                         freemodel.stopListening()
                         freemodel.translationText()
-                        
                     }
                 }) {
                     Image(systemName: freemodel.isListening ? "mic.circle.fill" : "mic.circle")
@@ -115,7 +114,8 @@ struct inputTranslationHandlers: View {
                 
                 
                 Button(action: {
-                    freemodel.clearText()
+//                    freemodel.clearText()
+                    freemodel.sendPatientTranslation()
                     
                 }) {
                     Image(systemName: "trash.circle")
