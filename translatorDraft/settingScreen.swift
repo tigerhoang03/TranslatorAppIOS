@@ -33,6 +33,9 @@ struct SettingScreen: View {
                     NavigationLink(destination: underConstructionScreen()) {
                         Text("Themes")
                     }
+                    NavigationLink(destination: mainScreenForm()){
+                        Text("Form Demo")
+                    }
                 }
                 
                 // Legal Section
