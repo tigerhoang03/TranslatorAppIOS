@@ -11,6 +11,8 @@ import Speech
 import AVFoundation
 
 class freeModel: ObservableObject {
+    @ObservedObject var firestoreManager = FirestoreManager()
+    let fileHandler = TextFileHandler()
     
     @AppStorage("languageDirection") var languageDirection: Bool = true
     
@@ -28,15 +30,12 @@ class freeModel: ObservableObject {
     @Published var speechSynthesizer = AVSpeechSynthesizer()
     
     @Published var sourceLanguageIndex = 0
-//    @Published var sourceLanguageCode = ""
-//    @Published var targetLanguageCode = ""
 
     @Published var selectedSourceLanguage = "English"
     @Published var selectedTargetLanguage = "Spanish"
     
     let emptyTranslation = "NO QUERY SPECIFIED. EXAMPLE REQUEST: GET?Q=HELLO&LANGPAIR=EN|IT"
     
-    //let languages = ["English", "Spanish", "Hindi", "Vietnamese", "Turkish", "German", "Italian", "Russian", "Arabic"]
     let language = ["English":"en", "Spanish":"es", "Hindi":"hi", "Vietnamese":"vi", "Greek":"el","Turkish":"tr", "German":"de", "Italian":"it", "Russian":"ru", "Arabic":"ar"]
     
     //the correct source and target language will always be selected 
@@ -48,8 +47,6 @@ class freeModel: ObservableObject {
     }
     
     func translationWithAPI(inputText: String, sourceLanguage: String, targetLanguage: String) {
-//        let sourceLang1 = languageDirection ? sourceLanguage : targetLanguage
-//        let targetLang1 = languageDirection ? targetLanguage : sourceLanguage
         let urlStr = "https://api.mymemory.translated.net/get?q=\(inputText)&langpair=\(sourceLanguage)|\(targetLanguage)"
         
         print(urlStr)
@@ -207,6 +204,15 @@ class freeModel: ObservableObject {
         self.outputText = ""
     }
     
+    func writePatientTranslation(data: String) {
+        let patientFileURL = fileHandler.createFileURL(fileName: "patient.txt")
+        if fileHandler.appendTextToFile(text: data, fileURL: patientFileURL) {
+          print("Text appended successfully!")
+        } else {
+          print("Error appending text to file.")
+        }
+    }
+    
     func speak(text: String, languageCode: String) {
         let audioSession = AVAudioSession.sharedInstance()
         do {
@@ -222,4 +228,5 @@ class freeModel: ObservableObject {
         
         speechSynthesizer.speak(utterance)
     }
+    
 }

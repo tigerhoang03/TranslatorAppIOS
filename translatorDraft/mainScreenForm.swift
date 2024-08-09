@@ -14,6 +14,7 @@ struct mainScreenForm: View {
     
     @AppStorage("selectedPlan") private var selectedPlan: String = "Free Plan"
     @AppStorage("languageDirection") var languageDirection: Bool = true
+    @AppStorage("conversationNumber") private var conversationNumber: Int = 0
     
     @FocusState private var isFocused1: Bool
     @FocusState private var isFocused2: Bool
@@ -31,19 +32,26 @@ struct mainScreenForm: View {
                     ZStack{
                         RoundedRectangle(cornerRadius: 50.0)
                             .fill(Color.btnColors)
-                            .frame(maxWidth: 160, maxHeight: 60)
+                            .frame(maxWidth: 230, maxHeight: 60)
                         HStack {
                             Button(action: {
-                                //implement adding incrementing numbers and pushing to firestore
-                                firestoreManager.getData(collection: "conversations", document: "1") {
-                                    data in if let data = data {
-                                        print(data)
+                                firestoreManager.createNewConversation { newNumber in
+                                    if let newNumber = newNumber {
+                                        self.conversationNumber = newNumber
                                     }
+                                    print(self.conversationNumber)
                                 }
                             }) {
-                                Image(systemName: "plus.square.on.square")
-                                    .padding()
-                                    .font(.system(size: 30))
+                                HStack {
+                                    Image(systemName: "plus.square.on.square")
+                                        .padding()
+                                        .font(.system(size: 30))
+
+
+                                }
+                                Text("Conversation: \(conversationNumber)")
+                                    .foregroundColor(.white)
+                                    .fontWeight(.bold)
                             }
                         }
                     }
@@ -193,6 +201,13 @@ struct mainScreenForm: View {
             }
         }.tint(.highlighting) // for back buttons
         .navigationTitle("Home")
+        .onAppear {
+            firestoreManager.getCurrentConversation { number in
+                if let number = number {
+                    self.conversationNumber = number
+                }
+            }
+        }
         
     }
     

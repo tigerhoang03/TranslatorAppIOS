@@ -17,6 +17,7 @@
 		476CE7922C0FD7AF00AB822B /* underConstructionScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 476CE7912C0FD7AF00AB822B /* underConstructionScreen.swift */; };
 		47DD21CB2C66099500091AE7 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 47DD21CA2C66099500091AE7 /* FirebaseFirestore */; };
 		47DD21CF2C660A2900091AE7 /* FirestoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47DD21CE2C660A2900091AE7 /* FirestoreManager.swift */; };
+		47DD21D12C663C7D00091AE7 /* textFileHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47DD21D02C663C7D00091AE7 /* textFileHandler.swift */; };
 		490458972C0CA89F0030696A /* mainScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 490458962C0CA89F0030696A /* mainScreen.swift */; };
 		490458992C0D09850030696A /* freeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 490458982C0D09850030696A /* freeModel.swift */; };
 		4979F0932BF8D75400A62A2A /* communicatorApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4979F0922BF8D75400A62A2A /* communicatorApp.swift */; };
@@ -37,6 +38,7 @@
 		476CE78F2C0FD73100AB822B /* aboutScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = aboutScreen.swift; sourceTree = "<group>"; };
 		476CE7912C0FD7AF00AB822B /* underConstructionScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = underConstructionScreen.swift; sourceTree = "<group>"; };
 		47DD21CE2C660A2900091AE7 /* FirestoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreManager.swift; sourceTree = "<group>"; };
+		47DD21D02C663C7D00091AE7 /* textFileHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = textFileHandler.swift; sourceTree = "<group>"; };
 		490458962C0CA89F0030696A /* mainScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = mainScreen.swift; sourceTree = "<group>"; };
 		490458982C0D09850030696A /* freeModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = freeModel.swift; sourceTree = "<group>"; };
 		4979F08F2BF8D75400A62A2A /* translatorDraft.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = translatorDraft.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -108,6 +110,7 @@
 				474150842C3D4B9300678A0E /* inputTranslationHandlers.swift */,
 				4759FD652C636C3000854EA5 /* mainScreenForm.swift */,
 				47DD21CE2C660A2900091AE7 /* FirestoreManager.swift */,
+				47DD21D02C663C7D00091AE7 /* textFileHandler.swift */,
 			);
 			path = translatorDraft;
 			sourceTree = "<group>";
@@ -209,6 +212,7 @@
 				4979F0952BF8D75400A62A2A /* ContentView.swift in Sources */,
 				476CE78E2C0FD02100AB822B /* settingScreen.swift in Sources */,
 				490458972C0CA89F0030696A /* mainScreen.swift in Sources */,
+				47DD21D12C663C7D00091AE7 /* textFileHandler.swift in Sources */,
 				476CE7922C0FD7AF00AB822B /* underConstructionScreen.swift in Sources */,
 				490458992C0D09850030696A /* freeModel.swift in Sources */,
 				4979F0932BF8D75400A62A2A /* communicatorApp.swift in Sources */,

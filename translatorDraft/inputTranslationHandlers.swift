@@ -76,6 +76,7 @@ struct inputTranslationHandlers: View {
     @AppStorage("selectedPlan") private var selectedPlan: String = ""
     @AppStorage("languageDirection") var languageDirection: Bool = true
     @AppStorage("continueConversation") var continueConversation: Bool = false
+    @AppStorage("conversationNumber") private var conversationNumber: Int = 0
     
     //do not change, required for text in main screen
     @ObservedObject var freemodel: freeModel
@@ -113,7 +114,10 @@ struct inputTranslationHandlers: View {
                 .font(.system(size: 20))
                 
                 
-                Button(action: freemodel.clearText) {
+                Button(action: {
+                    freemodel.clearText()
+                    
+                }) {
                     Image(systemName: "trash.circle")
                         .padding()
                         .font(.system(size: 40))
