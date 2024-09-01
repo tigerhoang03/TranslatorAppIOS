@@ -146,7 +146,7 @@ struct mainScreen: View {
                             TextField("", text: $freemodel.outputText , axis: .vertical)
                                 .lineLimit(7)
                                 .padding(.leading)
-                                .focused($isFocused2) // Bind the focus state
+                                .focused($isFocused2)
                         }
                     }.overlay(
                         VStack() {
@@ -157,7 +157,7 @@ struct mainScreen: View {
                                 }
                                 .padding(.trailing, 20)
                                 .padding(.top, 15)
-                                .transition(.opacity) // Optional: Add a fade transition
+                                .transition(.opacity)
                             }
                         }, alignment: .topTrailing
                     )

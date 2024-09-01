@@ -70,8 +70,7 @@ class Conversation: ObservableObject {
         //    }
 }
 
-    
-    
+
 struct inputTranslationHandlers: View {
     @AppStorage("selectedPlan") private var selectedPlan: String = ""
     @AppStorage("languageDirection") var languageDirection: Bool = true
@@ -107,15 +106,13 @@ struct inputTranslationHandlers: View {
                         languageDirection.toggle()
                     }
                 } label: {
-                    Image(systemName: languageDirection ? "arrow.down" : "arrow.up")
+                    Image(systemName: languageDirection ? "arrow.down" : "arrow.up") //true means down, false is up
                 }
                 .foregroundColor(.highlighting)
                 .font(.system(size: 20))
                 
-                
                 Button(action: {
-//                    freemodel.clearText()
-                    freemodel.sendPatientTranslation()
+                    freemodel.clearText()
                     
                 }) {
                     Image(systemName: "trash.circle")

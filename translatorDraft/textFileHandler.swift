@@ -10,7 +10,7 @@ import Foundation
 class TextFileHandler: ObservableObject {
     let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
 
-    //create a file and its URL
+    // create a file and its URL
     func createFileURL(fileName: String) -> URL {
         let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
         let fileURL = documentsDirectory.appendingPathComponent(fileName)
@@ -32,23 +32,23 @@ class TextFileHandler: ObservableObject {
     }
 
 
-    //write text to file
+    // write text to file
     func appendTextToFile(text: String, fileURL: URL) -> Bool {
       guard let data = text.data(using: .utf8) else {
         print("Failed to convert text to data.")
         return false
       }
 
-      // Open the file for appending (if it exists) or creating (if it doesn't)
+      // if file exists, open for appending, otherwise create file to append
       if let fileHandle = try? FileHandle(forUpdating: fileURL) {
-        // Seek to the end of the file before writing
+        // seek to end of the file before writing
         fileHandle.seekToEndOfFile()
         fileHandle.write(data)
         fileHandle.closeFile()
         print("Text appended to: \(fileURL)")
         return true
       } else {
-        // Create the file if it doesn't exist
+        // create file if it doesn't exist
         do {
           try data.write(to: fileURL)
           print("File created and data written: \(fileURL)")
@@ -59,5 +59,4 @@ class TextFileHandler: ObservableObject {
         }
       }
     }
-
 }

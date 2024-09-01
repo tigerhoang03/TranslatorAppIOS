@@ -39,7 +39,7 @@ class freeModel: ObservableObject {
     
     let language = ["English":"en", "Spanish":"es", "Hindi":"hi", "Vietnamese":"vi", "Greek":"el","Turkish":"tr", "German":"de", "Italian":"it", "Russian":"ru", "Arabic":"ar"]
     
-    //the correct source and target language will always be selected 
+    // ensures the correct source and target language will always be selected
    public var sourceLanguageCode: String { languageDirection ? language[selectedSourceLanguage]! : language[selectedTargetLanguage]! }
    public var targetLanguageCode: String { languageDirection ? language[selectedTargetLanguage]! : language[selectedSourceLanguage]! }
     
@@ -88,13 +88,13 @@ class freeModel: ObservableObject {
                             self.speak(text: "Empty Input. Please Translate Again", languageCode: self.targetLanguageCode)
                         } else if self.languageDirection == false {
                             self.inputText = translatedText
+                            self.writePatientTranslation(data: translatedText)
                             self.speak(text: translatedText, languageCode: self.targetLanguageCode)
                         } else {
                             self.outputText = translatedText
+                            self.writeDoctorTranslation(data: translatedText)
                             self.speak(text: translatedText, languageCode: self.targetLanguageCode)
                         }
-                        
-                        self.languageDirection.toggle()
                     }
                 } else {
                     DispatchQueue.main.async {
@@ -141,7 +141,7 @@ class freeModel: ObservableObject {
 
         recognitionRequest = SFSpeechAudioBufferRecognitionRequest()
 
-        let inputNode = audioEngine.inputNode // Directly using the inputNode as it's no longer optional
+        let inputNode = audioEngine.inputNode
         
         recognitionRequest?.shouldReportPartialResults = true
 
@@ -203,27 +203,37 @@ class freeModel: ObservableObject {
     func clearText() {
         self.inputText = ""
         self.outputText = ""
+        print(languageDirection)
+    }
+    
+    func writeDoctorTranslation(data: String) {
+        let patientFileURL = fileHandler.createFileURL(fileName: "doctor.txt")
+        if fileHandler.appendTextToFile(text: data, fileURL: patientFileURL) {
+          print("Text appended to doctor.txt successfully!")
+        } else {
+          print("Error appending text to doctor.txt.")
+        }
     }
     
     func writePatientTranslation(data: String) {
         let patientFileURL = fileHandler.createFileURL(fileName: "patient.txt")
         if fileHandler.appendTextToFile(text: data, fileURL: patientFileURL) {
-          print("Text appended successfully!")
+          print("Text appended to patient.txt successfully!")
         } else {
-          print("Error appending text to file.")
+          print("Error appending text to patient.txt.")
         }
     }
     
-    func sendPatientTranslation() {
-        let patientFileURL = fileHandler.createFileURL(fileName: "patient.txt")
+    func sendTranslationToFirestore(user: String) {
+        let fileURL = fileHandler.createFileURL(fileName: "\(user).txt")
 
         do {
-            let data = try String(contentsOf: patientFileURL, encoding: .utf8)
+            let data = try String(contentsOf: fileURL, encoding: .utf8)
 
             let fileTranslationData: [String: Any] = [
                 "value": data
             ]
-            firestoreManager.addDataToConversation(data: fileTranslationData, conversationNumber: conversationNumber)
+            firestoreManager.addDataToConversation(data: fileTranslationData, conversationNumber: conversationNumber, user: user)
             
         } catch {
             print("Error reading file: \(error)")
@@ -244,6 +254,7 @@ class freeModel: ObservableObject {
         utterance.rate = 0.39
         
         speechSynthesizer.speak(utterance)
+        self.languageDirection.toggle()
+        
     }
-    
 }

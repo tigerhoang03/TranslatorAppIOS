@@ -41,6 +41,13 @@ struct mainScreenForm: View {
                                     }
                                     print(self.conversationNumber)
                                 }
+                                if languageDirection == false {
+                                    freemodel.sendTranslationToFirestore(user: "doctor")
+                                }
+                                else {
+                                    freemodel.sendTranslationToFirestore(user: "patient")
+                                }
+                                
                             }) {
                                 HStack {
                                     Image(systemName: "plus.square.on.square")
@@ -142,7 +149,6 @@ struct mainScreenForm: View {
                                 .frame(maxWidth: .infinity, maxHeight: 50)
                                 .clipShape(RoundedRectangle(cornerRadius: 25.0))
                         }
-                        
                         Spacer()
                         Spacer()
                     }

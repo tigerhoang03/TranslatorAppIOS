@@ -11,9 +11,9 @@ import Combine
 class FirestoreManager: ObservableObject {
     private var db = Firestore.firestore()
     
-    func addDataToConversation(data: [String: Any], conversationNumber: Int) {
+    func addDataToConversation(data: [String: Any], conversationNumber: Int, user: String) {
         let db = Firestore.firestore()
-        let docRef = db.collection("conversations").document("\(conversationNumber)").collection("data").document("patient")
+        let docRef = db.collection("conversations").document("\(conversationNumber)").collection("data").document("\(user)")
 
         docRef.setData(data) { err in
             if let err = err {
@@ -107,7 +107,5 @@ class FirestoreManager: ObservableObject {
             }
         }
     }
-
-
 }
 
