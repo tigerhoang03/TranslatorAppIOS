@@ -7,10 +7,20 @@
 
 import Foundation
 
+
+/**
+ The `TextFileHandler` class provides methods for creating and managing text files in the documents directory.
+ It allows you to create a file and append text to it.
+ */
 class TextFileHandler: ObservableObject {
     let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
 
-    // create a file and its URL
+    /**
+     Creates a file with the specified name in the documents directory.
+     
+     - Parameter fileName: The name of the file to be created.
+     - Returns: The URL of the created file.
+     */
     func createFileURL(fileName: String) -> URL {
         let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
         let fileURL = documentsDirectory.appendingPathComponent(fileName)
@@ -32,7 +42,15 @@ class TextFileHandler: ObservableObject {
     }
 
 
-    // write text to file
+    /**
+     Appends the specified text to the file at the given URL.
+     If the file does not exist, it creates the file and writes the text.
+     
+     - Parameters:
+        - text: The text to append to the file.
+        - fileURL: The URL of the file to which the text will be appended.
+     - Returns: `true` if the text was successfully appended or the file was created and written to; otherwise, `false`.
+     */
     func appendTextToFile(text: String, fileURL: URL) -> Bool {
       guard let data = text.data(using: .utf8) else {
         print("Failed to convert text to data.")

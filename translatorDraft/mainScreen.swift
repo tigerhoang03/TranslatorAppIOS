@@ -1,5 +1,13 @@
 import SwiftUI
 
+
+
+/**
+ The `mainScreen` struct represents the main user interface of the translation app.
+ It provides fields for input and output text, language selection, and controls for translation and settings navigation.
+
+ This view is designed to work with two `ObservableObject`s: `freeModel` and `VoiceRecording`.
+ */
 struct mainScreen: View {
     @ObservedObject var freemodel = freeModel()
     @ObservedObject var voiceNote = VoiceRecording()
@@ -13,6 +21,7 @@ struct mainScreen: View {
     @State private var inputText = ""
     @State private var outputText = ""
     
+    // Supported Langauges
     let languages = ["English", "Spanish", "Hindi", "Vietnamese", "Greek", "Turkish", "German", "Italian", "Russian", "Arabic"]
     
     var body: some View {
@@ -177,6 +186,9 @@ struct mainScreen: View {
 
 #if canImport(UIKit)
 extension View {
+    /**
+     An extension to hide the keyboard in iOS applications.
+     */
     func hideKeyboard() {
         UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
     }

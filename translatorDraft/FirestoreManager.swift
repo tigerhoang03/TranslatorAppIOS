@@ -8,9 +8,23 @@
 import FirebaseFirestore
 import Combine
 
+
+/**
+ The `FirestoreManager` class provides an interface for interacting with Firestore.
+ It includes methods to add, retrieve, and manage conversation data in a Firestore database.
+ */
 class FirestoreManager: ObservableObject {
     private var db = Firestore.firestore()
     
+    
+    /**
+     Adds data to a specific conversation in Firestore.
+     
+     - Parameters:
+        - data: A dictionary containing the data to be added.
+        - conversationNumber: The number of the conversation to which the data will be added.
+        - user: The user identifier for the document.
+     */
     func addDataToConversation(data: [String: Any], conversationNumber: Int, user: String) {
         let db = Firestore.firestore()
         let docRef = db.collection("conversations").document("\(conversationNumber)").collection("data").document("\(user)")
@@ -25,6 +39,14 @@ class FirestoreManager: ObservableObject {
     }
 
     
+    /**
+     Retrieves data from a specific document in Firestore.
+     
+     - Parameters:
+        - collection: The name of the collection.
+        - document: The name of the document.
+        - completion: Closure called with the document data or `nil` if the document does not exist.
+     */
     func getData(collection: String, document: String, completion: @escaping ([String: Any]?) -> Void) {
         let docRef = db.collection(collection).document(document)
         docRef.getDocument { (document, error) in
@@ -37,6 +59,12 @@ class FirestoreManager: ObservableObject {
         }
     }
     
+    
+    /**
+     Retrieves the current conversation number from Firestore.
+     
+     - Parameter completion: Closure called with the current conversation number or `nil` if it cannot be retrieved.
+     */
     func getCurrentConversation(completion: @escaping (Int?) -> Void) {
         let docRef = db.collection("conversations").document("current")
         docRef.getDocument { (document, error) in
@@ -49,7 +77,13 @@ class FirestoreManager: ObservableObject {
             }
         }
     }
-
+    
+    
+    /**
+     Creates a new conversation in Firestore, including initializing conversation metadata and adding sample data.
+     
+     - Parameter completion: Closure called with the new conversation number or `nil` if creation fails.
+     */
     func createNewConversation(completion: @escaping (Int?) -> Void) {
         getCurrentConversation { currentConversation in
             guard let current = currentConversation else {

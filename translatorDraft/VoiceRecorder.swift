@@ -9,6 +9,12 @@ import SwiftUI
 import AVFoundation
 import Combine
 
+
+
+/**
+ The `VoiceRecording` class handles audio recording, playback, and translation functionalities.
+ It uses `AVAudioRecorder` for recording and `AVAudioPlayer` for playback. It also manages audio file interactions and translations.
+ */
 class VoiceRecording: NSObject, ObservableObject, AVAudioRecorderDelegate, AVAudioPlayerDelegate {
     
     var audioRecorder: AVAudioRecorder?
@@ -35,6 +41,12 @@ class VoiceRecording: NSObject, ObservableObject, AVAudioRecorderDelegate, AVAud
     public var sourceLanguageCode: String { languageDirection ? seamless_languages[selectedSourceLanguage]! : seamless_languages[selectedTargetLanguage]! }
     public var targetLanguageCode: String { languageDirection ? seamless_languages[selectedTargetLanguage]! : seamless_languages[selectedSourceLanguage]! }
     
+    
+    /**
+     Starts recording audio and sets up necessary configurations.
+     
+     - Parameter completion: Closure called when silence is detected and recording is stopped.
+     */
     func startRecording(completion: @escaping () -> Void) {
         let audioSession = AVAudioSession.sharedInstance()
         do {
@@ -68,6 +80,9 @@ class VoiceRecording: NSObject, ObservableObject, AVAudioRecorderDelegate, AVAud
     }
     
     
+    /**
+     Stops the audio recording and invalidates the timer.
+     */
     func stopRecording() {
         print("Stopping Voice Recording")
         audioRecorder?.stop()
@@ -76,6 +91,12 @@ class VoiceRecording: NSObject, ObservableObject, AVAudioRecorderDelegate, AVAud
         timer = nil
     }
     
+    
+    /**
+     Checks the audio level and stops recording if silence is detected.
+     
+     - Parameter completion: Closure called when silence is detected and recording is stopped.
+     */
     private func checkAudioLevel(completion: @escaping () -> Void) {
         audioRecorder?.updateMeters()
         
@@ -97,6 +118,10 @@ class VoiceRecording: NSObject, ObservableObject, AVAudioRecorderDelegate, AVAud
         }
     }
     
+    
+    /**
+     Retrieves and prints information about the recorded audio file.
+     */
     func getAudioInfo() {
         let recordingPath = paths[0].appendingPathComponent("recording.wav")
         
@@ -120,6 +145,10 @@ class VoiceRecording: NSObject, ObservableObject, AVAudioRecorderDelegate, AVAud
         }
     }
     
+    
+    /**
+     Sends the recorded audio file to a server for translation and saves the translated file.
+     */
     func translationAudioFile() {
         let recordingPath = paths[0].appendingPathComponent("recording.wav")
                 
@@ -183,6 +212,10 @@ class VoiceRecording: NSObject, ObservableObject, AVAudioRecorderDelegate, AVAud
         task.resume()
     }
     
+    
+    /**
+     Plays the translated audio file.
+     */
     func playTranslatedAudio() {
         let translatedFilePath = paths[0].appendingPathComponent("translated_recording.wav")
         
@@ -201,13 +234,19 @@ class VoiceRecording: NSObject, ObservableObject, AVAudioRecorderDelegate, AVAud
         }
     }
 
-    // AVAudioPlayerDelegate method to handle audio playback completion
+    /**
+     AVAudioPlayerDelegate method to handle audio playback completion
+     */
     func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
         isPlayingAudio = false
         print("Finished playing audio")
     }
 
-    
+    /**
+     Converts the recorded audio file to an array of float values.
+     
+     - Returns: An array of `Float` values representing the audio data, or `nil` if conversion fails.
+     */
     func audioFileToArray() -> [Float]? {
         let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
         let recordingPath = paths[0].appendingPathComponent("recording.wav")
